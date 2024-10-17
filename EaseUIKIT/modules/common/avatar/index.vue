@@ -37,5 +37,33 @@ const onError = () => {
 </script>
 
 <style lang="scss" scoped>
-@import url("./style.scss");
+.avatar {
+  overflow: hidden;
+  display: inline-block;
+}
+
+.avatar .image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image cover-view {
+  width: 100%;
+  text-align: center;
+  color: #fff;
+  background-color: rgba(107, 96, 99, 0.4);
+  position: absolute;
+  left: 50%;
+  top: 66%;
+  transform: translate(-50%, 0);
+}
+
+.avatar.circle {
+  border-radius: 50%;
+}
+
+.avatar.square {
+  border-radius: 4px;
+}
 </style>

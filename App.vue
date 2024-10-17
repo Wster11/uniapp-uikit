@@ -1,17 +1,23 @@
 <script lang="ts">
 import { EaseConnKit } from "./EaseUIKIT";
 import { APPKEY, API_URL, URL, CHAT_STORE } from "@/const/index";
+import websdk from "easemob-websdk/uniApp/Easemob-chat";
+import { EasemobChatStatic } from "easemob-websdk/Easemob-chat";
 
 EaseConnKit.init({
+  sdk: websdk as unknown as EasemobChatStatic,
   sdkConfig: {
     appKey: APPKEY,
     isHttpDNS: false,
     url: URL,
     apiUrl: API_URL
   },
-  theme:{
-	  avatarShape: "square"
+	uikit:{
+		theme: {
+    avatarShape: "square"
   }
+	}
+ 
 });
 
 uni.$UIKIT = EaseConnKit;

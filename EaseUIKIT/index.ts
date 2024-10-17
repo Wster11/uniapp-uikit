@@ -7,7 +7,6 @@ import ConversationStore from "./store/conversation";
 import GroupStore from "./store/group";
 import MessageStore from "./store/message";
 import ConfigStore from "./store/config";
-import { EasemobChat } from "easemob-websdk";
 import { EaseUIKITConfig } from "./configType";
 class EaseUIKIT {
   public connStore: ConnStore;
@@ -29,7 +28,7 @@ class EaseUIKIT {
       return;
     }
     this.configStore.initConfig(config);
-    this.connStore.initChatSDK(config.sdkConfig);
+    this.connStore.initChatSDK(config.sdk, config.sdkConfig);
     this.blockStore = new BlockStore();
     this.chatStore = new ChatStore();
     this.contactStore = new ContactStore();

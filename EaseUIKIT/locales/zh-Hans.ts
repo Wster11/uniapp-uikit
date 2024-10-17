@@ -136,5 +136,9 @@ export default {
   group: "群组",
   wxConfigTip: "设置成功, 请重新打开小程序",
   inviteToGroup: "邀请您加入群组",
-  myGroup: "我的群组"
+  myGroup: "我的群组",
+  mute: "静音",
+  unmute: "取消静音",
+  pin: "置顶",
+  unPin: "取消置顶"
 };

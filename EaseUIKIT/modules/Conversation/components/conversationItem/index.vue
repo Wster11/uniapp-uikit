@@ -8,7 +8,16 @@
     </view>
     <view class="content-wrap">
       <view class="user-info-wrap">
-        <view class="user-nick-name ellipsis">{{ conversationInfo.name }}</view>
+        <view class="info-wrap">
+          <view class="user-nick-name ellipsis"
+            >{{ conversationInfo.name }}
+          </view>
+          <image
+            v-if="isMute"
+            style="width: 20px; height: 20px"
+            src="../../../../assets/icon/mute.png"
+          />
+        </view>
         <view class="msg-wrap">
           <view class="last-msg ellipsis">{{
             formatLastMessage(conversation)
@@ -19,7 +28,8 @@
         <view class="time">{{
           getConversationTime(conversation.lastMessage)
         }}</view>
-        <view class="unread-count">
+        <view v-if="isMute" class="unread-mute"></view>
+        <view v-else class="unread-count">
           {{ conversation.unReadCount > 99 ? "99+" : conversation.unReadCount }}
         </view>
       </view>
@@ -48,7 +58,15 @@ const groupStore = EaseConnKit.groupStore;
 
 const conversationInfo = ref<any>({});
 
-const uninstallConvInfo = autorun(() => {
+const isMute = ref<Boolean>(false);
+
+const uninstallIsMuteWatch = autorun(() => {
+  isMute.value = EaseConnKit.convStore.muteConvsMap.get(
+    props.conversation.conversationId
+  );
+});
+
+const uninstallConvInfoWatch = autorun(() => {
   const convId = props.conversation.conversationId;
   if (props.conversation.conversationType === "groupChat") {
     const groupInfo = groupStore.getGroupInfoFromStore(convId);
@@ -115,9 +133,11 @@ const formatLastMessage = (conversation: EasemobChat.ConversationItem) => {
 };
 
 onUnmounted(() => {
-  uninstallConvInfo();
+  uninstallConvInfoWatch();
+  uninstallIsMuteWatch();
 });
 </script>
 <style lang="scss">
+@import url("../../../../styles//common.scss");
 @import url("./style.scss");
 </style>

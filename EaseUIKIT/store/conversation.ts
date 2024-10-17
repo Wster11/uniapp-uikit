@@ -8,8 +8,9 @@ import { EaseConnKit } from "../index";
 class ConversationStore {
   conversationList: EasemobChat.ConversationItem[] = [];
   currConversation: ConversationBaseInfo | null = null;
+  muteConvsMap: Map<string, boolean> = new Map();
   conversationParams: { pageSize: number; cursor: string } = {
-    pageSize: 50,
+    pageSize: 20, // 某些API限制单次获取最多20条
     cursor: ""
   };
   deepGetUserInfo = EaseConnKit.contactStore.deepGetUserInfo;
@@ -37,17 +38,8 @@ class ConversationStore {
       .map((conversationItem) => conversationItem.conversationId);
 
     this.deepGetUserInfo(userIds);
-
-    runInAction(() => {
-      this.conversationList.push(...filteredConversations);
-    });
-  }
-
-  setConversationParams(p: { pageSize: number; cursor: string }) {
-    runInAction(() => {
-      this.conversationParams.pageSize = p.pageSize;
-      this.conversationParams.cursor = p.cursor;
-    });
+    this.getSilentModeForConversations(filteredConversations);
+    this.conversationList.push(...filteredConversations);
   }
 
   async getConversationList() {
@@ -55,9 +47,7 @@ class ConversationStore {
       this.conversationParams
     );
     this.setConversations(res.data?.conversations || []);
-    runInAction(() => {
-      this.conversationParams.cursor = res.data?.cursor;
-    });
+    this.conversationParams.cursor = res.data?.cursor;
     if (res.data?.cursor) {
       await this.getConversationList();
     }
@@ -71,9 +61,7 @@ class ConversationStore {
         cvs.conversationId === conversation.conversationId
     );
     if (idx > -1) {
-      runInAction(() => {
-        this.conversationList.splice(idx, 1);
-      });
+      this.conversationList.splice(idx, 1);
     }
   }
 
@@ -112,18 +100,14 @@ class ConversationStore {
       to: conversation.conversationId
     });
     await EaseConnKit.getChatConn().send(msg);
-    runInAction(() => {
-      const conv = this.getConversationById(conversation.conversationId);
-      if (conv) {
-        conv.unReadCount = 0;
-      }
-    });
+    const conv = this.getConversationById(conversation.conversationId);
+    if (conv) {
+      conv.unReadCount = 0;
+    }
   }
 
   setCurrentConversation(conversation: ConversationBaseInfo | null) {
-    runInAction(() => {
-      this.currConversation = conversation;
-    });
+    this.currConversation = conversation;
   }
 
   moveConversationTop(conversation: EasemobChat.ConversationItem) {
@@ -139,9 +123,7 @@ class ConversationStore {
         });
       }
     } else {
-      runInAction(() => {
-        this.conversationList.unshift(conversation);
-      });
+      this.conversationList.unshift(conversation);
     }
   }
 
@@ -187,6 +169,73 @@ class ConversationStore {
     } else {
       return message.from || "";
     }
+  }
+  // 获取会话的免打扰状态 (单次最多获取20条)
+  getSilentModeForConversations(
+    conversationList: EasemobChat.ConversationItem[]
+  ) {
+    if (!conversationList || conversationList.length == 0) {
+      return;
+    }
+    const params = {
+      conversationList: conversationList.map((item) => {
+        return {
+          id: item.conversationId,
+          type: item.conversationType
+        };
+      })
+    };
+    EaseConnKit.getChatConn()
+      .getSilentModeForConversations(params)
+      .then((res) => {
+        const userSetting = res.data?.user || [];
+        const groupSetting = res.data?.group || [];
+
+        Object.keys(userSetting).forEach((userId) => {
+          if (userSetting?.[userId] && userSetting[userId]?.type == "NONE") {
+            this.muteConvsMap.set(userId, true);
+          }
+        });
+
+        Object.keys(groupSetting).forEach((groupId) => {
+          if (groupSetting?.[groupId] && groupSetting[groupId]?.type == "AT") {
+            this.muteConvsMap.set(groupId, true);
+          }
+        });
+      });
+  }
+
+  setSilentModeForConversationSync(cvs: ConversationBaseInfo, mute: boolean) {
+    this.muteConvsMap.set(cvs.conversationId, mute);
+  }
+
+  setSilentModeForConversation(cvs: EasemobChat.ConversationItem) {
+    EaseConnKit.getChatConn()
+      .setSilentModeForConversation({
+        conversationId: cvs.conversationId,
+        //@ts-ignore
+        type: cvs.conversationType,
+        options: {
+          paramType: 0,
+          //@ts-ignore
+          remindType: cvs.conversationType == "groupChat" ? "AT" : "NONE"
+        }
+      })
+      .then((res: any) => {
+        this.setSilentModeForConversationSync(cvs, true);
+      });
+  }
+
+  clearRemindTypeForConversation(cvs: EasemobChat.ConversationItem) {
+    EaseConnKit.getChatConn()
+      .clearRemindTypeForConversation({
+        conversationId: cvs.conversationId,
+        //@ts-ignore
+        type: cvs.conversationType
+      })
+      .then((res: any) => {
+        this.setSilentModeForConversationSync(cvs, false);
+      });
   }
 
   clear() {

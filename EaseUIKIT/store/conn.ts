@@ -1,54 +1,47 @@
 import { makeAutoObservable } from "mobx";
 import type {
-	EasemobChat,
-	EasemobChatStatic
+  EasemobChat,
+  EasemobChatStatic
 } from "easemob-websdk/Easemob-chat";
-//@ts-ignore
-import websdk from "easemob-websdk/uniApp/Easemob-chat";
-
-websdk.logger.onLog = (log : any) => {
-	console.log(log.time, ...log.logs);
-};
-
-// 关闭控制台日志
-websdk.logger.setConsoleLogVisibility(false);
 
 class ConnStore {
-	/** IM连接实例 */
-	conn : EasemobChat.Connection | null = null;
+  /** IM连接实例 */
+  conn: EasemobChat.Connection | null = null;
+  sdk: EasemobChatStatic | null = null;
+  constructor() {
+    makeAutoObservable(this);
+  }
 
-	constructor() {
-		makeAutoObservable(this);
-	}
+  /** 初始化webIM */
+  initChatSDK(
+    sdk: EasemobChatStatic,
+    config: EasemobChat.ConnectionParameters
+  ) {
+    this.sdk = sdk;
+    this.setChatConn(new sdk.connection(config));
+    return this.conn;
+  }
 
-	/** 初始化webIM */
-	initChatSDK(config : EasemobChat.ConnectionParameters) {
-		this.setChatConn(new websdk.connection(config));
-		return this.conn;
-	}
+  /** 设置conn实例 */
+  setChatConn(connection: EasemobChat.Connection) {
+    this.conn = connection;
+  }
 
-	/** 设置conn实例 */
-	setChatConn(connection : EasemobChat.Connection) {
-		this.conn = connection;
-		//@ts-ignore
-		uni.conn = connection;
-	}
+  /** 获取conn实例 */
+  getChatConn(): EasemobChat.Connection {
+    if (this.conn) {
+      return this.conn;
+    }
+    throw new Error("conn is not initialized");
+  }
 
-	/** 获取conn实例 */
-	getChatConn() : EasemobChat.Connection {
-		if (this.conn) {
-			return this.conn;
-		}
-		throw new Error("conn is not initialized");
-	}
-
-	/** 获取 websdk */
-	getChatSDK() : EasemobChatStatic {
-		if (websdk) {
-			return websdk;
-		}
-		throw new Error("SDK is not found");
-	}
+  /** 获取 websdk */
+  getChatSDK(): EasemobChatStatic {
+    if (this.sdk) {
+      return this.sdk;
+    }
+    throw new Error("SDK is not found");
+  }
 }
 
-export default ConnStore
+export default ConnStore;

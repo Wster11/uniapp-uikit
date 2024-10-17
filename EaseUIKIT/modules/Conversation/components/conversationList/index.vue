@@ -1,40 +1,109 @@
 <template>
-	<view class="conversation-list-wrap">
-		<view v-if="conversationList.length">
-			<view v-for="conv in conversationList" :key="conv.conversationId" :data-id="conv.conversationId"
-				class="conversation-item-wrap" :class="{
-          'conversation-item-wrap-selected':
-            conv.conversationId === selectedConv.conversationId
-        }">
-				<ConversationItem :conversation="conv" />
-			</view>
-		</view>
-		<view v-else class="conversation-empty">
-			{{ t("conversationEmptyTip") }}
-		</view>
-	</view>
+  <view class="conversation-list-wrap">
+    <view v-if="conversationList.length">
+      <view
+        v-for="conv in conversationList"
+        :key="conv.conversationId"
+        :data-id="conv.conversationId"
+        @longpress="onLongPress"
+        class="conversation-item-wrap"
+      >
+        <ConversationItem :conversation="conv" />
+      </view>
+    </view>
+    <view v-else class="conversation-empty">
+      {{ t("conversationEmptyTip") }}
+    </view>
+    <Popup ref="popup" :height="250">
+      <MenuItem
+        :name="isMuteSelectedConv ? t('unmute') : t('mute')"
+        key="1"
+        @click="onMuteButtonClick"
+      />
+      <MenuItem name="取消置顶" key="2" />
+      <MenuItem
+        className="dangerous-btn"
+        :name="t('deleteConv')"
+        @click="deleteConversation"
+        key="4"
+        :hideDivider="true"
+      />
+      <Divider :height="8" />
+      <MenuItem name="取消" key="4" :hideDivider="true" />
+    </Popup>
+  </view>
 </template>
 
 <script setup lang="ts">
-	import ConversationItem from "../conversationItem/index.vue";
-	import { ref, onUnmounted } from "vue";
-	import type { EasemobChat } from "easemob-websdk";
-	import { t } from "../../../../locales/index";
-	import { EaseConnKit } from "../../../../index";
-	import { autorun } from "mobx";
-	import { deepClone } from "../../../../utils/index";
-	const conversationList = ref<EasemobChat.ConversationItem[]>([]);
-	const selectedConv = ref({} as EasemobChat.ConversationItem);
+import ConversationItem from "../conversationItem/index.vue";
+import Popup from "../../../common/popup/index.vue";
+import MenuItem from "../../../common/menuItem/index.vue";
+import Divider from "../../../common/divider/index.vue";
+import { ref, computed, onUnmounted } from "vue";
+import type { EasemobChat } from "easemob-websdk";
+import { t } from "../../../../locales/index";
+import { EaseConnKit } from "../../../../index";
+import { autorun } from "mobx";
+import { deepClone } from "../../../../utils/index";
 
+const popup = ref(null);
+const isMuteSelectedConv = ref(false);
+const closePopup = () => {
+  popup.value.closePopup();
+};
 
-	const uninstallConvListWatch = autorun(() => {
-		conversationList.value = deepClone(EaseConnKit.convStore.conversationList);
-	});
+const onLongPress = (e: any) => {
+  let [touches, style, conversationId] = [
+    e.touches[0],
+    "",
+    e.currentTarget.dataset.id
+  ];
+  selectedConv.value = EaseConnKit.convStore.conversationList.find(
+    (conv) => conv.conversationId === conversationId
+  ) as EasemobChat.ConversationItem;
+  isMuteSelectedConv.value = EaseConnKit.convStore.muteConvsMap.get(
+    selectedConv.value.conversationId
+  );
+  popup.value.openPopup();
+};
 
-	onUnmounted(() => {
-		uninstallConvListWatch();
-	});
+const conversationList = ref<EasemobChat.ConversationItem[]>([]);
+const selectedConv = ref({} as EasemobChat.ConversationItem);
+const uninstallConvListWatch = autorun(() => {
+  conversationList.value = deepClone(EaseConnKit.convStore.conversationList);
+});
+
+const deleteConversation = () => {
+  EaseConnKit.convStore.deleteConversation(selectedConv.value);
+  closePopup();
+};
+
+const muteConversation = () => {
+  EaseConnKit.convStore.setSilentModeForConversation(selectedConv.value);
+  closePopup();
+};
+
+const unMuteConversation = () => {
+  EaseConnKit.convStore.clearRemindTypeForConversation(selectedConv.value);
+  closePopup();
+};
+
+const onMuteButtonClick = () => {
+  if (isMuteSelectedConv.value) {
+    unMuteConversation();
+  } else {
+    muteConversation();
+  }
+};
+
+onUnmounted(() => {
+  uninstallConvListWatch();
+});
 </script>
 <style lang="scss" scoped>
-	@import url("./style.scss");
+@import url("../../../../styles//common.scss");
+@import url("./style.scss");
+.dangerous-btn {
+  color: #ff002b;
+}
 </style>

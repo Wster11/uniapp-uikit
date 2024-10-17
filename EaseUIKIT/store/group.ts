@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import type { EasemobChat } from "easemob-websdk/Easemob-chat";
 import type { GroupNotice, GroupNoticeInfo } from "../types/index";
 import {
@@ -206,13 +206,15 @@ class GroupStore {
   };
 
   clear = () => {
-    this.joinedGroupList = [];
-    this.groupNoticeInfo = {
-      list: [],
-      unReadCount: 0
-    };
-    this.groupDetailMap.clear();
-    this.viewedGroupInfo = {} as EasemobChat.GroupInfo;
+    runInAction(() => {
+      this.joinedGroupList = [];
+      this.groupNoticeInfo = {
+        list: [],
+        unReadCount: 0
+      };
+      this.groupDetailMap.clear();
+      this.viewedGroupInfo = {} as EasemobChat.GroupInfo;
+    });
   };
 }
 

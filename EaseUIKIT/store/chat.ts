@@ -2,6 +2,7 @@ import { makeAutoObservable, runInAction } from "mobx";
 import { GroupEventFromIds } from "../const/index";
 import { throttle } from "../utils/index";
 import { EaseConnKit } from "../index";
+import { EasemobChat } from "easemob-websdk/Easemob-chat";
 
 class ChatStore {
   isInitEvent = false;
@@ -62,6 +63,28 @@ class ChatStore {
           if (conv) {
             EaseConnKit.convStore.deleteConversation(conv);
           }
+        } else if (e.operation === "setSilentModeForConversation") {
+          EaseConnKit.convStore.setSilentModeForConversationSync(
+            {
+              conversationType: (
+                e as EasemobChat.NotificationConMultiDeviceInfo
+              ).type,
+              conversationId: (e as EasemobChat.NotificationConMultiDeviceInfo)
+                .conversationId
+            },
+            true
+          );
+        } else if (e.operation === "removeSilentModeForConversation") {
+          EaseConnKit.convStore.setSilentModeForConversationSync(
+            {
+              conversationType: (
+                e as EasemobChat.NotificationConMultiDeviceInfo
+              ).type,
+              conversationId: (e as EasemobChat.NotificationConMultiDeviceInfo)
+                .conversationId
+            },
+            false
+          );
         }
       }
     });

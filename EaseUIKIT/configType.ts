@@ -1,10 +1,13 @@
-import { EasemobChat } from "easemob-websdk";
+import { EasemobChat, EasemobChatStatic } from "easemob-websdk";
 interface EaseUIKITConfig {
+  sdk: EasemobChatStatic;
   sdkConfig: EasemobChat.ConnectionParameters;
-  features?: {};
-  theme?: {
-    // 头像形状
-    avatarShape?: "circle" | "square";
+  uikit: {
+    features?: {};
+    theme?: {
+      // 头像形状
+      avatarShape?: "circle" | "square";
+    };
   };
 }
 
