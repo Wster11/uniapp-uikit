@@ -1,13 +1,15 @@
 .conversation-item-wrap {
   display: flex;
-  border-bottom: 2rpx solid #f7ecec;
-  padding: 10rpx;
+  padding: 5px;
   align-items: center;
 }
 
 .content-wrap {
+  height: 65px;
   display: flex;
   flex: 1;
+  align-items: center;
+  border-bottom: 0.5px solid #E3E6E8;
 }
 
 .avatar-wrap {
@@ -15,49 +17,55 @@
 }
 
 .unread-count {
-  position: absolute;
   display: inline-block;
   width: fit-content;
-  padding: 0 5rpx;
-  height: 30rpx;
-  min-width: 30rpx;
-  font-size: 20rpx;
+  padding: 1px 4px;
+  height: 15px;
+  min-width: 10px;
+  font-size: 12px;
   text-align: center;
-  line-height: 30rpx;
-  border-radius: 15rpx;
-  font-size: 24rpx;
-  background: red;
+  line-height: 16px;
+  border-radius: 9px;
+  background: #009DFF;
   color: #fff;
-  right: -5px;
+  margin-top: 5px;
 }
 
 .user-info-wrap {
   display: flex;
   flex: 1;
   flex-direction: column;
-  margin-left: 20rpx;
+  margin-left: 10px;
 }
 
 .user-nick-name {
-  font-size: 32rpx;
-  width: 240rpx;
+  font-size: 16px;
+  width: 120px;
   flex: 1;
+  color: #171A1C;
+  line-height: 22px;
 }
 
-.msg-wrap{
+.msg-wrap {
   display: flex;
 }
 
 .last-msg {
   flex: 1;
   width: 0;
-  font-size: 28rpx;
-  color: gray;
+  font-size: 14px;
+  color: #75828A;
+  line-height: 18px;
 }
 
 .time {
   flex-shrink: 0;
-  margin-left: 30rpx;
-  color: #999;
-  font-size: 28rpx;
+  margin-left: 15px;
+  color: #75828A;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.msg-right-wrap {
+  text-align: right;
 }

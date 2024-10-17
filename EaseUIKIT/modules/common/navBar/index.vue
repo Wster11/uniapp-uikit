@@ -1,7 +1,7 @@
 <template>
   <view
     :class="['avatar', shape]"
-    :style="{ width: size + 'px', height: size + 'px' }"
+    :style="{ width: size + 'rpx', height: size + 'rpx' }"
   >
     <image class="image" :src="imageSrc" :alt="alt" @error="onError"> </image>
   </view>
@@ -9,7 +9,7 @@
 
 <script lang="ts" setup>
 import { ref, computed } from "vue";
-import { EaseConnKit } from "../../../index";
+
 interface Props {
   src: string;
   alt?: string;
@@ -27,9 +27,8 @@ const imageSrc = computed(() => {
   }
   return props.src || props.placeholder;
 });
-const size = props.size || 50; // 默认大小为50px
-const shape =
-  props.shape || EaseConnKit.configStore.config.theme?.avatarShape || "square"; // 默认形状为圆形
+const size = props.size || 100; // 默认大小为100rpx
+const shape = props.shape || "circle"; // 默认形状为圆形
 
 const onError = () => {
   isError.value = true;

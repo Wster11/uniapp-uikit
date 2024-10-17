@@ -6,8 +6,9 @@ import ContactStore from "./store/contact";
 import ConversationStore from "./store/conversation";
 import GroupStore from "./store/group";
 import MessageStore from "./store/message";
+import ConfigStore from "./store/config";
 import { EasemobChat } from "easemob-websdk";
-
+import { EaseUIKITConfig } from "./configType";
 class EaseUIKIT {
   public connStore: ConnStore;
   public chatStore: ChatStore;
@@ -17,16 +18,18 @@ class EaseUIKIT {
   public contactStore: ContactStore;
   public groupStore: GroupStore;
   public messageStore: MessageStore;
-
+  public configStore: ConfigStore;
   constructor() {
     this.connStore = new ConnStore();
+    this.configStore = new ConfigStore();
   }
   // 初始化IM SDK
-  public init(config: EasemobChat.ConnectionParameters) {
+  public init(config: EaseUIKITConfig) {
     if (this.connStore.conn) {
       return;
     }
-    this.connStore.initChatSDK(config);
+    this.configStore.initConfig(config);
+    this.connStore.initChatSDK(config.sdkConfig);
     this.blockStore = new BlockStore();
     this.chatStore = new ChatStore();
     this.contactStore = new ContactStore();
