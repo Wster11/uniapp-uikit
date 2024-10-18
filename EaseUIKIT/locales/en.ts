@@ -140,5 +140,5 @@ export default {
   mute:"Mute",
   unmute:"Unmute",
   pin: "Pin",
-  unPin: "Unpin",
+  unpin: "Unpin",
 };

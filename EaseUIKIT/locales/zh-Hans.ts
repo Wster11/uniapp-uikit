@@ -140,5 +140,5 @@ export default {
   mute: "静音",
   unmute: "取消静音",
   pin: "置顶",
-  unPin: "取消置顶"
+  unpin: "取消置顶"
 };

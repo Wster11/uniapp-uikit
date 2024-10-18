@@ -6,3 +6,7 @@
   text-overflow: ellipsis;
   /* 使用省略号替代超出部分 */
 }
+
+.hidden {
+  opacity: 0;
+}

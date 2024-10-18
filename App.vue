@@ -12,12 +12,11 @@ EaseConnKit.init({
     url: URL,
     apiUrl: API_URL
   },
-	uikit:{
-		theme: {
-    avatarShape: "square"
+  uikit: {
+    theme: {
+      avatarShape: "square"
+    }
   }
-	}
- 
 });
 
 uni.$UIKIT = EaseConnKit;

@@ -1,7 +1,11 @@
 .conversation-item-wrap {
   display: flex;
-  padding: 5px;
+  padding: 5px 15px;
   align-items: center;
+}
+
+.pin-conversation-item-wrap {
+  background: #F1F2F3;
 }
 
 .content-wrap {

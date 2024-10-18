@@ -10,7 +10,7 @@
 import { computed } from "vue";
 
 interface Props {
-  className: string;
+  className?: string;
   name: string; // 菜单名称
   hideDivider?: boolean; // 是否显示分割线
 }

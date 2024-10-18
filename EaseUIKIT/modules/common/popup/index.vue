@@ -26,7 +26,7 @@
 import { ref, computed } from "vue";
 
 interface Props {
-  height?: string;
+  height?: number;
 }
 
 const props = defineProps<Props>();
@@ -40,6 +40,7 @@ const popupStyle = computed(() => `height: ${popupHeight.value}px;`);
 
 // 打开弹窗
 const openPopup = () => {
+  uni.hideTabBar();
   show.value = true;
   animatePopup(true);
 };
@@ -47,6 +48,7 @@ const openPopup = () => {
 // 关闭弹窗
 const closePopup = () => {
   animatePopup(false, () => {
+    uni.showTabBar();
     show.value = false;
   });
 };

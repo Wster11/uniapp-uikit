@@ -6,7 +6,6 @@
         :key="conv.conversationId"
         :data-id="conv.conversationId"
         @longpress="onLongPress"
-        class="conversation-item-wrap"
       >
         <ConversationItem :conversation="conv" />
       </view>
@@ -20,7 +19,11 @@
         key="1"
         @click="onMuteButtonClick"
       />
-      <MenuItem name="取消置顶" key="2" />
+      <MenuItem
+        :name="selectedConv.isPinned ? t('unpin') : t('pin')"
+        @click="pinConversation(!selectedConv.isPinned)"
+        key="2"
+      />
       <MenuItem
         className="dangerous-btn"
         :name="t('deleteConv')"
@@ -29,7 +32,12 @@
         :hideDivider="true"
       />
       <Divider :height="8" />
-      <MenuItem name="取消" key="4" :hideDivider="true" />
+      <MenuItem
+        :name="t('cancel')"
+        @click="closePopup"
+        key="4"
+        :hideDivider="true"
+      />
     </Popup>
   </view>
 </template>
@@ -48,6 +56,7 @@ import { deepClone } from "../../../../utils/index";
 
 const popup = ref(null);
 const isMuteSelectedConv = ref(false);
+
 const closePopup = () => {
   popup.value.closePopup();
 };
@@ -85,6 +94,11 @@ const muteConversation = () => {
 
 const unMuteConversation = () => {
   EaseConnKit.convStore.clearRemindTypeForConversation(selectedConv.value);
+  closePopup();
+};
+
+const pinConversation = (isPined: boolean) => {
+  EaseConnKit.convStore.pinConversation(selectedConv.value, isPined);
   closePopup();
 };
 

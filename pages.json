@@ -28,13 +28,13 @@
 				"text": "联系人",
 				"iconPath": "static/icon/contacts.png",
 				"selectedIconPath": "static/icon/contacts_active.png",
-				"pagePath": "pages/ContactList/index"
+				"pagePath": "EaseUIKIT/modules/Conversation/index"
 			},
 			{
 				"text": "我",
 				"iconPath": "static/icon/mine.png",
 				"selectedIconPath": "static/icon/mine_active.png",
-				"pagePath": "pages/User/index"
+				"pagePath": "EaseUIKIT/modules/Conversation/index"
 			}
 		]
 	},

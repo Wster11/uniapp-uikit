@@ -1,5 +1,11 @@
 <template>
-  <view class="conversation-item-wrap" @tap="toChatPage">
+  <view
+    :class="[
+      'conversation-item-wrap',
+      { 'pin-conversation-item-wrap': props.conversation.isPinned }
+    ]"
+    @tap="toChatPage"
+  >
     <view class="avatar-wrap">
       <Avatar
         :src="conversationInfo.avatar"
@@ -28,9 +34,13 @@
         <view class="time">{{
           getConversationTime(conversation.lastMessage)
         }}</view>
-        <view v-if="isMute" class="unread-mute"></view>
-        <view v-else class="unread-count">
-          {{ conversation.unReadCount > 99 ? "99+" : conversation.unReadCount }}
+        <view :class="conversation.unReadCount ? '' : 'hidden'">
+          <view v-if="isMute" class="unread-mute"></view>
+          <view v-else class="unread-count">
+            {{
+              conversation.unReadCount > 99 ? "99+" : conversation.unReadCount
+            }}
+          </view>
         </view>
       </view>
     </view>
@@ -59,6 +69,7 @@ const groupStore = EaseConnKit.groupStore;
 const conversationInfo = ref<any>({});
 
 const isMute = ref<Boolean>(false);
+
 
 const uninstallIsMuteWatch = autorun(() => {
   isMute.value = EaseConnKit.convStore.muteConvsMap.get(
@@ -138,6 +149,6 @@ onUnmounted(() => {
 });
 </script>
 <style lang="scss">
-@import url("../../../../styles//common.scss");
+@import url("../../../../styles/common.scss");
 @import url("./style.scss");
 </style>

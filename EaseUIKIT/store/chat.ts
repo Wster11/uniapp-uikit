@@ -17,7 +17,12 @@ class ChatStore {
       .open(params)
       .then((res) => {
         runInAction(() => {
-          EaseConnKit.convStore.getConversationList();
+          const featureConfig = EaseConnKit.configStore.getFeatureConfig();
+          if (featureConfig.pinConversation) {
+            EaseConnKit.convStore.getServerPinnedConversations();
+          } else {
+            EaseConnKit.convStore.getConversationList();
+          }
           EaseConnKit.contactStore.getContacts();
           EaseConnKit.groupStore.getJoinedGroupList();
           EaseConnKit.blockStore.getBlockList();

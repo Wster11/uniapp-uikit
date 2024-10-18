@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import type { EasemobChat } from "easemob-websdk/Easemob-chat";
-import { getTimeStringAutoShort } from "../utils/index";
+import { getTimeStringAutoShort, sortByPinned } from "../utils/index";
 import type { ConversationBaseInfo } from "./types/index";
 import type { MixedMessageBody } from "../types/index";
 import { EaseConnKit } from "../index";
@@ -10,13 +10,25 @@ class ConversationStore {
   currConversation: ConversationBaseInfo | null = null;
   muteConvsMap: Map<string, boolean> = new Map();
   conversationParams: { pageSize: number; cursor: string } = {
-    pageSize: 20, // 某些API限制单次获取最多20条
+    pageSize: 20,
     cursor: ""
   };
+  pinConversationParams: { pageSize: number; cursor: string } = {
+    pageSize: 20,
+    cursor: ""
+  };
+
   deepGetUserInfo = EaseConnKit.contactStore.deepGetUserInfo;
 
   constructor() {
     makeAutoObservable(this);
+  }
+
+  get totalUnreadCount() {
+    return this.conversationList.reduce((prev, curr) => {
+      const isMuted = this.muteConvsMap.get(curr.conversationId);
+      return prev + (isMuted ? 0 : curr.unReadCount);
+    }, 0);
   }
 
   setConversations(conversations: EasemobChat.ConversationItem[]) {
@@ -30,7 +42,7 @@ class ConversationStore {
     const filteredConversations = conversations.filter(
       ({ conversationId }) => !currentCvsId.includes(conversationId)
     );
-
+    const beforeConversations = [...this.conversationList];
     const userIds = filteredConversations
       .filter(
         (conversationItem) => conversationItem.conversationType === "singleChat"
@@ -39,7 +51,10 @@ class ConversationStore {
 
     this.deepGetUserInfo(userIds);
     this.getSilentModeForConversations(filteredConversations);
-    this.conversationList.push(...filteredConversations);
+
+    beforeConversations.push(...filteredConversations);
+
+    this.conversationList = [...beforeConversations.sort(sortByPinned)];
   }
 
   async getConversationList() {
@@ -47,9 +62,24 @@ class ConversationStore {
       this.conversationParams
     );
     this.setConversations(res.data?.conversations || []);
-    this.conversationParams.cursor = res.data?.cursor;
+    this.conversationParams.cursor = res.data?.cursor || "";
     if (res.data?.cursor) {
       await this.getConversationList();
+    }
+    return res;
+  }
+
+  async getServerPinnedConversations() {
+    const res = await EaseConnKit.getChatConn().getServerPinnedConversations(
+      this.pinConversationParams
+    );
+    this.setConversations(res.data?.conversations || []);
+    this.pinConversationParams.cursor = res.data?.cursor || "";
+    if (res.data?.cursor) {
+      await this.getServerPinnedConversations();
+    } else {
+      // 如果没有置顶会话，再获取会话列表
+      this.getConversationList();
     }
     return res;
   }
@@ -112,19 +142,21 @@ class ConversationStore {
 
   moveConversationTop(conversation: EasemobChat.ConversationItem) {
     const conv = this.getConversationById(conversation.conversationId);
+    const conversationList = [...this.conversationList];
     if (conv) {
       const idx = this.conversationList.findIndex(
         (item) => item.conversationId === conversation.conversationId
       );
       if (idx > -1) {
         runInAction(() => {
-          this.conversationList.splice(idx, 1);
-          this.conversationList.unshift(conversation);
+          conversationList.splice(idx, 1);
+          conversationList.unshift(conversation);
         });
       }
     } else {
-      this.conversationList.unshift(conversation);
+      conversationList.unshift(conversation);
     }
+    this.conversationList = [...conversationList.sort(sortByPinned)];
   }
 
   createConversation(
@@ -136,7 +168,9 @@ class ConversationStore {
       conversationId: conversation.conversationId,
       conversationType: conversation.conversationType,
       lastMessage: msg,
-      unReadCount
+      unReadCount,
+      isPinned: false,
+      pinnedTime: 0
     };
     if (conversation.conversationType === "singleChat") {
       this.deepGetUserInfo([conversation.conversationId]);
@@ -238,10 +272,31 @@ class ConversationStore {
       });
   }
 
+  pinConversation(cvs: EasemobChat.ConversationItem, isPinned: boolean) {
+    EaseConnKit.getChatConn()
+      .pinConversation({
+        conversationType: cvs.conversationType,
+        conversationId: cvs.conversationId,
+        isPinned
+      })
+      .then((res) => {
+        const conv = this.getConversationById(cvs.conversationId);
+        if (conv) {
+          conv.isPinned = isPinned;
+          conv.pinnedTime = res.data?.pinnedTime || Date.now();
+        }
+
+        runInAction(() => {
+          this.conversationList = [...this.conversationList.sort(sortByPinned)];
+        });
+      });
+  }
+
   clear() {
     runInAction(() => {
       this.conversationList = [];
-      this.conversationParams = { pageSize: 50, cursor: "" };
+      this.conversationParams = { pageSize: 20, cursor: "" };
+      this.pinConversationParams = { pageSize: 20, cursor: "" };
       this.currConversation = null;
     });
   }
