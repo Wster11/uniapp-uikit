@@ -11,6 +11,12 @@
 			"style": {
 				"navigationBarTitleText": "Easemob Uniapp"
 			}
+		},
+		{
+			"path": "EaseUIKIT/modules/Chat/index",
+			"style": {
+				"navigationBarTitleText": "Easemob Uniapp"
+			}
 		}
 	],
 	"tabBar": {

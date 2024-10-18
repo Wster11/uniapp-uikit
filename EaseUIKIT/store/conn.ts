@@ -1,4 +1,3 @@
-import { makeAutoObservable } from "mobx";
 import type {
   EasemobChat,
   EasemobChatStatic
@@ -8,9 +7,7 @@ class ConnStore {
   /** IM连接实例 */
   conn: EasemobChat.Connection | null = null;
   sdk: EasemobChatStatic | null = null;
-  constructor() {
-    makeAutoObservable(this);
-  }
+  constructor() {}
 
   /** 初始化webIM */
   initChatSDK(
