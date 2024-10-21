@@ -1,8 +1,5 @@
 <template>
   <view class="msg-list-wrap">
-    <view class="tip">
-      本应用仅用于环信产品功能开发测试，请勿用于非法用途。任何涉及转账、汇款、裸聊、网恋、网购退款、投资理财等统统都是诈骗，请勿相信！
-    </view>
     <scroll-view
       scroll-y
       :scroll-top="scrollHeight"
@@ -119,6 +116,7 @@ defineExpose({
 .message-scroll-list {
   height: 100%;
   overflow-y: scroll;
+  background-color: #f9fafa;
 }
 
 .scroll-msg-item {
@@ -130,14 +128,5 @@ defineExpose({
   font-size: 28rpx;
   margin: 10rpx 0;
   color: #999;
-}
-
-.tip {
-  position: fixed;
-  top: 100px;
-  left: 40px;
-  right: 40px;
-  color: #bbb;
-  text-align: center;
 }
 </style>

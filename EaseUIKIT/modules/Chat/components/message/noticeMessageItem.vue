@@ -28,6 +28,7 @@
 <script lang="ts" setup>
 import type { MixedMessageBody } from "../../../../types/index";
 import { EaseConnKit } from "../../../../index";
+import { t } from "../../../../locales/index";
 interface Props {
   msg: MixedMessageBody;
 }
@@ -40,11 +41,12 @@ const noticeType = msg.noticeInfo?.noticeType;
 
 <style lang="scss" scoped>
 .msg-notice {
-  margin: 20rpx 0;
+  margin: 10px 0;
 }
 .notice-text {
   text-align: center;
-  font-size: 24rpx;
-  color: #999;
+  font-size: 12px;
+  color: #acb4b9;
+  line-height: 16px;
 }
 </style>

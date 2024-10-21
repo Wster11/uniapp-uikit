@@ -4,7 +4,6 @@
     <view class="msgs-wrap">
       <!-- 遮照层,点击关闭Toolbar -->
       <view v-if="isShowToolbar" class="mask" @tap="closeToolbar"></view>
-
       <MessageList
         v-if="msgs"
         ref="msgListRef"
@@ -36,6 +35,7 @@ import type { EasemobChat } from "easemob-websdk/Easemob-chat";
 import { onLoad } from "@dcloudio/uni-app";
 import type { InputToolbarEvent } from "../../types/index";
 import { EaseConnKit } from "../../index";
+import { deepClone } from "../../utils/index";
 import { autorun } from "mobx";
 
 const msgListRef = ref(null);
@@ -87,8 +87,8 @@ onLoad((option) => {
   conversationType.value = option?.type;
   conversationId.value = option?.id;
   uninstallMsgWatch = autorun(() => {
-    const messages = messageStore.conversationMessagesMap.get(
-      conversationId.value
+    const messages = deepClone(
+      messageStore.conversationMessagesMap.get(conversationId.value)
     );
     if (messages) {
       msgs.value = messages.messages;

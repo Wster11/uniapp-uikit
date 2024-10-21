@@ -2,8 +2,10 @@
   <view class="message-input-toolbar">
     <swiper class="swiper">
       <swiper-item class="swiper-item">
-        <ImageUpload />
-        <VideoUpload />
+        <view class="item-wrap">
+          <ImageUpload />
+          <VideoUpload />
+        </view>
       </swiper-item>
     </swiper>
   </view>
@@ -16,13 +18,20 @@ const emits = defineEmits(["onMessageSend"]);
 </script>
 <style lang="scss" scoped>
 .message-input-toolbar {
-  background:#f3f3f3;
+  background: #f9fafa;
+}
+
+.swiper {
+  min-height: 150px;
+  padding: 15px 30px 0 30px;
 }
 
 .swiper-item {
-  display: grid;
   width: 100%;
-  grid-template-columns: repeat(4, 25%);
-  grid-template-rows: repeat(2, 100px);
+}
+
+.item-wrap {
+  display: flex;
+  flex-flow: wrap;
 }
 </style>

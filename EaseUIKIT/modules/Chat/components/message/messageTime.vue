@@ -51,8 +51,9 @@ watch(
 <style lang="scss" scoped>
 .message-time {
   margin: 0 auto;
-  color: #999;
+  color: #ACB4B9;
   font-size: 12px;
+  line-height: 16px;
   overflow-wrap: anywhere;
   display: flex;
   place-content: center center;

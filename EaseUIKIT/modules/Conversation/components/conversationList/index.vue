@@ -8,9 +8,13 @@
       >
         <ConversationItem
           :conversation="conv"
+          :showMenu="
+            selectedConvId ? selectedConvId === conv.conversationId : false
+          "
           @mute="onMuteButtonClick"
           @pin="pinConversation"
           @delete="deleteConversation"
+          @leftSwipe="handleLeftSwipe"
         />
       </view>
     </view>
@@ -29,6 +33,7 @@ import { EaseConnKit } from "../../../../index";
 import { deepClone } from "../../../../utils/index";
 import { autorun } from "mobx";
 
+const selectedConvId = ref<EasemobChat.ConversationItem | null>(null);
 const conversationList = ref<EasemobChat.ConversationItem[]>([]);
 
 const uninstallConvListWatch = autorun(() => {
@@ -60,6 +65,10 @@ const onMuteButtonClick = (conv: EasemobChat.ConversationItem) => {
   } else {
     muteConversation(conv);
   }
+};
+
+const handleLeftSwipe = (convId: string | null) => {
+  selectedConvId.value = convId;
 };
 
 onUnmounted(() => {

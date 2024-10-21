@@ -3,7 +3,7 @@
     class="swipe-menu-wrap"
     @touchmove="touchMoveHandler"
     @touchstart="touchStartHandler"
-    :style="{ transform: `translateX(${translateX}px)` }"
+    :style="{ transform: `translateX(${props.showMenu ? -272 : 0}px)` }"
   >
     <view
       :class="[
@@ -76,13 +76,12 @@ import { autorun } from "mobx";
 
 interface Props {
   conversation: EasemobChat.ConversationItem;
+  showMenu: boolean;
 }
 
 const props = defineProps<Props>();
 
-const translateX = ref(0);
-
-const emits = defineEmits(["mute", "pin", "delete"]);
+const emits = defineEmits(["mute", "pin", "delete", "leftSwipe"]);
 
 let startX = 0;
 
@@ -142,6 +141,7 @@ const getAvatarPlaceholder = () => {
 };
 
 const toChatPage = () => {
+  emits("leftSwipe", null);
   uni.navigateTo({
     url: `../Chat/index?type=${props.conversation.conversationType}&id=${props.conversation.conversationId}`
   });
@@ -194,7 +194,7 @@ const handleMenuClick = (action: string) => {
   } else if (action === "delete") {
     emits("delete", props.conversation);
   }
-  translateX.value = 0;
+  emits("leftSwipe", null);
 };
 
 // 滑动开始
@@ -210,13 +210,9 @@ const touchMoveHandler = (e) => {
   if (Math.abs(moveX) < 80) return;
 
   if (moveX > 0) {
-    // 右滑 隐藏删除按钮
-    if (Math.abs(translateX.value) === 0) return;
-    translateX.value = 0;
+    emits("leftSwipe", null);
   } else {
-    // 左滑 显示删除按钮
-    if (Math.abs(translateX.value) >= 160) return;
-    translateX.value = -272;
+    emits("leftSwipe", props.conversation.conversationId);
   }
 };
 

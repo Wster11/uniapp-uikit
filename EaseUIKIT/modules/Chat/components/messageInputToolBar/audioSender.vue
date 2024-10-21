@@ -10,7 +10,7 @@
         @touchmove="handleRecordMove"
       >
         <view v-show="!isTalking" class="record-button">
-          <text class="">
+          <text>
             {{ t("holdToTalk") }}
           </text>
         </view>
@@ -212,7 +212,7 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .mr-10 {
-  margin-right: 10rpx;
+  margin-right: 5px;
 }
 .mic-layer {
   width: 100%;
@@ -221,9 +221,8 @@ onMounted(() => {
     border-radius: 10rpx;
     background-color: #f3f3f3;
     color: black;
-    height: 50rpx;
-    line-height: 50rpx;
     text-align: center;
+    line-height: 22px;
   }
 }
 /* 讲话中样式 */

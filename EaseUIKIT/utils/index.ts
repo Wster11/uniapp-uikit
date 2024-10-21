@@ -62,50 +62,7 @@ export const getTimeStringAutoShort = function (
     }
     // 当年 && 当天之外的时间（即昨天及以前的时间）
     else {
-      // 昨天（以“现在”的时候为基准-1天）
-      let yesterdayDate = new Date();
-      yesterdayDate.setDate(yesterdayDate.getDate() - 1);
-
-      // 前天（以“现在”的时候为基准-2天）
-      let beforeYesterdayDate = new Date();
-      beforeYesterdayDate.setDate(beforeYesterdayDate.getDate() - 2);
-
-      // 用目标日期的“月”和“天”跟上方计算出来的“昨天”进行比较，是最为准确的（如果用时间戳差值
-      // 的形式，是不准确的，比如：现在时刻是2019年02月22日1:00、而srcDate是2019年02月21日23:00，
-      // 这两者间只相差2小时，直接用“deltaTime/(3600 * 1000)” > 24小时来判断是否昨天，就完全是扯蛋的逻辑了）
-      if (
-        srcMonth == yesterdayDate.getMonth() + 1 &&
-        srcDateD == yesterdayDate.getDate()
-      )
-        ret = t("yesterday") + timeExtraStr; // -1d
-      // “前天”判断逻辑同上
-      else if (
-        srcMonth == beforeYesterdayDate.getMonth() + 1 &&
-        srcDateD == beforeYesterdayDate.getDate()
-      )
-        ret = t("beforeYesterday") + timeExtraStr; // -2d
-      else {
-        // 跟当前时间相差的小时数
-        let deltaHour = deltaTime / (3600 * 1000);
-
-        // 如果小于或等 7*24小时就显示星期几
-        if (deltaHour <= 7 * 24) {
-          let weekday = new Array(7);
-          weekday[0] = t("sunday");
-          weekday[1] = t("monday");
-          weekday[2] = t("tuesday");
-          weekday[3] = t("wednesday");
-          weekday[4] = t("thursday");
-          weekday[5] = t("friday");
-          weekday[6] = t("saturday");
-
-          // 取出当前是星期几
-          let weedayDesc = weekday[srcDate.getDay()];
-          ret = weedayDesc + timeExtraStr;
-        }
-        // 否则直接显示完整日期时间
-        else ret = formatDate(srcDate, "yyyy/M/d") + timeExtraStr;
-      }
+      ret = formatDate(srcDate, "M/d") + timeExtraStr;
     }
   }
   // 往年

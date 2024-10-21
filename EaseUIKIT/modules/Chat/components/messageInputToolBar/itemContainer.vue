@@ -19,26 +19,27 @@ const { title, iconUrl } = props;
 
 <style lang="scss" scoped>
 .tool-item-wrap {
-  width: 130rpx;
-  height: 130rpx;
-  font-size: 24rpx;
+  width: 64px;
+  font-size: 12px;
   color: #464e53;
   text-align: center;
-  cursor: pointer;
+  line-height: 16px;
+  margin-bottom: 12px;
 }
 
 .icon-wrap {
+  width: 64px;
+  height: 64px;
+  background: #f1f2f3;
+  border-radius: 12px;
+  margin-bottom: 8px;
   display: flex;
-  width: 130rpx;
-  height: 130rpx;
-  background: #fff;
   align-items: center;
   justify-content: center;
-  border-radius: 24rpx;
 }
 
 .icon {
-  width: 70rpx;
-  height: 70rpx;
+  width: 32px;
+  height: 32px;
 }
 </style>

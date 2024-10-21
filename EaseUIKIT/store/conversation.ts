@@ -1,4 +1,4 @@
-import { makeAutoObservable, runInAction } from "mobx";
+import { action, makeAutoObservable, runInAction } from "mobx";
 import type { EasemobChat } from "easemob-websdk/Easemob-chat";
 import { getTimeStringAutoShort, sortByPinned } from "../utils/index";
 import type { ConversationBaseInfo } from "./types/index";
@@ -120,7 +120,14 @@ class ConversationStore {
     if (!message || !message.time) {
       return "";
     }
-    return getTimeStringAutoShort(message.time);
+    return getTimeStringAutoShort(message.time, true);
+  }
+
+  clearConversationUnreadCount(conversationId: string) {
+    const conv = this.getConversationById(conversationId);
+    if (conv) {
+      conv.unReadCount = 0;
+    }
   }
 
   async markConversationRead(conversation: ConversationBaseInfo) {
@@ -130,10 +137,7 @@ class ConversationStore {
       to: conversation.conversationId
     });
     await EaseConnKit.getChatConn().send(msg);
-    const conv = this.getConversationById(conversation.conversationId);
-    if (conv) {
-      conv.unReadCount = 0;
-    }
+    this.clearConversationUnreadCount(conversation.conversationId);
   }
 
   setCurrentConversation(conversation: ConversationBaseInfo | null) {
