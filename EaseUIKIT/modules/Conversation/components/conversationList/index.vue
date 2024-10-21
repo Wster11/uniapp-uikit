@@ -5,108 +5,60 @@
         v-for="conv in conversationList"
         :key="conv.conversationId"
         :data-id="conv.conversationId"
-        @longpress="onLongPress"
       >
-        <ConversationItem :conversation="conv" />
+        <ConversationItem
+          :conversation="conv"
+          @mute="onMuteButtonClick"
+          @pin="pinConversation"
+          @delete="deleteConversation"
+        />
       </view>
     </view>
     <view v-else class="conversation-empty">
       {{ t("conversationEmptyTip") }}
     </view>
-    <Popup ref="popup" :height="250">
-      <MenuItem
-        :name="isMuteSelectedConv ? t('unmute') : t('mute')"
-        key="1"
-        @click="onMuteButtonClick"
-      />
-      <MenuItem
-        :name="selectedConv.isPinned ? t('unpin') : t('pin')"
-        @click="pinConversation(!selectedConv.isPinned)"
-        key="2"
-      />
-      <MenuItem
-        className="dangerous-btn"
-        :name="t('deleteConv')"
-        @click="deleteConversation"
-        key="4"
-        :hideDivider="true"
-      />
-      <Divider :height="8" />
-      <MenuItem
-        :name="t('cancel')"
-        @click="closePopup"
-        key="4"
-        :hideDivider="true"
-      />
-    </Popup>
   </view>
 </template>
 
 <script setup lang="ts">
 import ConversationItem from "../conversationItem/index.vue";
-import Popup from "../../../common/popup/index.vue";
-import MenuItem from "../../../common/menuItem/index.vue";
-import Divider from "../../../common/divider/index.vue";
-import { ref, computed, onUnmounted } from "vue";
+import { ref, onUnmounted } from "vue";
 import type { EasemobChat } from "easemob-websdk";
 import { t } from "../../../../locales/index";
 import { EaseConnKit } from "../../../../index";
-import { autorun } from "mobx";
 import { deepClone } from "../../../../utils/index";
-
-const popup = ref(null);
-const isMuteSelectedConv = ref(false);
-
-const closePopup = () => {
-  popup.value.closePopup();
-};
-
-const onLongPress = (e: any) => {
-  let [touches, style, conversationId] = [
-    e.touches[0],
-    "",
-    e.currentTarget.dataset.id
-  ];
-  selectedConv.value = EaseConnKit.convStore.conversationList.find(
-    (conv) => conv.conversationId === conversationId
-  ) as EasemobChat.ConversationItem;
-  isMuteSelectedConv.value = EaseConnKit.convStore.muteConvsMap.get(
-    selectedConv.value.conversationId
-  );
-  popup.value.openPopup();
-};
+import { autorun } from "mobx";
 
 const conversationList = ref<EasemobChat.ConversationItem[]>([]);
-const selectedConv = ref({} as EasemobChat.ConversationItem);
+
 const uninstallConvListWatch = autorun(() => {
   conversationList.value = deepClone(EaseConnKit.convStore.conversationList);
 });
 
-const deleteConversation = () => {
-  EaseConnKit.convStore.deleteConversation(selectedConv.value);
-  closePopup();
+const deleteConversation = (conv: EasemobChat.ConversationItem) => {
+  EaseConnKit.convStore.deleteConversation(conv);
 };
 
-const muteConversation = () => {
-  EaseConnKit.convStore.setSilentModeForConversation(selectedConv.value);
-  closePopup();
+const muteConversation = (conv: EasemobChat.ConversationItem) => {
+  EaseConnKit.convStore.setSilentModeForConversation(conv);
 };
 
-const unMuteConversation = () => {
-  EaseConnKit.convStore.clearRemindTypeForConversation(selectedConv.value);
-  closePopup();
+const unMuteConversation = (conv: EasemobChat.ConversationItem) => {
+  EaseConnKit.convStore.clearRemindTypeForConversation(conv);
 };
 
-const pinConversation = (isPined: boolean) => {
-  EaseConnKit.convStore.pinConversation(selectedConv.value, isPined);
-  closePopup();
+const pinConversation = (conv: EasemobChat.ConversationItem) => {
+  EaseConnKit.convStore.pinConversation(conv, !conv.isPinned);
 };
 
-const onMuteButtonClick = () => {
-  if (isMuteSelectedConv.value) {
-    unMuteConversation();
+const onMuteButtonClick = (conv: EasemobChat.ConversationItem) => {
+  const isMute = EaseConnKit.convStore.getConversationMuteStatus(
+    conv.conversationId
+  );
+  if (isMute) {
+    unMuteConversation(conv);
   } else {
-    muteConversation();
+    muteConversation(conv);
   }
 };
 

@@ -61,35 +61,63 @@ class ChatStore {
 
     EaseConnKit.getChatConn().addEventHandler("STORE_MULTI_DEVICE", {
       onMultiDeviceEvent: (e) => {
-        if (e.operation === "deleteConversation") {
-          const conv = EaseConnKit.convStore.getConversationById(
-            e.conversationId
-          );
-          if (conv) {
-            EaseConnKit.convStore.deleteConversation(conv);
-          }
-        } else if (e.operation === "setSilentModeForConversation") {
-          EaseConnKit.convStore.setSilentModeForConversationSync(
-            {
-              conversationType: (
-                e as EasemobChat.NotificationConMultiDeviceInfo
-              ).type,
-              conversationId: (e as EasemobChat.NotificationConMultiDeviceInfo)
-                .conversationId
-            },
-            true
-          );
-        } else if (e.operation === "removeSilentModeForConversation") {
-          EaseConnKit.convStore.setSilentModeForConversationSync(
-            {
-              conversationType: (
-                e as EasemobChat.NotificationConMultiDeviceInfo
-              ).type,
-              conversationId: (e as EasemobChat.NotificationConMultiDeviceInfo)
-                .conversationId
-            },
-            false
-          );
+        switch (e.operation) {
+          case "deleteConversation":
+            const conv = EaseConnKit.convStore.getConversationById(
+              e.conversationId
+            );
+            if (conv) {
+              EaseConnKit.convStore.deleteConversation(conv);
+            }
+            break;
+          case "setSilentModeForConversation":
+            EaseConnKit.convStore.setSilentModeForConversationSync(
+              {
+                conversationType: (
+                  e as EasemobChat.NotificationConMultiDeviceInfo
+                ).type,
+                conversationId: (
+                  e as EasemobChat.NotificationConMultiDeviceInfo
+                ).conversationId
+              },
+              true
+            );
+            break;
+          case "removeSilentModeForConversation":
+            EaseConnKit.convStore.setSilentModeForConversationSync(
+              {
+                conversationType: (
+                  e as EasemobChat.NotificationConMultiDeviceInfo
+                ).type,
+                conversationId: (
+                  e as EasemobChat.NotificationConMultiDeviceInfo
+                ).conversationId
+              },
+              false
+            );
+            break;
+          case "pinnedConversation":
+            EaseConnKit.convStore.pinConversationSync(
+              {
+                conversationId: e.conversationId,
+                conversationType: e.conversationType
+              } as EasemobChat.ConversationItem,
+              true,
+              e.timestamp
+            );
+            break;
+          case "unpinnedConversation":
+            EaseConnKit.convStore.pinConversationSync(
+              {
+                conversationId: e.conversationId,
+                conversationType: e.conversationType
+              } as EasemobChat.ConversationItem,
+              false,
+              e.timestamp
+            );
+            break;
+          default:
+            break;
         }
       }
     });

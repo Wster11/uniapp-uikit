@@ -9,7 +9,10 @@
 		{
 			"path": "EaseUIKIT/modules/Conversation/index",
 			"style": {
-				"navigationBarTitleText": "Easemob Uniapp"
+				"navigationBarTitleText": "Easemob Uniapp",
+				"app-plus": {
+					"bounce": "none"
+				}
 			}
 		},
 		{

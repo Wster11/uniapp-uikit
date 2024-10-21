@@ -13,7 +13,7 @@ export default {
   combine: "Combine Messages",
   conversationSearchPlaceholder: "Search conversations",
   conversationEmptyTip: "No conversations yet, start chatting now~",
-  deleteConv: "Delete Conversation",
+  deleteConv: "Delete",
   pinConv: "Pin Conversation",
   muteConv: "Mute Notifications",
   markRead: "Mark as Read",
@@ -137,8 +137,8 @@ export default {
   wxConfigTip: "Setting successful, please reopen the mini program",
   inviteToGroup: "invited you to join the group",
   myGroup: "My Groups",
-  mute:"Mute",
-  unmute:"Unmute",
+  mute: "Mute",
+  unmute: "Unmute",
   pin: "Pin",
-  unpin: "Unpin",
+  unpin: "Unpin"
 };

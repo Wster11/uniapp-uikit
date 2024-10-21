@@ -280,16 +280,32 @@ class ConversationStore {
         isPinned
       })
       .then((res) => {
-        const conv = this.getConversationById(cvs.conversationId);
-        if (conv) {
-          conv.isPinned = isPinned;
-          conv.pinnedTime = res.data?.pinnedTime || Date.now();
-        }
-
-        runInAction(() => {
-          this.conversationList = [...this.conversationList.sort(sortByPinned)];
-        });
+        this.pinConversationSync(
+          cvs,
+          isPinned,
+          res.data?.pinnedTime || Date.now()
+        );
       });
+  }
+
+  pinConversationSync(
+    cvs: EasemobChat.ConversationItem,
+    isPinned: boolean,
+    pinnedTime: number
+  ) {
+    const conv = this.getConversationById(cvs.conversationId);
+    if (conv) {
+      conv.isPinned = isPinned;
+      conv.pinnedTime = pinnedTime;
+    }
+
+    runInAction(() => {
+      this.conversationList = [...this.conversationList.sort(sortByPinned)];
+    });
+  }
+
+  getConversationMuteStatus(cvsId: string): boolean {
+    return this.muteConvsMap.get(cvsId) || false;
   }
 
   clear() {

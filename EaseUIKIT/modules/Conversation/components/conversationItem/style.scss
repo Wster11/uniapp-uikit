@@ -88,3 +88,46 @@
 .msg-right-wrap {
   text-align: right;
 }
+
+.swipe-menu-wrap {
+  transition: all 0.4s ease;
+  position: relative;
+}
+
+.menu-wrap {
+  position: absolute;
+  right: -272px;
+  top: 0;
+  width: 272px;
+  height: 100%;
+  text-align: center;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  line-height: 22px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.mute {
+  width: 112px;
+  background: #5270ad;
+}
+
+.pin {
+  width: 80px;
+  background: #009dff;
+}
+
+.delete {
+  width: 80px;
+  background: #ff002b;
+}
