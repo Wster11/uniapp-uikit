@@ -35,10 +35,11 @@ import type { EasemobChat } from "easemob-websdk/Easemob-chat";
 import MessageItem from "./messageItem.vue";
 import MessageTime from "./messageTime.vue";
 import NoticeMessageItem from "./noticeMessageItem.vue";
-import { ref, onMounted, computed, nextTick } from "vue";
+import { ref, onMounted, onUnmounted, nextTick } from "vue";
 import type { MixedMessageBody } from "../../../../types/index";
 import { EaseConnKit } from "../../../../index";
 import { t } from "../../../../locales/index";
+import { autorun } from "mobx";
 interface Props {
   msgs: MixedMessageBody[];
   conversationId: string;
@@ -54,12 +55,20 @@ const currentViewMsgId = ref<string>("");
 
 const messageStore = EaseConnKit.messageStore;
 
-const isLast = computed(() => {
-  return messageStore.conversationMessagesMap.get(props.conversationId)?.isLast;
+const isLast = ref(false);
+
+const cursor = ref("");
+
+const uninstallIsLastWatch = autorun(() => {
+  isLast.value = messageStore.conversationMessagesMap.get(
+    props.conversationId
+  )?.isLast;
 });
 
-const cursor = computed(() => {
-  return messageStore.conversationMessagesMap.get(props.conversationId)?.cursor;
+const uninstallCursorWatch = autorun(() => {
+  cursor.value = messageStore.conversationMessagesMap.get(
+    props.conversationId
+  )?.cursor;
 });
 
 const loadMore = async () => {
@@ -91,15 +100,17 @@ const loadMore = async () => {
 
 const toBottomMsg = () => {
   nextTick(() => {
-    const timer = setTimeout(() => {
-      scrollHeight.value = props.msgs.length * 300;
-      clearTimeout(timer);
-    }, 100);
+    scrollHeight.value = props.msgs.length * 300;
   });
 };
 
 onMounted(() => {
   toBottomMsg();
+});
+
+onUnmounted(() => {
+  uninstallIsLastWatch();
+  uninstallCursorWatch();
 });
 
 defineExpose({

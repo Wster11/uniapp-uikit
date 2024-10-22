@@ -18,7 +18,10 @@
 		{
 			"path": "EaseUIKIT/modules/Chat/index",
 			"style": {
-				"navigationBarTitleText": "Easemob Uniapp"
+				"navigationBarTitleText": "Easemob Uniapp",
+				"app-plus": {
+					"bounce": "none"
+				}
 			}
 		}
 	],
