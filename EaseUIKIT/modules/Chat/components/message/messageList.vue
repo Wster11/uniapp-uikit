@@ -1,5 +1,5 @@
 <template>
-  <view class="msg-list-wrap">
+  <view class="msg-list-wrap" @tap="resetMessageState">
     <scroll-view
       scroll-y
       :scroll-top="scrollHeight"
@@ -24,7 +24,12 @@
           v-if="msg?.noticeInfo?.type === 'notice'"
           :msg="msg"
         />
-        <MessageItem v-else :msg="msg" />
+        <MessageItem
+          v-else
+          :msg="msg"
+          @onLongPress="onMessageLongPress"
+          :isSelected="msg.id === selectedMsgId"
+        />
       </view>
     </scroll-view>
   </view>
@@ -40,6 +45,7 @@ import type { MixedMessageBody } from "../../../../types/index";
 import { EaseConnKit } from "../../../../index";
 import { t } from "../../../../locales/index";
 import { autorun } from "mobx";
+
 interface Props {
   msgs: MixedMessageBody[];
   conversationId: string;
@@ -58,6 +64,16 @@ const messageStore = EaseConnKit.messageStore;
 const isLast = ref(false);
 
 const cursor = ref("");
+
+const selectedMsgId = ref("");
+
+const onMessageLongPress = (msgId: string) => {
+  selectedMsgId.value = msgId;
+};
+
+const resetMessageState = () => {
+  selectedMsgId.value = "";
+};
 
 const uninstallIsLastWatch = autorun(() => {
   isLast.value = messageStore.conversationMessagesMap.get(

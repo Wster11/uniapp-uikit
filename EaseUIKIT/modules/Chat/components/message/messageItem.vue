@@ -15,7 +15,16 @@
         <view class="user-nickname" v-if="!isSelf">
           {{ getUserInfo(msg.from || "").nickname || extUserInfo.nickname }}
         </view>
-        <view :class="bubbleClass">
+
+        <view
+          :class="bubbleClass"
+          :id="'msg-bubble-' + msg.id"
+          @longpress="
+            (e) => {
+              onMessageBubblePress(e);
+            }
+          "
+        >
           <view v-if="msg.type === 'txt'">
             <TextMessage :msg="msg" />
           </view>
@@ -36,6 +45,7 @@
       <view class="msg-time"
         >{{ getTimeStringAutoShort(msg.time, true) }}
       </view>
+      <MessageActions ref="actionRef" :msg="msg" :isSelected="props.isSelected" />
     </view>
   </view>
 </template>
@@ -46,16 +56,24 @@ import TextMessage from "./messageTxt.vue";
 import ImageMessage from "./messageImage.vue";
 import VideoMessage from "./messageVideo.vue";
 import AudioMessage from "./messageAudio.vue";
+import MessageActions from "./messageActions.vue";
 import defaultAvatar from "../../../../assets/defaultAvatar.png";
 import type { MixedMessageBody } from "../../../../types/index";
-import { computed } from "vue";
+import { ref, computed, getCurrentInstance } from "vue";
 import { EaseConnKit } from "../../../../index";
 import { getTimeStringAutoShort } from "../../../../utils/index";
 
 interface Props {
   msg: MixedMessageBody;
+  isSelected: boolean;
 }
 const props = defineProps<Props>();
+
+const emits = defineEmits(["onLongPress"]);
+
+const instance = getCurrentInstance();
+
+const actionRef = ref(null);
 
 const appUserStore = EaseConnKit.appUserStore;
 
@@ -82,6 +100,11 @@ const bubbleClass = computed(() => {
   }
   return className;
 });
+
+const onMessageBubblePress = (e) => {
+  emits("onLongPress", props.msg.id);
+  actionRef?.value?.handleLongPress(e, instance);
+};
 </script>
 
 <style lang="scss" scoped>
@@ -98,7 +121,7 @@ const bubbleClass = computed(() => {
     font-style: normal;
     font-weight: 500;
     line-height: 16px;
-    color: #5270AD;
+    color: #5270ad;
   }
 
   .msg-bubble-bg {
