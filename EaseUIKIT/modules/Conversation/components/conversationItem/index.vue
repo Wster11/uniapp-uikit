@@ -152,32 +152,32 @@ const formatLastMessage = (conversation: EasemobChat.ConversationItem) => {
   switch (conversation.lastMessage?.type) {
     case "txt":
       if (conversation.lastMessage?.msg == "the combine message") {
-        lastMsg = `/${t("chatHistory")}/`;
+        lastMsg = `[${t("chatHistory")}]`;
       } else {
         lastMsg = conversation.lastMessage?.msg;
       }
       break;
     case "img":
-      lastMsg = `/${t("image")}/`;
+      lastMsg = `[${t("image")}]`;
       break;
     case "audio":
-      lastMsg = `/${t("audio")}/`;
+      lastMsg = `[${t("audio")}]`;
       break;
     case "file":
-      lastMsg = `/${t("file")}/`;
+      lastMsg = `[${t("file")}]`;
       break;
     case "video":
-      lastMsg = `/${t("video")}/`;
+      lastMsg = `[${t("video")}]`;
       break;
     case "custom":
       if (conversation.lastMessage.customEvent == "userCard") {
-        lastMsg = `/${t("contact")}/`;
+        lastMsg = `[${t("contact")}]`;
       } else {
-        lastMsg = `/${t("custom")}/`;
+        lastMsg = `[${t("custom")}]`;
       }
       break;
     case "combine":
-      lastMsg = `/${t("chatHistory")}/`;
+      lastMsg = `[${t("chatHistory")}]`;
       break;
     default:
       console.warn("unexpected message type:", conversation.lastMessage?.type);

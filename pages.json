@@ -23,6 +23,15 @@
 					"bounce": "none"
 				}
 			}
+		},
+		{
+			"path": "EaseUIKIT/modules/VideoPreview/index",
+			"style": {
+				"navigationBarTitleText": "Video Preview",
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
 		}
 	],
 	"tabBar": {
