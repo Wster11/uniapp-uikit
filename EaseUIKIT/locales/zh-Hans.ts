@@ -140,5 +140,7 @@ export default {
   mute: "静音",
   unmute: "取消静音",
   pin: "置顶",
-  unpin: "取消置顶"
+  unpin: "取消置顶",
+  selfRecallTip: "你撤回了一条消息",
+  otherRecallTip: "对方撤回了一条消息"
 };

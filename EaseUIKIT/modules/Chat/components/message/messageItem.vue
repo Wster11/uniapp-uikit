@@ -45,7 +45,11 @@
       <view class="msg-time"
         >{{ getTimeStringAutoShort(msg.time, true) }}
       </view>
-      <MessageActions ref="actionRef" :msg="msg" :isSelected="props.isSelected" />
+      <MessageActions
+        ref="actionRef"
+        :msg="msg"
+        :isSelected="props.isSelected"
+      />
     </view>
   </view>
 </template>

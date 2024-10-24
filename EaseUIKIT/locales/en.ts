@@ -140,5 +140,7 @@ export default {
   mute: "Mute",
   unmute: "Unmute",
   pin: "Pin",
-  unpin: "Unpin"
+  unpin: "Unpin",
+  selfRecallTip: "You retracted a message",
+  otherRecallTip: "The other party recalled a message",
 };

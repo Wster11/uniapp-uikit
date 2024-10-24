@@ -32,16 +32,28 @@ import { ref, computed, onMounted } from "vue";
 import type { MixedMessageBody } from "../../../../types/index";
 import { EaseConnKit } from "../../../../index";
 import CopyIcon from "../../../../assets/icon/copy.png";
+import RecallIcon from "../../../../assets/icon/recall.png";
+import ReplyIcon from "../../../../assets/icon/reply.png";
+import EditIcon from "../../../../assets/icon/edit.png";
+import DeleteIcon from "../../../../assets/icon/delete.png";
 
 interface Props {
   msg: MixedMessageBody;
   isSelected: boolean;
+}
+
+interface MenuItem {
+  label: string;
+  icon: string;
+  action: () => void;
 }
 const props = defineProps<Props>();
 const showActions = ref(false);
 const elementPosition = ref("");
 const elTop = ref(0);
 const arrowPosition = ref("0px");
+const menuItems = ref<Array<MenuItem>>([]);
+
 const windowSize = ref({
   width: 0,
   height: 0
@@ -51,34 +63,54 @@ const isSelf =
   EaseConnKit.connStore.getChatConn().user === props.msg.from ||
   props.msg.from === "";
 
-// 定义菜单项数组
-const menuItems = [
-  {
-    label: "复制",
-    icon: CopyIcon,
-    action: copyMessage
-  },
-  {
-    label: "回复",
-    icon: CopyIcon,
-    action: referenceMessage
-  },
-  {
-    label: "撤回",
-    icon: CopyIcon,
-    action: recallMessage
-  },
-  {
-    label: "删除",
-    icon: CopyIcon,
-    action: deleteMessage
-  },
-  {
-    label: "多选",
-    icon: CopyIcon,
-    action: multipleChoice
+const setMenuItems = () => {
+  const list: Array<MenuItem> = [];
+  const time = new Date().getTime();
+  const msgTime = props.msg.time;
+  const recallTime = 1000 * 10;
+  const isRecall = time - msgTime < recallTime;
+
+  // 文本消息类型才显示 "复制"
+  if (props.msg.type === "txt") {
+    list.push(
+      {
+        label: "复制",
+        icon: CopyIcon,
+        action: copyMessage
+      },
+      {
+        label: "编辑",
+        icon: EditIcon,
+        action: editMessage
+      }
+    );
   }
-];
+
+  // 回复消息
+  list.push({
+    label: "回复",
+    icon: ReplyIcon,
+    action: referenceMessage
+  });
+
+  // 自己的消息可以编辑、删除和撤回
+  if (isSelf) {
+    list.push({
+      label: "删除",
+      icon: DeleteIcon,
+      action: deleteMessage
+    });
+
+    if (isRecall) {
+      list.push({
+        label: "撤回",
+        icon: RecallIcon,
+        action: recallMessage
+      });
+    }
+  }
+  menuItems.value = [...list];
+};
 
 // 获取窗口尺寸
 onMounted(() => {
@@ -134,30 +166,35 @@ function handleLongPress(e, instance) {
       }
     })
     .exec();
+  setMenuItems();
   setTimeout(() => {
     showActions.value = true;
   }, 100);
 }
 
-function copyMessage(item, index) {
-  // 复制消息逻辑
-}
+const copyMessage = () => {
+  uni.setClipboardData({
+    data: props.msg.msg, //要被复制的内容
+    success: () => {
+      showActions.value = false;
+    }
+  });
+};
 
-function referenceMessage(item, index) {
-  // 引用消息逻辑
-}
+const referenceMessage = () => {};
 
-function recallMessage(item, index) {
-  // 撤回消息逻辑
-}
+const editMessage = () => {};
 
-function deleteMessage(item, index) {
-  // 删除消息逻辑
-}
+const deleteMessage = () => {};
 
-function multipleChoice(item, index) {
-  // 多选消息逻辑
-}
+const recallMessage = () => {
+  EaseConnKit.messageStore.recallMessage({
+    mid: props.msg.id,
+    to: EaseConnKit.convStore.getCvsIdFromMessage(props.msg),
+    chatType: props.msg.chatType
+  });
+  showActions.value = false;
+};
 
 defineExpose({
   handleLongPress

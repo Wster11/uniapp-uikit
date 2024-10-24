@@ -2,13 +2,13 @@ import { makeAutoObservable, runInAction } from "mobx";
 import type { EasemobChat } from "easemob-websdk/Easemob-chat";
 import type { MixedMessageBody } from "../types/index";
 import { EaseConnKit } from "../index";
+import { t } from "../locales/index";
 
 interface ConversationMessagesInfo {
   messages: MixedMessageBody[];
   cursor: string;
   isLast: boolean;
 }
-
 class MessageStore {
   messageMap: Map<string, MixedMessageBody> = new Map();
   conversationMessagesMap: Map<string, ConversationMessagesInfo> = new Map();
@@ -83,7 +83,7 @@ class MessageStore {
         if (msg.chatType !== "chatRoom") {
           const convId = EaseConnKit.convStore.getCvsIdFromMessage(msg);
           const conv = EaseConnKit.convStore.getConversationById(convId);
-
+          msg.id = res.serverMsgId;
           if (conv) {
             EaseConnKit.convStore.updateConversationLastMessage(
               {
@@ -156,7 +156,7 @@ class MessageStore {
     });
   }
 
-  async recallMessage(msg: EasemobChat.MessageBody) {
+  async recallMessage(msg: any) {
     const res = await EaseConnKit.getChatConn().recallMessage(msg);
     runInAction(() => {
       this.onRecallMessage(msg.mid, EaseConnKit.getChatConn().user);
@@ -189,14 +189,27 @@ class MessageStore {
 
       if (recalledMessage.chatType !== "chatRoom") {
         const conv = EaseConnKit.convStore.getConversationById(cvsId);
+        let lastMessage = conv?.lastMessage;
+        const isSelf = from === EaseConnKit.getChatConn().user;
         if (conv) {
+          const unreadCount = conv.unReadCount - 1;
+          // 表示撤回的为最后一条消息
+          if (lastMessage?.id === mid) {
+            lastMessage = EaseConnKit.connStore.getChatSDK().message.create({
+              type: "txt",
+              msg: isSelf ? t("selfRecallTip") : t("otherRecallTip"),
+              from: from,
+              to: recalledMessage.to,
+              chatType: recalledMessage.chatType
+            });
+          }
           EaseConnKit.convStore.updateConversationLastMessage(
             {
               conversationId: cvsId,
               conversationType: recalledMessage.chatType
             },
-            null as any,
-            conv.unReadCount - 1
+            lastMessage as EasemobChat.MessageBody,
+            unreadCount < 0 ? 0 : unreadCount
           );
         }
       }
