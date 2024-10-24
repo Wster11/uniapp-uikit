@@ -30,7 +30,7 @@ interface Props {
 }
 const props = defineProps<Props>();
 
-const IMAGE_MAX_SIZE = 200;
+const IMAGE_MAX_SIZE = 225;
 
 const styles = ref({ width: "auto", height: `${IMAGE_MAX_SIZE}px` });
 
@@ -78,7 +78,7 @@ const toVideoPreview = () => {
   position: relative;
 }
 .image {
-  border-radius: 20rpx;
+  border-radius: 4px;
 }
 
 .video-poster {
@@ -88,16 +88,16 @@ const toVideoPreview = () => {
 .video-play-btn {
   display: inline-block;
   position: absolute;
-  width: 110rpx;
-  height: 100rpx;
+  width: 64px;
+  height: 64px;
   top: 50%;
   left: 50%;
-  transform: translateX(-50rpx) translateY(-50rpx);
+  transform: translateX(-32px) translateY(-32px);
   border-radius: 50%;
 }
 
 .video-play-btn-image {
-  width: 110rpx;
-  height: 100rpx;
+  width: 64px;
+  height: 64px;
 }
 </style>

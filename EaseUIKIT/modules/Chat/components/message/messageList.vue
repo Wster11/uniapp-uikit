@@ -1,6 +1,7 @@
 <template>
   <view class="msg-list-wrap" @tap="resetMessageState">
     <scroll-view
+      v-if="isShow"
       scroll-y
       :scroll-top="scrollHeight"
       class="message-scroll-list"
@@ -45,6 +46,7 @@ import type { MixedMessageBody } from "../../../../types/index";
 import { EaseConnKit } from "../../../../index";
 import { t } from "../../../../locales/index";
 import { autorun } from "mobx";
+import { onLoad } from "@dcloudio/uni-app";
 
 interface Props {
   msgs: MixedMessageBody[];
@@ -56,6 +58,8 @@ const props = defineProps<Props>();
 const scrollHeight = ref(0);
 
 const isLoading = ref(false);
+
+const isShow = ref(false);
 
 const currentViewMsgId = ref<string>("");
 
@@ -127,6 +131,13 @@ onMounted(() => {
 onUnmounted(() => {
   uninstallIsLastWatch();
   uninstallCursorWatch();
+});
+
+onLoad(() => {
+  // 修复会话列表跳转到聊天页面延迟显示的问题
+  setTimeout(() => {
+    isShow.value = true;
+  }, 200);
 });
 
 defineExpose({

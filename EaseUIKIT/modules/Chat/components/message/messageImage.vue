@@ -19,7 +19,7 @@ import { ref } from "vue";
 interface Props {
   msg: EasemobChat.ImgMsgBody;
 }
-const IMAGE_MAX_SIZE = 160;
+const IMAGE_MAX_SIZE = 225;
 const props = defineProps<Props>();
 const isError = ref(false);
 const styles = ref({ width: "auto", height: `${IMAGE_MAX_SIZE}px` });
@@ -63,6 +63,6 @@ const onImgLoad = (e: any) => {
 
 <style lang="scss" scoped>
 .image {
-  border-radius: 20rpx;
+  border-radius: 4px;
 }
 </style>
