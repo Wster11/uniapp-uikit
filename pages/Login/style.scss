@@ -1,6 +1,6 @@
 .login-wrap {
   width: 100%;
-  padding: 0 40rpx;
+  padding: 0 20px;
   box-sizing: border-box;
 }
 
@@ -8,54 +8,54 @@
   display: flex;
   flex-flow: row wrap;
   justify-content: space-around;
-  margin-top: 40rpx;
+  margin-top: 20px;
 }
 
 .login-title {
   width: 100%;
   text-align: center;
   font-family: Noto Sans SC;
-  font-size: 48rpx;
+  font-size: 24px;
   font-weight: 700;
   color: #009eff;
 }
 
 .login-form-warp {
-  margin-top: 40rpx;
+  margin-top: 20px;
 }
 
 .item-wrap {
   display: flex;
-  margin-bottom: 10rpx;
+  margin-bottom: 5px;
 }
 
 .item-wrap input {
   width: 100%;
-  border: 2rpx solid #ccc;
-  border-radius: 8rpx;
+  border: 1px solid #ccc;
+  border-radius: 4px;
   outline: none;
-  height: 80rpx;
-  padding: 0 0 0 28rpx;
+  height: 40px;
+  padding: 0 0 0 14px;
 }
 
 .send-code {
-  font-size: 24rpx;
+  font-size: 12px;
   flex-shrink: 0;
   display: flex;
-  width: 220rpx;
+  width: 110px;
   align-items: center;
   justify-content: center;
-  margin-left: 20rpx;
+  margin-left: 10px;
 }
 
 .private-wrap {
   display: flex;
   align-items: center;
-  margin: 20rpx 0;
+  margin: 10px 0;
 }
 
 .server-config {
-  margin-top: 20rpx;
+  margin-top: 10px;
   text-align: center;
 }
 

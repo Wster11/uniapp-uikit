@@ -36,6 +36,7 @@ import RecallIcon from "../../../../assets/icon/recall.png";
 import ReplyIcon from "../../../../assets/icon/reply.png";
 import EditIcon from "../../../../assets/icon/edit.png";
 import DeleteIcon from "../../../../assets/icon/delete.png";
+import { renderTxt } from "../../../../utils/index";
 
 interface Props {
   msg: MixedMessageBody;
@@ -173,8 +174,13 @@ function handleLongPress(e, instance) {
 }
 
 const copyMessage = () => {
+  // 复制消息逻辑
+  const text = renderTxt(props.msg.msg).reduce((prev, curr) => {
+    return prev + (curr.type === "text" ? curr.value : curr.alt);
+  }, "");
+
   uni.setClipboardData({
-    data: props.msg.msg, //要被复制的内容
+    data: text, //要被复制的内容
     success: () => {
       showActions.value = false;
     }

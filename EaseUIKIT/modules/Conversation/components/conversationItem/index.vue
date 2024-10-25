@@ -31,9 +31,24 @@
             />
           </view>
           <view class="msg-wrap">
-            <view class="last-msg ellipsis">{{
-              formatLastMessage(conversation)
-            }}</view>
+            <view
+              class="last-msg ellipsis"
+              v-if="conversation.lastMessage?.type === 'txt'"
+            >
+              <span
+                v-for="(item, idx) in renderTxt(conversation.lastMessage.msg)"
+                :key="idx"
+              >
+                <span v-if="item.type === 'text'"> {{ item.value }}</span>
+                <!-- emoji -->
+                <!-- <image v-else class="msg-emoji" :src="item.value" /> -->
+                <!-- emoji alt -->
+                <span v-else> {{ item.alt }}</span>
+              </span>
+            </view>
+            <view v-else class="last-msg ellipsis">
+              {{ formatLastMessage(conversation) }}
+            </view>
           </view>
         </view>
         <view class="msg-right-wrap">
@@ -72,6 +87,7 @@ import defaultGroupAvatar from "../../../../assets/defaultGroupAvatar.png";
 import { t } from "../../../../locales/index";
 import { ref, onUnmounted, computed } from "vue";
 import { EaseConnKit } from "../../../../index";
+import { renderTxt } from "../../../../utils/index";
 import { autorun } from "mobx";
 
 interface Props {

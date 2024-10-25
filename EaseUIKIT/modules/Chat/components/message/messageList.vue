@@ -158,13 +158,13 @@ defineExpose({
 }
 
 .scroll-msg-item {
-  padding: 0 30rpx;
+  padding: 0 15px;
 }
 
 .loadMore {
   text-align: center;
-  font-size: 28rpx;
-  margin: 10rpx 0;
+  font-size: 14px;
+  margin: 5px 0;
   color: #999;
 }
 </style>

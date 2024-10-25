@@ -116,7 +116,7 @@ const onMessageBubblePress = (e) => {
   display: flex;
   width: 100%;
   display: flex;
-  margin-bottom: 30rpx;
+  margin-bottom: 15px;
   align-items: center;
   color: #333;
 

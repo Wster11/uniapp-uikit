@@ -4,7 +4,7 @@
       <view
         class="content"
         v-if="isSelf"
-        :style="{ width: (props.msg.length || 0) * 20 + 'rpx' }"
+        :style="{ width: (props.msg.length || 0) * 10 + 'px' }"
       >
         <view> {{ props.msg.length }}'' </view>
         <image
@@ -16,7 +16,7 @@
       <view
         class="content"
         v-else
-        :style="{ width: (props.msg.length || 0) * 10 + 'rpx' }"
+        :style="{ width: (props.msg.length || 0) * 5 + 'px' }"
       >
         <image
           class="image"
@@ -166,16 +166,16 @@ onUnmounted(() => {
 
 <style lang="scss" scoped>
 .image {
-  width: 40rpx;
-  height: 40rpx;
+  width: 20px;
+  height: 20px;
   flex-shrink: 0;
 }
 
 .content {
   display: flex;
   align-items: center;
-  min-width: 100rpx;
-  max-width: 240rpx;
+  min-width: 50px;
+  max-width: 120px;
   line-height: 100%;
   justify-content: space-between;
 }
