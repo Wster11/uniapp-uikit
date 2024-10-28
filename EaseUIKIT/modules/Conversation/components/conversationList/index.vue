@@ -18,9 +18,7 @@
         />
       </view>
     </view>
-    <view v-else class="conversation-empty">
-      {{ t("conversationEmptyTip") }}
-    </view>
+    <view v-else class="conversation-empty"></view>
   </view>
 </template>
 
