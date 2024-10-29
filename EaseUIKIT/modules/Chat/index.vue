@@ -5,9 +5,7 @@
       <!-- 遮照层,点击关闭Toolbar -->
       <view v-if="isShowMask" class="mask" @tap="closeToolbar"></view>
       <MessageList
-        v-if="msgs"
         ref="msgListRef"
-        :msgs="msgs"
         :conversationId="conversationId"
         :conversationType="conversationType"
       />
@@ -16,7 +14,6 @@
     <view class="chat-input-wrap" @tap.stop="closeToolbar">
       <MessageInput
         ref="msgInputRef"
-        @onMessageSend="onMessageSend"
         @onShowToolbar="
           isShowToolbar = true;
           isShowEmojiPicker = false;
@@ -46,8 +43,6 @@ import type { EasemobChat } from "easemob-websdk/Easemob-chat";
 import { onLoad } from "@dcloudio/uni-app";
 import type { InputToolbarEvent } from "../../types/index";
 import { EaseConnKit } from "../../index";
-import { deepClone } from "../../utils/index";
-import { autorun } from "mobx";
 
 const msgListRef = ref(null);
 const msgInputRef = ref(null);
@@ -57,20 +52,12 @@ const isShowEmojiPicker = ref(false);
 const conversationType = ref<EasemobChat.ConversationItem["conversationType"]>(
   "" as EasemobChat.ConversationItem["conversationType"]
 );
-const messageStore = EaseConnKit.messageStore;
 const appUserStore = EaseConnKit.appUserStore;
 const groupStore = EaseConnKit.groupStore;
-const msgs = ref(null);
-let uninstallMsgWatch: any;
 
 const isShowMask = computed(() => {
   return isShowToolbar.value || isShowEmojiPicker.value;
 });
-
-const onMessageSend = () => {
-  //@ts-ignore
-  msgListRef?.value?.toBottomMsg();
-};
 
 const closeToolbar = () => {
   if (isShowToolbar.value === true) {
@@ -94,31 +81,15 @@ onMounted(() => {
     conversationId: conversationId.value,
     conversationType: conversationType.value
   });
-  const vl = msgs.value;
-  if (!vl) {
-    messageStore.getHistoryMessages({
-      conversationId: conversationId.value,
-      conversationType: conversationType.value
-    } as EasemobChat.ConversationItem);
-  }
 });
 
 onUnmounted(() => {
   EaseConnKit.convStore.setCurrentConversation(null);
-  uninstallMsgWatch();
 });
 
 onLoad((option) => {
   conversationType.value = option?.type;
   conversationId.value = option?.id;
-  uninstallMsgWatch = autorun(() => {
-    const messages = deepClone(
-      messageStore.conversationMessagesMap.get(conversationId.value)
-    );
-    if (messages) {
-      msgs.value = messages.messages;
-    }
-  });
   if (option?.id) {
     EaseConnKit.convStore.setCurrentConversation({
       conversationId: conversationId.value,
@@ -138,7 +109,6 @@ onLoad((option) => {
 });
 
 provide<InputToolbarEvent>("InputToolbarEvent", {
-  onMessageSend,
   closeToolbar
 });
 </script>

@@ -74,7 +74,6 @@ const sendVideoMessage = (res: any) => {
       });
       try {
         await EaseConnKit.messageStore.sendMessage(videoMsg);
-        toolbarInject?.onMessageSend();
         toolbarInject?.closeToolbar();
       } catch (error: any) {
         uni.showToast({

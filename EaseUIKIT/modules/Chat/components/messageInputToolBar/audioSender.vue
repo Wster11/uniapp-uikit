@@ -54,7 +54,6 @@ import { t } from "../../../../locales/index";
 import { EaseConnKit } from "../../../../index";
 const connStore = EaseConnKit.connStore;
 const conn = connStore.getChatConn();
-const toolbarInject = inject<InputToolbarEvent>("InputToolbarEvent");
 
 const SDK = connStore.getChatSDK();
 const convStore = EaseConnKit.convStore;
@@ -164,7 +163,6 @@ const sendAudioMessage = (tempFilePath: string) => {
       try {
         duration.value = 0;
         await EaseConnKit.messageStore.sendMessage(audioMsg);
-        toolbarInject?.onMessageSend();
       } catch (error: any) {
         uni.showToast({
           title: `send failed: ${error.message}`,

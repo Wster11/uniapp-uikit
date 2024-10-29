@@ -1,11 +1,12 @@
 <template>
-  <view class="msg-list-wrap" @tap="resetMessageState">
+  <view
+    :class="['msg-list-wrap', { opacity: isOpacity }]"
+    @tap="resetMessageState"
+  >
     <scroll-view
-      v-if="isShow"
       scroll-y
       :scroll-top="scrollHeight"
       class="message-scroll-list"
-      :style="{ height: '100%' }"
       :scroll-into-view="`msg-${currentViewMsgId}`"
     >
       <view class="loadMore" v-if="msgs && !isLast" @tap="loadMore">{{
@@ -46,10 +47,9 @@ import type { MixedMessageBody } from "../../../../types/index";
 import { EaseConnKit } from "../../../../index";
 import { t } from "../../../../locales/index";
 import { autorun } from "mobx";
-import { onLoad } from "@dcloudio/uni-app";
+import { deepClone } from "../../../../utils/index";
 
 interface Props {
-  msgs: MixedMessageBody[];
   conversationId: string;
   conversationType: EasemobChat.ConversationItem["conversationType"];
 }
@@ -59,17 +59,21 @@ const scrollHeight = ref(0);
 
 const isLoading = ref(false);
 
-const isShow = ref(false);
-
 const currentViewMsgId = ref<string>("");
 
 const messageStore = EaseConnKit.messageStore;
 
-const isLast = ref(false);
+const isLast = ref(true);
 
 const cursor = ref("");
 
 const selectedMsgId = ref("");
+
+const msgs = ref<MixedMessageBody[]>([]);
+
+const isOpacity = ref(true);
+
+let uninstallMsgWatch: any = null;
 
 const onMessageLongPress = (msgId: string) => {
   selectedMsgId.value = msgId;
@@ -79,16 +83,32 @@ const resetMessageState = () => {
   selectedMsgId.value = "";
 };
 
-const uninstallIsLastWatch = autorun(() => {
-  isLast.value = messageStore.conversationMessagesMap.get(
-    props.conversationId
-  )?.isLast;
-});
-
-const uninstallCursorWatch = autorun(() => {
-  cursor.value = messageStore.conversationMessagesMap.get(
-    props.conversationId
-  )?.cursor;
+onMounted(() => {
+  uninstallMsgWatch = autorun(() => {
+    const messages = deepClone(
+      messageStore.conversationMessagesMap.get(props.conversationId)
+    );
+    if (messages) {
+      msgs.value = messages.messages;
+      isLast.value = messages.isLast;
+      cursor.value = messages.cursor;
+      if (currentViewMsgId.value) {
+        return;
+      }
+      nextTick(() => {
+        scrollToBottom();
+        setTimeout(() => {
+          isOpacity.value = false;
+        }, 200);
+      });
+    }
+  });
+  if (!messageStore.conversationMessagesMap.has(props.conversationId)) {
+    messageStore.getHistoryMessages({
+      conversationId: props.conversationId,
+      conversationType: props.conversationType
+    } as EasemobChat.ConversationItem);
+  }
 });
 
 const loadMore = async () => {
@@ -96,7 +116,7 @@ const loadMore = async () => {
     return;
   }
   isLoading.value = true;
-  const viewedMsgId = props.msgs[0].id;
+  const viewedMsgId = msgs.value[0].id;
   try {
     await messageStore.getHistoryMessages(
       {
@@ -118,42 +138,32 @@ const loadMore = async () => {
   }
 };
 
-const toBottomMsg = () => {
-  nextTick(() => {
-    scrollHeight.value = props.msgs.length * 300;
-  });
+const scrollToBottom = () => {
+  scrollHeight.value = msgs.value.length * 300;
+  setTimeout(() => {
+    scrollHeight.value += 1;
+  }, 200);
 };
 
-onMounted(() => {
-  toBottomMsg();
-});
-
 onUnmounted(() => {
-  uninstallIsLastWatch();
-  uninstallCursorWatch();
-});
-
-onLoad(() => {
-  // 修复会话列表跳转到聊天页面延迟显示的问题
-  setTimeout(() => {
-    isShow.value = true;
-  }, 200);
+  uninstallMsgWatch && uninstallMsgWatch();
 });
 
 defineExpose({
-  toBottomMsg
+  scrollToBottom
 });
 </script>
 
 <style lang="scss" scoped>
 .msg-list-wrap {
   height: 100%;
-  overflow-y: scroll;
+  overflow: hidden;
 }
 
 .message-scroll-list {
+  flex: 1;
   height: 100%;
-  overflow-y: scroll;
+  overflow: hidden auto;
   background-color: #f9fafa;
 }
 
@@ -166,5 +176,9 @@ defineExpose({
   font-size: 14px;
   margin: 5px 0;
   color: #999;
+}
+
+.opacity {
+  opacity: 0;
 }
 </style>

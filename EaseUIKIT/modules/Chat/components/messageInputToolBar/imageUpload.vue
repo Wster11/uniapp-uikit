@@ -71,7 +71,6 @@ const sendImageMessage = (res: any) => {
       });
       try {
         await EaseConnKit.messageStore.sendMessage(imgMsg);
-        toolbarInject?.onMessageSend();
         toolbarInject?.closeToolbar();
       } catch (error: any) {
         uni.showToast({

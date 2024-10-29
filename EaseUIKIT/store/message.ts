@@ -29,7 +29,7 @@ class MessageStore {
     const dt = await EaseConnKit.getChatConn().getHistoryMessages({
       targetId: conversation.conversationId,
       chatType: conversation.conversationType,
-      pageSize: 50,
+      pageSize: 20,
       cursor: cursor || ""
     });
 
