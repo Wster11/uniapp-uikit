@@ -3,6 +3,7 @@ import type { EasemobChat } from "easemob-websdk/Easemob-chat";
 import type { MixedMessageBody } from "../types/index";
 import { EaseConnKit } from "../index";
 import { t } from "../locales/index";
+import { ConversationBaseInfo } from "./types";
 
 interface ConversationMessagesInfo {
   messages: MixedMessageBody[];
@@ -223,6 +224,42 @@ class MessageStore {
         this.conversationMessagesMap.get(cvsId)?.messages.push(msg);
       }
     });
+  }
+
+  deleteMessage(cvs: ConversationBaseInfo, messageId: string) {
+    EaseConnKit.getChatConn()
+      .removeHistoryMessages({
+        targetId: cvs.conversationId,
+        chatType: cvs.conversationType,
+        messageIds: [messageId]
+      })
+      .then(() => {
+        runInAction(() => {
+          if (this.conversationMessagesMap.has(cvs.conversationId)) {
+            const info = this.conversationMessagesMap.get(cvs.conversationId);
+            if (info) {
+              const idx = info.messages.findIndex((m) => m.id === messageId);
+              if (idx > -1) {
+                info.messages.splice(idx, 1);
+              }
+            }
+          }
+          const conv = EaseConnKit.convStore.getConversationById(
+            cvs.conversationId
+          );
+          let lastMessage = conv?.lastMessage;
+          if (lastMessage?.id === messageId) {
+            EaseConnKit.convStore.updateConversationLastMessage(
+              {
+                conversationId: conv?.conversationId || "",
+                conversationType: conv?.conversationType as any
+              },
+              {} as EasemobChat.MessageBody,
+              conv?.unReadCount || 0
+            );
+          }
+        });
+      });
   }
 
   clear() {

@@ -191,7 +191,15 @@ const referenceMessage = () => {};
 
 const editMessage = () => {};
 
-const deleteMessage = () => {};
+const deleteMessage = () => {
+  EaseConnKit.messageStore.deleteMessage(
+    {
+      conversationType: props.msg.chatType,
+      conversationId: EaseConnKit.convStore.getCvsIdFromMessage(props.msg)
+    },
+    props.msg.id
+  );
+};
 
 const recallMessage = () => {
   EaseConnKit.messageStore.recallMessage({
