@@ -3,13 +3,20 @@ import { GroupEventFromIds } from "../const/index";
 import { throttle } from "../utils/index";
 import { EaseConnKit } from "../index";
 import { EasemobChat } from "easemob-websdk/Easemob-chat";
+import { ConnState } from "../types";
 
 class ChatStore {
   isInitEvent = false;
   SDK = EaseConnKit.connStore.getChatSDK();
+  connState: ConnState;
   constructor() {
-    makeAutoObservable(this);
+    this.connState = "none";
     this.initSDKEvent(); // 初始化SDK事件
+    makeAutoObservable(this);
+  }
+
+  isLogin() {
+    return !EaseConnKit.getChatConn().logout;
   }
 
   login(params) {
@@ -58,6 +65,22 @@ class ChatStore {
   initSDKEvent() {
     if (this.isInitEvent) return;
     this.isInitEvent = true;
+
+    EaseConnKit.getChatConn().addEventHandler("CONNECTION_STATE", {
+      onConnected: () => {
+        this.connState = "connected";
+      },
+      onDisconnected: () => {
+        if (this.isLogin()) {
+          this.connState = "disconnected";
+        } else {
+          this.connState = "none";
+        }
+      },
+      onReconnecting: () => {
+        this.connState = "reconnecting";
+      }
+    });
 
     EaseConnKit.getChatConn().addEventHandler("STORE_MULTI_DEVICE", {
       onMultiDeviceEvent: (e) => {

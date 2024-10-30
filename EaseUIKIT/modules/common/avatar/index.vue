@@ -29,7 +29,7 @@ const imageSrc = computed(() => {
 });
 const size = props.size || 50; // 默认大小为50px
 const shape =
-  props.shape || EaseConnKit.configStore.config.theme?.avatarShape || "square"; // 默认形状为圆形
+  props.shape || EaseConnKit.configStore.config.uikit?.theme?.avatarShape || "square"; // 默认形状为圆形
 
 const onError = () => {
   isError.value = true;

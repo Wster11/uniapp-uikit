@@ -5,6 +5,8 @@ type InputToolbarEvent = {
   closeToolbar: () => void;
 };
 
+type ConnState = "none" | "reconnecting" | "connected" | "disconnected";
+
 type ContactNotice = EasemobChat.ContactMsgBody & {
   ext: "invited" | "agreed" | "refused" | "deleted" | "added";
   time: number;
@@ -52,5 +54,6 @@ export type {
   ContactNoticeInfo,
   GroupNoticeInfo,
   MixedMessageBody,
-  MessageStatus
+  MessageStatus,
+  ConnState
 };
