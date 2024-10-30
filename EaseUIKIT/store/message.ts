@@ -6,7 +6,7 @@ import { t } from "../locales/index";
 import { ConversationBaseInfo } from "./types";
 
 interface ConversationMessagesInfo {
-  messages: MixedMessageBody[];
+  messageIds: string[];
   cursor: string;
   isLast: boolean;
 }
@@ -44,13 +44,23 @@ class MessageStore {
           conversation.conversationId
         );
         if (info) {
-          info.messages.unshift(...dt.messages.reverse());
+          info.messageIds.unshift(
+            ...dt.messages
+              .map((msg) => {
+                return msg.id;
+              })
+              .reverse()
+          );
           info.cursor = dt.cursor || "";
           info.isLast = dt.isLast;
         }
       } else {
         this.conversationMessagesMap.set(conversation.conversationId, {
-          messages: dt.messages.reverse(),
+          messageIds: dt.messages
+            .map((msg) => {
+              return msg.id;
+            })
+            .reverse(),
           cursor: dt.cursor || "",
           isLast: dt.isLast
         });
@@ -64,7 +74,7 @@ class MessageStore {
       if (this.conversationMessagesMap.has(convId)) {
         const info = this.conversationMessagesMap.get(convId);
         if (info) {
-          info.messages.push(msg);
+          info.messageIds.push(msg.id);
         }
       }
     });
@@ -169,24 +179,17 @@ class MessageStore {
     const recalledMessage = this.messageMap.get(mid);
     if (recalledMessage) {
       const cvsId = EaseConnKit.convStore.getCvsIdFromMessage(recalledMessage);
-      const idx =
-        this.conversationMessagesMap
-          .get(cvsId)
-          ?.messages.findIndex((m) => m.id === mid) || -1;
-
-      if (idx > -1) {
-        this.conversationMessagesMap.get(cvsId)?.messages.splice(idx, 1, {
-          ...recalledMessage,
-          noticeInfo: {
-            type: "notice",
-            noticeType: "recall",
-            ext: {
-              isRecalled: true,
-              from: from
-            }
+      this.messageMap.set(mid, {
+        ...recalledMessage,
+        noticeInfo: {
+          type: "notice",
+          noticeType: "recall",
+          ext: {
+            isRecalled: true,
+            from: from
           }
-        });
-      }
+        }
+      });
 
       if (recalledMessage.chatType !== "chatRoom") {
         const conv = EaseConnKit.convStore.getConversationById(cvsId);
@@ -220,8 +223,9 @@ class MessageStore {
   insertNoticeMessage(msg: MixedMessageBody) {
     const cvsId = EaseConnKit.convStore.getCvsIdFromMessage(msg);
     runInAction(() => {
+      this.messageMap.set(msg.id, msg);
       if (this.conversationMessagesMap.has(cvsId)) {
-        this.conversationMessagesMap.get(cvsId)?.messages.push(msg);
+        this.conversationMessagesMap.get(cvsId)?.messageIds.push(msg.id);
       }
     });
   }
@@ -235,12 +239,13 @@ class MessageStore {
       })
       .then(() => {
         runInAction(() => {
+          this.messageMap.delete(messageId);
           if (this.conversationMessagesMap.has(cvs.conversationId)) {
             const info = this.conversationMessagesMap.get(cvs.conversationId);
             if (info) {
-              const idx = info.messages.findIndex((m) => m.id === messageId);
+              const idx = info.messageIds.findIndex((id) => id === messageId);
               if (idx > -1) {
-                info.messages.splice(idx, 1);
+                info.messageIds.splice(idx, 1);
               }
             }
           }
