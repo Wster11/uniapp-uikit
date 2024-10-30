@@ -4,6 +4,7 @@ import type { MixedMessageBody } from "../types/index";
 import { EaseConnKit } from "../index";
 import { t } from "../locales/index";
 import { ConversationBaseInfo } from "./types";
+import { MessageStatus } from "../types/index";
 
 interface ConversationMessagesInfo {
   messageIds: string[];
@@ -80,47 +81,100 @@ class MessageStore {
     });
   }
 
-  async sendMessage(msg: EasemobChat.MessageBody) {
-    const res = await EaseConnKit.getChatConn().send(msg);
-    runInAction(() => {
+  replaceConvMessageId(localMsgId: string, msg: MixedMessageBody) {
+    const convId = EaseConnKit.convStore.getCvsIdFromMessage(msg);
+    const idx =
+      this.conversationMessagesMap
+        .get(convId)
+        ?.messageIds.findIndex((id) => id === localMsgId) || -1;
+
+    if (idx > -1) {
+      this.conversationMessagesMap
+        .get(convId)
+        ?.messageIds.splice(idx, 1, msg.id);
+    }
+  }
+
+  updateMessageStatus(msgId: string, status: MessageStatus) {
+    if (this.messageMap.has(msgId)) {
+      const msg = this.messageMap.get(msgId) as MixedMessageBody;
+      this.messageMap.set(msgId, {
+        ...msg,
+        status
+      });
+    }
+  }
+
+  setAllMessageRead(cvs: ConversationBaseInfo) {
+    const info = this.conversationMessagesMap.get(cvs.conversationId);
+    if (info) {
+      runInAction(() => {
+        info.messageIds.forEach((id) => {
+          const msg = this.messageMap.get(id);
+          if (msg) {
+            if (!msg.status || msg.status === "failed") return;
+            this.messageMap.set(id, {
+              ...msg,
+              status: "read"
+            });
+          }
+        });
+      });
+    }
+  }
+
+  sendMessage(msg: EasemobChat.MessageBody) {
+    runInAction(async () => {
       if (
         msg.type !== "delivery" &&
         msg.type !== "read" &&
         msg.type !== "channel"
       ) {
-        res.message && this.messageMap.set(res.serverMsgId, res.message);
-        this.insertMessage(res.message as MixedMessageBody);
-
-        if (msg.chatType !== "chatRoom") {
-          const convId = EaseConnKit.convStore.getCvsIdFromMessage(msg);
+        try {
+          const msgCopy = { ...msg, status: "sending" } as MixedMessageBody;
+          this.messageMap.set(msgCopy.id, msgCopy);
+          this.insertMessage(msgCopy);
+          const res = await EaseConnKit.getChatConn().send(msg);
+          // 消息发送成功删除本地的消息
+          this.messageMap.delete(msgCopy.id);
+          const convId = EaseConnKit.convStore.getCvsIdFromMessage(msgCopy);
           const conv = EaseConnKit.convStore.getConversationById(convId);
-          msg.id = res.serverMsgId;
-          if (conv) {
-            EaseConnKit.convStore.updateConversationLastMessage(
-              {
-                conversationId: convId,
-                conversationType: msg.chatType
-              },
-              msg,
-              conv.unReadCount
-            );
-            EaseConnKit.convStore.moveConversationTop(conv);
-          } else {
-            const newConv = EaseConnKit.convStore.createConversation(
-              {
-                conversationId: convId,
-                conversationType: msg.chatType
-              },
-              msg,
-              0
-            );
-            EaseConnKit.convStore.moveConversationTop(newConv);
+          const sentMessage = {
+            ...res.message,
+            status: "sent"
+          } as MixedMessageBody;
+          this.replaceConvMessageId(msgCopy.id, sentMessage);
+          res.message && this.messageMap.set(res.serverMsgId, sentMessage);
+
+          if (msg.chatType !== "chatRoom") {
+            msg.id = res.serverMsgId;
+            if (conv) {
+              EaseConnKit.convStore.updateConversationLastMessage(
+                {
+                  conversationId: convId,
+                  conversationType: msg.chatType
+                },
+                msg,
+                conv.unReadCount
+              );
+              EaseConnKit.convStore.moveConversationTop(conv);
+            } else {
+              const newConv = EaseConnKit.convStore.createConversation(
+                {
+                  conversationId: convId,
+                  conversationType: msg.chatType
+                },
+                msg,
+                0
+              );
+              EaseConnKit.convStore.moveConversationTop(newConv);
+            }
           }
+        } catch (error) {
+          this.updateMessageStatus(msg.id, "failed");
         }
       }
     });
-
-    return res;
   }
 
   onMessage(msg: MixedMessageBody) {

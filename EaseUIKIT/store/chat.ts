@@ -128,7 +128,19 @@ class ChatStore {
       onVideoMessage: (msg) => EaseConnKit.messageStore.onMessage(msg),
       onAudioMessage: (msg) => EaseConnKit.messageStore.onMessage(msg),
       onRecallMessage: (msg) =>
-        EaseConnKit.messageStore.onRecallMessage(msg.mid, msg.from)
+        EaseConnKit.messageStore.onRecallMessage(msg.mid, msg.from),
+      onDeliveredMessage: (msg) => {
+        EaseConnKit.messageStore.updateMessageStatus(msg.mid, "received");
+      },
+      onReadMessage: (msg) => {
+        EaseConnKit.messageStore.updateMessageStatus(msg.mid, "read");
+      },
+      onChannelMessage: (msg) => {
+        EaseConnKit.messageStore.setAllMessageRead({
+          conversationId: EaseConnKit.convStore.getCvsIdFromMessage(msg),
+          conversationType: msg.chatType
+        });
+      }
     });
 
     EaseConnKit.getChatConn().addEventHandler("STORE_CONTACT", {

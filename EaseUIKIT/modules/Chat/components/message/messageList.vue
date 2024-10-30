@@ -90,7 +90,7 @@ onMounted(() => {
     );
     if (messages) {
       msgs.value = messages.messageIds.map((id) => {
-        return EaseConnKit.messageStore.messageMap.get(id);
+        return deepClone(EaseConnKit.messageStore.messageMap.get(id));
       });
       isLast.value = messages.isLast;
       cursor.value = messages.cursor;

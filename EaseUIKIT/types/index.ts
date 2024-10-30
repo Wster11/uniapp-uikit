@@ -32,8 +32,17 @@ interface MessageNoticeInfo {
   ext: Record<string, any>;
 }
 
+type MessageStatus =
+  | "sending"
+  | "sent"
+  | "received"
+  | "read"
+  | "unread"
+  | "failed";
+
 type MixedMessageBody = EasemobChat.ExcludeAckMessageBody & {
   noticeInfo?: MessageNoticeInfo;
+  status: MessageStatus;
 };
 
 export type {
@@ -42,5 +51,6 @@ export type {
   GroupNotice,
   ContactNoticeInfo,
   GroupNoticeInfo,
-  MixedMessageBody
+  MixedMessageBody,
+  MessageStatus
 };

@@ -10,7 +10,8 @@ EaseConnKit.init({
     appKey: APPKEY,
     isHttpDNS: false,
     url: URL,
-    apiUrl: API_URL
+    apiUrl: API_URL,
+    delivery: true
   },
   uikit: {
     theme: {

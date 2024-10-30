@@ -15,7 +15,6 @@
         <view class="user-nickname" v-if="!isSelf">
           {{ getUserInfo(msg.from || "").nickname || extUserInfo.nickname }}
         </view>
-
         <view
           :class="bubbleClass"
           :id="'msg-bubble-' + msg.id"
@@ -25,6 +24,7 @@
             }
           "
         >
+          <MessageStatus v-if="isSelf && msg.status" :msg="msg" />
           <view v-if="msg.type === 'txt'">
             <TextMessage :msg="msg" />
           </view>
@@ -62,6 +62,7 @@ import ImageMessage from "./messageImage.vue";
 import VideoMessage from "./messageVideo.vue";
 import AudioMessage from "./messageAudio.vue";
 import MessageActions from "./messageActions.vue";
+import MessageStatus from "./messageStatus.vue";
 import defaultAvatar from "../../../../assets/defaultAvatar.png";
 import type { MixedMessageBody } from "../../../../types/index";
 import { ref, computed, getCurrentInstance } from "vue";
@@ -142,6 +143,7 @@ const onMessageBubblePress = (e) => {
   }
 
   .msg-bubble {
+    position: relative;
     font-size: 16px;
     line-height: 22px;
     display: inline-block;
