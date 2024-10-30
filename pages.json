@@ -11,8 +11,7 @@
 			"style": {
 				"navigationBarTitleText": "Easemob Uniapp",
 				"app-plus": {
-					"bounce": "none",
-					"scrollIndicator":"none"
+					"bounce": "none"
 				}
 			}
 		},

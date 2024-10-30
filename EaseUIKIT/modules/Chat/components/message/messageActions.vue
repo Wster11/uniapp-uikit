@@ -1,6 +1,6 @@
 <template>
   <view
-    v-if="showActions && isSelected"
+    v-if="showActions"
     :class="['message-popup-box', popupClassName]"
     :style="
       elementPosition == 'overstep'

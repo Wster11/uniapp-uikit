@@ -24,39 +24,39 @@ uni.$UIKIT = EaseConnKit;
 // 获取IM实例
 const conn = EaseConnKit.connStore.getChatConn();
 /** 连接状态事件 */
-conn.addEventHandler("CONNECTION_STATE", {
-  onConnected: () => {
-    uni.showToast({
-      icon: "none",
-      title: "onConnected"
-    });
-  },
-  onDisconnected: () => {
-    uni.showToast({
-      icon: "none",
-      title: "onDisconnected"
-    });
-  },
-  //@ts-ignore
-  onReconnecting: () => {
-    uni.showToast({
-      icon: "none",
-      title: "onReconnecting"
-    });
-  },
-  onOnline: () => {
-    uni.showToast({
-      icon: "none",
-      title: "onOnline"
-    });
-  },
-  onOffline: () => {
-    uni.showToast({
-      icon: "none",
-      title: "onOffline"
-    });
-  }
-});
+// conn.addEventHandler("CONNECTION_STATE", {
+//   onConnected: () => {
+//     uni.showToast({
+//       icon: "none",
+//       title: "onConnected"
+//     });
+//   },
+//   onDisconnected: () => {
+//     uni.showToast({
+//       icon: "none",
+//       title: "onDisconnected"
+//     });
+//   },
+//   //@ts-ignore
+//   onReconnecting: () => {
+//     uni.showToast({
+//       icon: "none",
+//       title: "onReconnecting"
+//     });
+//   },
+//   onOnline: () => {
+//     uni.showToast({
+//       icon: "none",
+//       title: "onOnline"
+//     });
+//   },
+//   onOffline: () => {
+//     uni.showToast({
+//       icon: "none",
+//       title: "onOffline"
+//     });
+//   }
+// });
 
 const autoLogin = async () => {
   try {

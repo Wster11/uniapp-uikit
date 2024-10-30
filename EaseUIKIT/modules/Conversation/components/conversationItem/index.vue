@@ -223,7 +223,7 @@ const touchMoveHandler = (e) => {
   const pageX = e.touches[0].pageX;
   const moveX = pageX - startX;
 
-  if (Math.abs(moveX) < 80) return;
+  if (Math.abs(moveX) < 60) return;
 
   if (moveX > 0) {
     emits("leftSwipe", null);

@@ -92,7 +92,7 @@ onMounted(() => {
       msgs.value = messages.messages;
       isLast.value = messages.isLast;
       cursor.value = messages.cursor;
-      if (currentViewMsgId.value) {
+      if (isLoading.value || currentViewMsgId.value) {
         return;
       }
       nextTick(() => {

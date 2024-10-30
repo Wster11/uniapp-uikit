@@ -46,6 +46,7 @@
         >{{ getTimeStringAutoShort(msg.time, true) }}
       </view>
       <MessageActions
+        v-if="props.isSelected"
         ref="actionRef"
         :msg="msg"
         :isSelected="props.isSelected"
@@ -107,7 +108,9 @@ const bubbleClass = computed(() => {
 
 const onMessageBubblePress = (e) => {
   emits("onLongPress", props.msg.id);
-  actionRef?.value?.handleLongPress(e, instance);
+  setTimeout(() => {
+    actionRef?.value?.handleLongPress(e, instance);
+  }, 0);
 };
 </script>
 
