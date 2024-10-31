@@ -154,6 +154,24 @@ const onMessageBubblePress = (e) => {
     min-width: 15px;
   }
 
+  .msg-bubble-bg:before {
+    content: "";
+    position: absolute;
+    left: -9px;
+    bottom: 10px;
+    border: 5px solid transparent;
+    border-right: 5px solid #e5f5ff;
+  }
+
+  .msg-bubble-self-bg:before {
+    content: "";
+    position: absolute;
+    right: -9px;
+    bottom: 10px;
+    border: 5px solid transparent;
+    border-left: 5px solid #009dff;
+  }
+
   .msg-content {
     width: 100%;
     position: relative;
