@@ -65,15 +65,15 @@ const isShowMask = computed(() => {
 
 const unwatchQuoteMsg = autorun(() => {
   if (ChatUIKIT.messageStore.quoteMessage) {
-    msgInputRef?.value.setIsFocus(true);
+    msgInputRef?.value?.setIsFocus(true);
   } else {
-    msgInputRef?.value.setIsFocus(false);
+    msgInputRef?.value?.setIsFocus(false);
   }
 });
 
 const onInputWrapClick = () => {
   closeToolbar();
-  msgInputRef?.value.setIsFocus(true);
+  msgInputRef?.value?.setIsFocus(true);
 };
 
 const closeToolbar = () => {

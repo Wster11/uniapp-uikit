@@ -13,7 +13,7 @@
         t("loadMore")
       }}</view>
       <view
-        :class="['scroll-msg-item', { 'blink': blinkMsgId === msg.id }]"
+        :class="['scroll-msg-item', { blink: blinkMsgId === msg.id }]"
         v-for="(msg, idx) in msgs"
         :id="`msg-${msg.id}`"
         :key="msg.id"
@@ -88,15 +88,15 @@ const resetMessageState = () => {
 
 onMounted(() => {
   uninstallMsgWatch = autorun(() => {
-    const messages = deepClone(
+    const convMessageInfo = deepClone(
       messageStore.conversationMessagesMap.get(props.conversationId)
     );
-    if (messages) {
-      msgs.value = messages.messageIds.map((id) => {
+    if (convMessageInfo) {
+      msgs.value = convMessageInfo.messageIds.map((id) => {
         return deepClone(ChatUIKIT.messageStore.messageMap.get(id));
       });
-      isLast.value = messages.isLast;
-      cursor.value = messages.cursor;
+      isLast.value = convMessageInfo.isLast;
+      cursor.value = convMessageInfo.cursor;
       if (isLoading.value || currentViewMsgId.value) {
         return;
       }
