@@ -91,7 +91,7 @@ const setMenuItems = () => {
   list.push({
     label: "回复",
     icon: ReplyIcon,
-    action: referenceMessage
+    action: quoteMessage
   });
 
   // 自己的消息可以编辑、删除和撤回
@@ -187,7 +187,10 @@ const copyMessage = () => {
   });
 };
 
-const referenceMessage = () => {};
+const quoteMessage = () => {
+  EaseConnKit.messageStore.setQuoteMessage(props.msg);
+  showActions.value = false;
+};
 
 const editMessage = () => {};
 

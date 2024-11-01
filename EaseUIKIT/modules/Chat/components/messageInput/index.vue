@@ -32,13 +32,14 @@
 <script setup lang="ts">
 import { ref, nextTick } from "vue";
 import AudioMessageSender from "../messageInputToolBar/audioSender.vue";
-import { formatTextMessage } from "../../../../utils/index";
+import { formatTextMessage, formatMessage } from "../../../../utils/index";
 import PlusIcon from "../../../../assets/icon/plus.png";
 import AudioIcon from "../../../../assets/icon/audioButton.png";
 import Keyboard from "../../../../assets/icon/keyboard.png";
 import EmojiIcon from "../../../../assets/icon/emoji.png";
 import { EaseConnKit } from "../../../../index";
 import { t } from "../../../../locales/index";
+import { MessageQuoteExt } from "../../../../types/index";
 const emits = defineEmits([
   "onMessageSend",
   "onShowToolbar",
@@ -66,6 +67,17 @@ const showEmojiPicker = () => {
 
 const handleSendMessage = async () => {
   let textMessage = formatTextMessage(text.value);
+  let msgQuoteExt: MessageQuoteExt = {} as MessageQuoteExt;
+  const quoteMessage = EaseConnKit.messageStore.quoteMessage;
+  if (quoteMessage) {
+    msgQuoteExt = {
+      msgID: quoteMessage.id,
+      msgPreview: formatMessage(quoteMessage),
+      msgSender: EaseConnKit.appUserStore.getSelfUserInfo().nickname,
+      msgType: quoteMessage.type
+    };
+    EaseConnKit.messageStore.setQuoteMessage(null);
+  }
   const msg = SDK.message.create({
     to: convStore.currConversation!.conversationId,
     chatType: convStore.currConversation!.conversationType,
@@ -75,7 +87,8 @@ const handleSendMessage = async () => {
       ease_chat_uikit_user_info: {
         avatarURL: EaseConnKit.appUserStore.getSelfUserInfo().avatar,
         nickname: EaseConnKit.appUserStore.getSelfUserInfo().name
-      }
+      },
+      msgQuote: msgQuoteExt
     }
   });
   text.value = "";

@@ -16,6 +16,16 @@
           {{ getUserInfo(msg.from || "").nickname || extUserInfo.nickname }}
         </view>
         <view
+          v-if="msg.ext.msgQuote && msg.ext.msgQuote.msgID"
+          class="msg-quote-container"
+        >
+          <MessageQuote
+            :msgId="msg.ext.msgQuote.msgID"
+            :messageQuoteExt="msg.ext.msgQuote"
+            :titleStyle="{ justifyContent: isSelf ? 'flex-end' : 'flex-start' }"
+          />
+        </view>
+        <view
           :class="bubbleClass"
           :id="'msg-bubble-' + msg.id"
           @longpress="
@@ -61,6 +71,7 @@ import TextMessage from "./messageTxt.vue";
 import ImageMessage from "./messageImage.vue";
 import VideoMessage from "./messageVideo.vue";
 import AudioMessage from "./messageAudio.vue";
+import MessageQuote from "./messageQuote.vue";
 import MessageActions from "./messageActions.vue";
 import MessageStatus from "./messageStatus.vue";
 import defaultAvatar from "../../../../assets/defaultAvatar.png";
@@ -186,6 +197,10 @@ const onMessageBubblePress = (e) => {
     font-size: 12px;
     color: #acb4b9;
     line-height: 16px;
+  }
+
+  .msg-quote-container {
+    margin-bottom: 2px;
   }
 }
 </style>

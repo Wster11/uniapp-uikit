@@ -1,7 +1,7 @@
 <template>
   <view class="msg-image">
     <image
-      mode="aspectFit"
+      :mode="mode"
       :style="{ width: styles.width, height: styles.height }"
       @error="onError"
       @tap="previewImage"
@@ -18,11 +18,21 @@ import ImageNotFound from "../../../../assets/img404.jpg";
 import { ref } from "vue";
 interface Props {
   msg: EasemobChat.ImgMsgBody;
+  mode?: string; // uni image mode
+  width?: number;
+  height?: number;
+  disabledPreview?: boolean; // is use preview
 }
 const IMAGE_MAX_SIZE = 225;
 const props = defineProps<Props>();
 const isError = ref(false);
-const styles = ref({ width: "auto", height: `${IMAGE_MAX_SIZE}px` });
+const width = props.width ? `${props.width}px` : "auto";
+const height = props.height ? `${props.height}px` : `${IMAGE_MAX_SIZE}px`;
+const styles = ref({
+  width,
+  height
+});
+const mode = props.mode || "aspectFit";
 
 const onError = () => {
   isError.value = true;
@@ -30,7 +40,7 @@ const onError = () => {
 };
 
 const previewImage = () => {
-  if (isError.value) {
+  if (isError.value || props.disabledPreview === true) {
     return;
   }
   uni.previewImage({
@@ -57,6 +67,9 @@ const genImageStyles = (value: { width?: any; height?: any }) => {
 };
 
 const onImgLoad = (e: any) => {
+  if (props.width || props.height) {
+    return;
+  }
   genImageStyles(e.detail);
 };
 </script>

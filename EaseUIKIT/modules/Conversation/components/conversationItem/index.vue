@@ -36,14 +36,15 @@
               v-if="conversation.lastMessage?.type === 'txt'"
             >
               <span
+                :class="[{ 'emoji-wrap': item.type !== 'text' }]"
                 v-for="(item, idx) in renderTxt(conversation.lastMessage.msg)"
                 :key="idx"
               >
                 <span v-if="item.type === 'text'"> {{ item.value }}</span>
                 <!-- emoji -->
-                <!-- <image v-else class="msg-emoji" :src="item.value" /> -->
+                <image v-else class="msg-emoji" :src="item.value" />
                 <!-- emoji alt -->
-                <span v-else> {{ item.alt }}</span>
+                <!-- <span v-else> {{ item.alt }}</span> -->
               </span>
             </view>
             <view v-else class="last-msg ellipsis">
@@ -87,8 +88,9 @@ import defaultGroupAvatar from "../../../../assets/defaultGroupAvatar.png";
 import { t } from "../../../../locales/index";
 import { ref, onUnmounted, computed } from "vue";
 import { EaseConnKit } from "../../../../index";
-import { renderTxt } from "../../../../utils/index";
+import { renderTxt, formatMessage } from "../../../../utils/index";
 import { autorun } from "mobx";
+import { MixedMessageBody } from "../../../../types";
 
 interface Props {
   conversation: EasemobChat.ConversationItem;
@@ -164,42 +166,7 @@ const toChatPage = () => {
 };
 
 const formatLastMessage = (conversation: EasemobChat.ConversationItem) => {
-  let lastMsg = "";
-  switch (conversation.lastMessage?.type) {
-    case "txt":
-      if (conversation.lastMessage?.msg == "the combine message") {
-        lastMsg = `[${t("chatHistory")}]`;
-      } else {
-        lastMsg = conversation.lastMessage?.msg;
-      }
-      break;
-    case "img":
-      lastMsg = `[${t("image")}]`;
-      break;
-    case "audio":
-      lastMsg = `[${t("audio")}]`;
-      break;
-    case "file":
-      lastMsg = `[${t("file")}]`;
-      break;
-    case "video":
-      lastMsg = `[${t("video")}]`;
-      break;
-    case "custom":
-      if (conversation.lastMessage.customEvent == "userCard") {
-        lastMsg = `[${t("contact")}]`;
-      } else {
-        lastMsg = `[${t("custom")}]`;
-      }
-      break;
-    case "combine":
-      lastMsg = `[${t("chatHistory")}]`;
-      break;
-    default:
-      console.warn("unexpected message type:", conversation.lastMessage?.type);
-      break;
-  }
-  return lastMsg;
+  return formatMessage(conversation.lastMessage as MixedMessageBody);
 };
 
 const handleMenuClick = (action: string) => {

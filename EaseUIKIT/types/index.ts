@@ -34,6 +34,13 @@ interface MessageNoticeInfo {
   ext: Record<string, any>;
 }
 
+interface MessageQuoteExt {
+  msgID: string;
+  msgPreview: string;
+  msgSender: string;
+  msgType: string;
+}
+
 type MessageStatus =
   | "sending"
   | "sent"
@@ -55,5 +62,6 @@ export type {
   GroupNoticeInfo,
   MixedMessageBody,
   MessageStatus,
+  MessageQuoteExt,
   ConnState
 };

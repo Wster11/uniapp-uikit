@@ -1,7 +1,11 @@
 <template>
   <view class="msg-text">
     <span class="msg">
-      <span v-for="(item, idx) in data" :key="idx">
+      <span
+        :class="[{ 'emoji-wrap': item.type !== 'text' }]"
+        v-for="(item, idx) in data"
+        :key="idx"
+      >
         <span v-if="item.type === 'text'"> {{ item.value }}</span>
         <image v-else class="msg-emoji" :src="item.value" />
       </span>
@@ -22,16 +26,13 @@ const props = defineProps<Props>();
 const data = computed(() => {
   return renderTxt(props.msg.msg);
 });
-
 </script>
 
 <style lang="scss" scoped>
 @import url("../../../../styles/common.scss");
 
-.msg {
-  display: flex;
-  align-items: center;
-  flex-flow: row wrap;
+.emoji-wrap {
+  vertical-align: middle;
 }
 
 .msg-text {

@@ -26,7 +26,6 @@
 import ConversationItem from "../conversationItem/index.vue";
 import { ref, onUnmounted } from "vue";
 import type { EasemobChat } from "easemob-websdk";
-import { t } from "../../../../locales/index";
 import { EaseConnKit } from "../../../../index";
 import { deepClone } from "../../../../utils/index";
 import { autorun } from "mobx";

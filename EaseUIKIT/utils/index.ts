@@ -1,5 +1,6 @@
 import { t } from "../locales/index";
 import { emojiAltMap, emoji } from "../const/emoji";
+import { MixedMessageBody } from "../types";
 export const formatDate = function (date: Date, fmt: string = "") {
   const o = {
     "M+": date.getMonth() + 1, //月份
@@ -254,3 +255,42 @@ export function splitArrayIntoChunks(arr: Array<any>, chunkSize: number) {
   }
   return result;
 }
+
+export const formatMessage = (message: MixedMessageBody) => {
+  let lastMsg = "";
+  switch (message?.type) {
+    case "txt":
+      if (message?.msg == "the combine message") {
+        lastMsg = `[${t("chatHistory")}]`;
+      } else {
+        lastMsg = message?.msg;
+      }
+      break;
+    case "img":
+      lastMsg = `[${t("image")}]`;
+      break;
+    case "audio":
+      lastMsg = `[${t("audio")}]`;
+      break;
+    case "file":
+      lastMsg = `[${t("file")}]`;
+      break;
+    case "video":
+      lastMsg = `[${t("video")}]`;
+      break;
+    case "custom":
+      if (message.customEvent == "userCard") {
+        lastMsg = `[${t("contact")}]`;
+      } else {
+        lastMsg = `[${t("custom")}]`;
+      }
+      break;
+    case "combine":
+      lastMsg = `[${t("chatHistory")}]`;
+      break;
+    default:
+      console.warn("unexpected message type:", message?.type);
+      break;
+  }
+  return lastMsg;
+};

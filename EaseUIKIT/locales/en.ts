@@ -143,4 +143,7 @@ export default {
   unpin: "Unpin",
   selfRecallTip: "You recalled a message",
   otherRecallTip: "The other party recalled a message",
+  you: "You",
+  reply: "replying",
+  messageNotFound: "Message not found",
 };

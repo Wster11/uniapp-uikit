@@ -1,4 +1,4 @@
-import { makeAutoObservable, runInAction } from "mobx";
+import { makeAutoObservable, runInAction, set } from "mobx";
 import type { EasemobChat } from "easemob-websdk/Easemob-chat";
 import type { MixedMessageBody } from "../types/index";
 import { EaseConnKit } from "../index";
@@ -15,6 +15,7 @@ class MessageStore {
   messageMap: Map<string, MixedMessageBody> = new Map();
   conversationMessagesMap: Map<string, ConversationMessagesInfo> = new Map();
   playingAudioMsgId: string = "";
+  quoteMessage: MixedMessageBody | null = null; // 当前引用的消息
 
   constructor() {
     makeAutoObservable(this);
@@ -98,6 +99,7 @@ class MessageStore {
   updateMessageStatus(msgId: string, status: MessageStatus) {
     if (this.messageMap.has(msgId)) {
       const msg = this.messageMap.get(msgId) as MixedMessageBody;
+      if (msg.status === "read") return;
       this.messageMap.set(msgId, {
         ...msg,
         status
@@ -319,6 +321,10 @@ class MessageStore {
           }
         });
       });
+  }
+
+  setQuoteMessage(msg: MixedMessageBody | null) {
+    this.quoteMessage = msg;
   }
 
   clear() {
