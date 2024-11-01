@@ -1,6 +1,6 @@
 <template>
   <view class="msg-quote-wrap">
-    <view class="quote-brief">
+    <view class="quote-brief" @click="jumpToMessage">
       <view class="title" :style="titleStyle ? titleStyle : {}">
         <view class="user" v-if="props.isReplying" v-text="you"></view>
         <view class="tip" v-if="props.isReplying" v-text="reply"></view>
@@ -63,6 +63,14 @@ const props = defineProps<Props>();
 const quoteFrom = ref(null);
 
 const msg = ref(null);
+
+const emits = defineEmits(["jumpToMessage"]);
+
+const jumpToMessage = () => {
+  if (msg.value) {
+    emits("jumpToMessage", msg.value.id);
+  }
+};
 
 const data = computed(() => {
   if (!msg.value) {

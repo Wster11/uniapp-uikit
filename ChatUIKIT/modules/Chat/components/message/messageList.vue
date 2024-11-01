@@ -13,7 +13,7 @@
         t("loadMore")
       }}</view>
       <view
-        class="scroll-msg-item"
+        :class="['scroll-msg-item', { 'blink': blinkMsgId === msg.id }]"
         v-for="(msg, idx) in msgs"
         :id="`msg-${msg.id}`"
         :key="msg.id"
@@ -30,6 +30,7 @@
           v-else
           :msg="msg"
           @onLongPress="onMessageLongPress"
+          @jumpToMessage="setViewMsgId"
           :isSelected="msg.id === selectedMsgId"
         />
       </view>
@@ -68,6 +69,8 @@ const isLast = ref(true);
 const cursor = ref("");
 
 const selectedMsgId = ref("");
+
+const blinkMsgId = ref(""); // 闪烁的消息id
 
 const msgs = ref<MixedMessageBody[]>([]);
 
@@ -147,6 +150,18 @@ const scrollToBottom = () => {
   }, 200);
 };
 
+const setViewMsgId = (msgId: string) => {
+  if (blinkMsgId.value) {
+    return;
+  }
+  currentViewMsgId.value = msgId;
+  blinkMsgId.value = msgId;
+  setTimeout(() => {
+    blinkMsgId.value = "";
+    currentViewMsgId.value = "";
+  }, 1000);
+};
+
 onUnmounted(() => {
   uninstallMsgWatch && uninstallMsgWatch();
 });
@@ -167,6 +182,22 @@ defineExpose({
   height: 100%;
   overflow: hidden auto;
   background-color: #f9fafa;
+}
+
+@keyframes blink {
+  0% {
+    background-color: #f9fafa;
+  }
+  50% {
+    background-color: #e0e0e0; /* 可以调整颜色 */
+  }
+  100% {
+    background-color: #f9fafa;
+  }
+}
+
+.blink {
+  animation: blink 1s infinite;
 }
 
 .scroll-msg-item {

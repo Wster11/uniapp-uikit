@@ -23,6 +23,7 @@
             :msgId="msg.ext.msgQuote.msgID"
             :messageQuoteExt="msg.ext.msgQuote"
             :titleStyle="{ justifyContent: isSelf ? 'flex-end' : 'flex-start' }"
+            @jumpToMessage="jumpToMessage"
           />
         </view>
         <view
@@ -86,7 +87,11 @@ interface Props {
 }
 const props = defineProps<Props>();
 
-const emits = defineEmits(["onLongPress"]);
+const emits = defineEmits(["onLongPress", "jumpToMessage"]);
+
+const jumpToMessage = (id) => {
+  emits("jumpToMessage", id);
+};
 
 const instance = getCurrentInstance();
 
