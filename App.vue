@@ -1,10 +1,10 @@
 <script lang="ts">
-import { EaseConnKit } from "./EaseUIKIT";
+import { ChatUIKIT } from "./ChatUIKIT";
 import { APPKEY, API_URL, URL, CHAT_STORE } from "@/const/index";
 import websdk from "easemob-websdk/uniApp/Easemob-chat";
 import { EasemobChatStatic } from "easemob-websdk/Easemob-chat";
 
-EaseConnKit.init({
+ChatUIKIT.init({
   sdk: websdk as unknown as EasemobChatStatic,
   sdkConfig: {
     appKey: APPKEY,
@@ -20,7 +20,7 @@ EaseConnKit.init({
   }
 });
 
-uni.$UIKIT = EaseConnKit;
+uni.$UIKIT = ChatUIKIT;
 
 const autoLogin = async () => {
   try {
@@ -31,7 +31,7 @@ const autoLogin = async () => {
     if (res.data) {
       // 跳转会话列表页面
       uni.switchTab({
-        url: "/EaseUIKIT/modules/Conversation/index"
+        url: "/ChatUIKIT/modules/Conversation/index"
       });
       const { userId, token } = res.data;
       await uni.$UIKIT.chatStore.login({

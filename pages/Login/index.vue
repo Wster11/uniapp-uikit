@@ -45,7 +45,7 @@
 
 <script setup lang="ts">
 	import { ref } from "vue";
-	import { t } from "../../EaseUIKIT/locales"
+	import { t } from "../../ChatUIKIT/locales"
 	import { CHAT_STORE, IS_USE_CUSTOM_SERVER } from "@/const/index";
 	const counter = ref(60);
 	const userId = ref("");
@@ -133,7 +133,7 @@
 				});
 				// 跳转会话列表页面
 				uni.switchTab({
-					url: "/EaseUIKIT/modules/Conversation/index"
+					url: "/ChatUIKIT/modules/Conversation/index"
 				});
 			})
 			.catch((e) => {
@@ -180,7 +180,7 @@
 						});
 						// 跳转会话列表页面
 						uni.switchTab({
-							url: "/EaseUIKIT/modules/Conversation/index"
+							url: "/ChatUIKIT/modules/Conversation/index"
 						});
 					})
 					.finally(() => {

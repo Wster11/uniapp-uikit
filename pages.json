@@ -3,29 +3,29 @@
 		{
 			"path": "pages/Login/index",
 			"style": {
-				"navigationBarTitleText": "Easemob Uniapp"
+				"navigationBarTitleText": "Chatmob Uniapp"
 			}
 		},
 		{
-			"path": "EaseUIKIT/modules/Conversation/index",
+			"path": "ChatUIKIT/modules/Conversation/index",
 			"style": {
-				"navigationBarTitleText": "Easemob Uniapp",
+				"navigationBarTitleText": "Chatmob Uniapp",
 				"app-plus": {
 					"bounce": "none"
 				}
 			}
 		},
 		{
-			"path": "EaseUIKIT/modules/Chat/index",
+			"path": "ChatUIKIT/modules/Chat/index",
 			"style": {
-				"navigationBarTitleText": "Easemob Uniapp",
+				"navigationBarTitleText": "Chatmob Uniapp",
 				"app-plus": {
 					"bounce": "none"
 				}
 			}
 		},
 		{
-			"path": "EaseUIKIT/modules/VideoPreview/index",
+			"path": "ChatUIKIT/modules/VideoPreview/index",
 			"style": {
 				"navigationBarTitleText": "Video Preview",
 				"app-plus": {
@@ -43,7 +43,7 @@
 				"text": "消息",
 				"iconPath": "static/icon/conversation.png",
 				"selectedIconPath": "static/icon/conversation_active.png",
-				"pagePath": "EaseUIKIT/modules/Conversation/index"
+				"pagePath": "ChatUIKIT/modules/Conversation/index"
 			},
 			{
 				"text": "联系人",
