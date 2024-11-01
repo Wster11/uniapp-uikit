@@ -21,6 +21,14 @@ class MessageStore {
     makeAutoObservable(this);
   }
 
+  addMessageToMap(msg: MixedMessageBody) {
+    this.messageMap.set(msg.id, msg);
+  }
+
+  removeMessageFromMap(msgId: string) {
+    this.messageMap.delete(msgId);
+  }
+
   setPlayingAudioMessageId(msgId: string) {
     this.playingAudioMsgId = msgId;
   }
@@ -38,7 +46,7 @@ class MessageStore {
 
     runInAction(() => {
       dt.messages.forEach((msg: any) => {
-        this.messageMap.set(msg.id, msg);
+        this.addMessageToMap(msg);
       });
 
       if (this.conversationMessagesMap.has(conversation.conversationId)) {
@@ -100,9 +108,10 @@ class MessageStore {
     if (this.messageMap.has(msgId)) {
       const msg = this.messageMap.get(msgId) as MixedMessageBody;
       if (msg.status === "read") return;
-      this.messageMap.set(msgId, {
+      this.addMessageToMap({
         ...msg,
-        status
+        status,
+        id: msgId
       });
     }
   }
@@ -115,9 +124,10 @@ class MessageStore {
           const msg = this.messageMap.get(id);
           if (msg) {
             if (!msg.status || msg.status === "failed") return;
-            this.messageMap.set(id, {
+            this.addMessageToMap({
               ...msg,
-              status: "read"
+              status: "read",
+              id
             });
           }
         });
@@ -134,11 +144,11 @@ class MessageStore {
       ) {
         try {
           const msgCopy = { ...msg, status: "sending" } as MixedMessageBody;
-          this.messageMap.set(msgCopy.id, msgCopy);
+          this.addMessageToMap(msgCopy);
           this.insertMessage(msgCopy);
           const res = await ChatUIKIT.getChatConn().send(msg);
           // 消息发送成功删除本地的消息
-          this.messageMap.delete(msgCopy.id);
+          this.removeMessageFromMap(msgCopy.id);
           const convId = ChatUIKIT.convStore.getCvsIdFromMessage(msgCopy);
           const conv = ChatUIKIT.convStore.getConversationById(convId);
           const sentMessage = {
@@ -146,7 +156,11 @@ class MessageStore {
             status: "sent"
           } as MixedMessageBody;
           this.replaceConvMessageId(msgCopy.id, sentMessage);
-          res.message && this.messageMap.set(res.serverMsgId, sentMessage);
+          res.message &&
+            this.addMessageToMap({
+              ...sentMessage,
+              id: res.serverMsgId
+            });
 
           if (msg.chatType !== "chatRoom") {
             msg.id = res.serverMsgId;
@@ -181,7 +195,7 @@ class MessageStore {
 
   onMessage(msg: MixedMessageBody) {
     runInAction(() => {
-      this.messageMap.set(msg.id, msg);
+      this.addMessageToMap(msg);
       this.insertMessage(msg);
 
       if (msg.chatType !== "chatRoom") {
@@ -235,7 +249,7 @@ class MessageStore {
     const recalledMessage = this.messageMap.get(mid);
     if (recalledMessage) {
       const cvsId = ChatUIKIT.convStore.getCvsIdFromMessage(recalledMessage);
-      this.messageMap.set(mid, {
+      this.addMessageToMap({
         ...recalledMessage,
         noticeInfo: {
           type: "notice",
@@ -244,7 +258,8 @@ class MessageStore {
             isRecalled: true,
             from: from
           }
-        }
+        },
+        id: mid
       });
 
       if (recalledMessage.chatType !== "chatRoom") {
@@ -279,7 +294,7 @@ class MessageStore {
   insertNoticeMessage(msg: MixedMessageBody) {
     const cvsId = ChatUIKIT.convStore.getCvsIdFromMessage(msg);
     runInAction(() => {
-      this.messageMap.set(msg.id, msg);
+      this.addMessageToMap(msg);
       if (this.conversationMessagesMap.has(cvsId)) {
         this.conversationMessagesMap.get(cvsId)?.messageIds.push(msg.id);
       }
@@ -295,7 +310,7 @@ class MessageStore {
       })
       .then(() => {
         runInAction(() => {
-          this.messageMap.delete(messageId);
+          this.removeMessageFromMap(messageId);
           if (this.conversationMessagesMap.has(cvs.conversationId)) {
             const info = this.conversationMessagesMap.get(cvs.conversationId);
             if (info) {

@@ -44,7 +44,7 @@ class AppUserStore {
           res.data &&
             Object.keys(res.data).forEach((key) => {
               const result = res.data?.[key] || {};
-              this.appUserInfo.set(key, result);
+              this.addUserInfo(key, result);
             });
           resolve(res);
         })
@@ -54,12 +54,16 @@ class AppUserStore {
     });
   }
 
+  addUserInfo(userId: string, userInfo: EasemobChat.UpdateOwnUserInfoParams) {
+    this.appUserInfo.set(userId, userInfo);
+  }
+
   /** 更新用户信息 */
   updateUserInfo(params: EasemobChat.UpdateOwnUserInfoParams) {
     return ChatUIKIT.getChatConn()
       .updateUserInfo(params)
       .then((res) => {
-        this.appUserInfo.set(ChatUIKIT.getChatConn().user, res.data || {});
+        this.addUserInfo(ChatUIKIT.getChatConn().user, res.data || {});
         return res;
       });
   }

@@ -15,6 +15,10 @@ class ChatStore {
     makeAutoObservable(this);
   }
 
+  setConnState(state: ConnState) {
+    this.connState = state;
+  }
+
   isLogin() {
     return !ChatUIKIT.getChatConn().logout;
   }
@@ -68,17 +72,17 @@ class ChatStore {
 
     ChatUIKIT.getChatConn().addEventHandler("CONNECTION_STATE", {
       onConnected: () => {
-        this.connState = "connected";
+        this.setConnState("connected");
       },
       onDisconnected: () => {
         if (this.isLogin()) {
-          this.connState = "disconnected";
+          this.setConnState("disconnected");
         } else {
-          this.connState = "none";
+          this.setConnState("none");
         }
       },
       onReconnecting: () => {
-        this.connState = "reconnecting";
+        this.setConnState("reconnecting");
       }
     });
 
