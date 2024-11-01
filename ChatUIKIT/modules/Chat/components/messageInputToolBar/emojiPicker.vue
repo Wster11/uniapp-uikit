@@ -59,6 +59,10 @@ const selectEmoji = (alt: string) => {
   width: 32px;
   height: 32px;
   margin: 8px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   &:active {
     background: #f1f2f3;
     border-radius: 5px;

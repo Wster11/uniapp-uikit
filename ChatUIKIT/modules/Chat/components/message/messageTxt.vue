@@ -41,5 +41,6 @@ const data = computed(() => {
   word-break: break-all;
   word-wrap: break-word;
   white-space: break-spaces;
+  min-height: 18.5px;
 }
 </style>

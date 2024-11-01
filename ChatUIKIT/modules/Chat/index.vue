@@ -12,9 +12,10 @@
     </view>
     <MessageQuotePanel />
     <!-- 输入框 -->
-    <view class="chat-input-wrap" @tap.stop="closeToolbar">
+    <view class="chat-input-wrap" @tap.stop="onInputWrapClick">
       <MessageInput
         ref="msgInputRef"
+        :preventEvent="isShowToolbar || isShowEmojiPicker"
         @onShowToolbar="
           isShowToolbar = true;
           isShowEmojiPicker = false;
@@ -44,6 +45,7 @@ import { ref, onMounted, computed, onUnmounted, provide } from "vue";
 import type { EasemobChat } from "easemob-websdk/Easemob-chat";
 import { onLoad } from "@dcloudio/uni-app";
 import type { InputToolbarEvent } from "../../types/index";
+import { autorun } from "mobx";
 import { ChatUIKIT } from "../../index";
 
 const msgListRef = ref(null);
@@ -60,6 +62,19 @@ const groupStore = ChatUIKIT.groupStore;
 const isShowMask = computed(() => {
   return isShowToolbar.value || isShowEmojiPicker.value;
 });
+
+const unwatchQuoteMsg = autorun(() => {
+  if (ChatUIKIT.messageStore.quoteMessage) {
+    msgInputRef?.value.setIsFocus(true);
+  } else {
+    msgInputRef?.value.setIsFocus(false);
+  }
+});
+
+const onInputWrapClick = () => {
+  closeToolbar();
+  msgInputRef?.value.setIsFocus(true);
+};
 
 const closeToolbar = () => {
   if (isShowToolbar.value === true) {
@@ -87,6 +102,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   ChatUIKIT.convStore.setCurrentConversation(null);
+  unwatchQuoteMsg();
 });
 
 onLoad((option) => {

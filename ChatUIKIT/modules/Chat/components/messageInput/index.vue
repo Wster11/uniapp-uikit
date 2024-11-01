@@ -10,13 +10,17 @@
     <!-- #1endif -->
     <view class="send-input" v-if="!isSendAudio">
       <input
+        :class="[{ 'prevent-event': props.preventEvent }]"
         v-model="text"
         cursor-spacing="20"
         type="text"
+        :focus="isFocus"
         :adjust-position="true"
         :auto-blur="true"
         confirm-type="send"
         @confirm="handleSendMessage"
+        @blur="onBlur"
+        @focus="onFocus"
         :placeholder="t('sendMessagePlaceholder')"
       />
     </view>
@@ -40,16 +44,27 @@ import EmojiIcon from "../../../../assets/icon/emoji.png";
 import { ChatUIKIT } from "../../../../index";
 import { t } from "../../../../locales/index";
 import { MessageQuoteExt } from "../../../../types/index";
+
+interface Props {
+  preventEvent: boolean; // 输入框是否禁止事件
+}
+
+const props = defineProps<Props>();
+
 const emits = defineEmits([
   "onMessageSend",
   "onShowToolbar",
-  "onShowEmojiPicker"
+  "onShowEmojiPicker",
+  "onBlur",
+  "onFocus"
 ]);
 
 const convStore = ChatUIKIT.convStore;
 
 // 是否发送语音消息
 const isSendAudio = ref(false);
+
+const isFocus = ref(false);
 
 const SDK = ChatUIKIT.connStore.getChatSDK();
 
@@ -105,9 +120,22 @@ const handleSendMessage = async () => {
   }
 };
 
+const onBlur = () => {
+  isFocus.value = false;
+  emits("onBlur");
+};
+
+const onFocus = () => {
+  isFocus.value = true;
+  emits("onFocus");
+};
+
 defineExpose({
   insertEmoji(emoji: string) {
     text.value += emoji;
+  },
+  setIsFocus(focus: boolean) {
+    isFocus.value = focus;
   }
 });
 </script>

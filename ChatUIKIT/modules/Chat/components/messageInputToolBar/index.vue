@@ -3,8 +3,12 @@
     <swiper class="swiper">
       <swiper-item class="swiper-item">
         <view class="item-wrap">
-          <ImageUpload />
-          <VideoUpload />
+          <view class="item">
+            <ImageUpload />
+          </view>
+          <view class="item" style="width: 25%">
+            <VideoUpload />
+          </view>
         </view>
       </swiper-item>
     </swiper>
@@ -33,5 +37,9 @@ const emits = defineEmits(["onMessageSend"]);
 .item-wrap {
   display: flex;
   flex-flow: wrap;
+}
+
+.item {
+  width: 25%;
 }
 </style>

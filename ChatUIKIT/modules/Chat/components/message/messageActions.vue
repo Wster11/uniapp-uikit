@@ -86,13 +86,14 @@ const setMenuItems = () => {
       }
     );
   }
-
-  // 回复消息
-  list.push({
-    label: "回复",
-    icon: ReplyIcon,
-    action: quoteMessage
-  });
+  if (props.msg.status !== "failed" && props.msg.status !== "sending") {
+    // 回复消息
+    list.push({
+      label: "回复",
+      icon: ReplyIcon,
+      action: quoteMessage
+    });
+  }
 
   // 自己的消息可以编辑、删除和撤回
   if (isSelf) {

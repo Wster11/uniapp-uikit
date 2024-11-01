@@ -33,3 +33,7 @@
   height: 25px;
   cursor: pointer;
 }
+
+.prevent-event {
+  pointer-events: none;
+}
