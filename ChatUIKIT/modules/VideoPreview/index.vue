@@ -26,10 +26,10 @@ onLoad((option) => {
     videoUrl.value = option?.url;
   }
   const timer = setTimeout(() => {
-    // 延时显示视频，否则多次进入视频video发生偏移
+    // 延时显示视频，否则多次进入视频video发生偏移，播放器卡顿
     isShow.value = true;
     clearTimeout(timer);
-  }, 200);
+  }, 500);
 });
 </script>
 
