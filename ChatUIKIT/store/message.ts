@@ -54,28 +54,25 @@ class MessageStore {
           conversation.conversationId
         );
         if (info) {
-          info.messageIds.unshift(
-            ...dt.messages
-              .map((msg) => {
-                return msg.id;
-              })
-              .reverse()
+          info.messageIds.push(
+            ...dt.messages.map((msg) => {
+              return msg.id;
+            })
           );
-          info.cursor = dt.cursor || "";
+          info.cursor = dt.cursor === "undefined" ? "" : dt.cursor || "";
           info.isLast = dt.isLast;
         }
       } else {
         this.conversationMessagesMap.set(conversation.conversationId, {
-          messageIds: dt.messages
-            .map((msg) => {
-              return msg.id;
-            })
-            .reverse(),
+          messageIds: dt.messages.map((msg) => {
+            return msg.id;
+          }),
           cursor: dt.cursor || "",
           isLast: dt.isLast
         });
       }
     });
+    return dt;
   }
 
   insertMessage(msg: MixedMessageBody) {
@@ -84,7 +81,7 @@ class MessageStore {
       if (this.conversationMessagesMap.has(convId)) {
         const info = this.conversationMessagesMap.get(convId);
         if (info) {
-          info.messageIds.push(msg.id);
+          info.messageIds.unshift(msg.id);
         }
       }
     });
@@ -95,7 +92,7 @@ class MessageStore {
     const idx =
       this.conversationMessagesMap
         .get(convId)
-        ?.messageIds.findIndex((id) => id === localMsgId) || -1;
+        ?.messageIds.findIndex((id) => id === localMsgId) ?? -1;
 
     if (idx > -1) {
       this.conversationMessagesMap

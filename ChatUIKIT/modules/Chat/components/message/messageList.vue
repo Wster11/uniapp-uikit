@@ -1,39 +1,39 @@
 <template>
-  <view
-    :class="['msg-list-wrap', { opacity: isOpacity }]"
-    @tap="resetMessageState"
-  >
+  <view :class="['msg-list-wrap']" @tap="resetMessageState">
     <scroll-view
       scroll-y
       :scroll-top="scrollHeight"
-      class="message-scroll-list"
       :scroll-into-view="`msg-${currentViewMsgId}`"
+      @scrolltolower="loadMore"
+      class="message-scroll-list"
     >
-      <view class="loadMore" v-if="msgs && !isLast" @tap="loadMore">{{
-        t("loadMore")
-      }}</view>
-      <view
-        :class="['scroll-msg-item', { blink: blinkMsgId === msg.id }]"
-        v-for="(msg, idx) in msgs"
-        :id="`msg-${msg.id}`"
-        :key="msg.id"
-      >
-        <MessageTime
-          :curr-time="msg.time"
-          :prev-time="idx > 0 ? msgs[idx - 1].time : 0"
-        />
-        <NoticeMessageItem
-          v-if="msg?.noticeInfo?.type === 'notice'"
-          :msg="msg"
-        />
-        <MessageItem
-          v-else
-          :msg="msg"
-          @onLongPress="onMessageLongPress"
-          @jumpToMessage="setViewMsgId"
-          :isSelected="msg.id === selectedMsgId"
-        />
+      <view class="message-item-list">
+        <view style="flex: 1"></view>
+
+        <view
+          :class="['scroll-msg-item', { blink: blinkMsgId === msg.id }]"
+          v-for="(msg, idx) in msgs"
+          :id="`msg-${msg.id}`"
+          :key="msg.id"
+        >
+          <MessageTime
+            :curr-time="msg.time"
+            :prev-time="idx > 0 ? msgs[idx - 1].time : 0"
+          />
+          <NoticeMessageItem
+            v-if="msg?.noticeInfo?.type === 'notice'"
+            :msg="msg"
+          />
+          <MessageItem
+            v-else
+            :msg="msg"
+            @onLongPress="onMessageLongPress"
+            @jumpToMessage="setViewMsgId"
+            :isSelected="msg.id === selectedMsgId"
+          />
+        </view>
       </view>
+      <view v-if="isLoading" class="loading"></view>
     </scroll-view>
   </view>
 </template>
@@ -74,8 +74,6 @@ const blinkMsgId = ref(""); // 闪烁的消息id
 
 const msgs = ref<MixedMessageBody[]>([]);
 
-const isOpacity = ref(true);
-
 let uninstallMsgWatch: any = null;
 
 const onMessageLongPress = (msgId: string) => {
@@ -102,9 +100,6 @@ onMounted(() => {
       }
       nextTick(() => {
         scrollToBottom();
-        setTimeout(() => {
-          isOpacity.value = false;
-        }, 200);
       });
     }
   });
@@ -117,11 +112,10 @@ onMounted(() => {
 });
 
 const loadMore = async () => {
-  if (isLoading.value === true) {
+  if (isLast.value === true || isLoading.value === true) {
     return;
   }
   isLoading.value = true;
-  const viewedMsgId = msgs.value[0].id;
   try {
     await messageStore.getHistoryMessages(
       {
@@ -131,12 +125,7 @@ const loadMore = async () => {
       cursor.value
     );
     nextTick(() => {
-      currentViewMsgId.value = viewedMsgId;
-      const timer = setTimeout(() => {
-        isLoading.value = false;
-        currentViewMsgId.value = "";
-        clearTimeout(timer);
-      }, 300);
+      isLoading.value = false;
     });
   } catch (error) {
     isLoading.value = false;
@@ -144,7 +133,7 @@ const loadMore = async () => {
 };
 
 const scrollToBottom = () => {
-  scrollHeight.value = msgs.value.length * 300;
+  scrollHeight.value = 0;
   setTimeout(() => {
     scrollHeight.value += 1;
   }, 200);
@@ -182,6 +171,7 @@ defineExpose({
   height: 100%;
   overflow: hidden auto;
   background-color: #f9fafa;
+  transform: rotate(180deg);
 }
 
 @keyframes blink {
@@ -202,6 +192,8 @@ defineExpose({
 
 .scroll-msg-item {
   padding: 0 15px;
+  transform: rotate(-180deg);
+
 }
 
 .loadMore {
@@ -211,7 +203,44 @@ defineExpose({
   color: #999;
 }
 
-.opacity {
-  opacity: 0;
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading {
+  width: 20px;
+  height: 20px;
+  margin: 10px auto;
+  background-position: center center;
+  background-image: url("../../../../assets/icon/spinner.png");
+  background-size: 100%;
+  animation: spin 1s linear infinite;
+  background-repeat: no-repeat;
+}
+
+scroll-view ::-webkit-scrollbar {
+  display: none;
+  width: 0 !important;
+  height: 0 !important;
+  -webkit-appearance: none;
+  background: transparent;
+}
+
+.msg-items-wrap {
+  display: flex;
+  flex-direction: column-reverse;
+  height: 100%;
+}
+
+.message-item-list {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 </style>
