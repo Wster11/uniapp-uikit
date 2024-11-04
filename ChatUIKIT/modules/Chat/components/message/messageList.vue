@@ -5,13 +5,13 @@
   >
     <scroll-view
       scroll-y
-      :scroll-top="scrollHeight"
+      :scroll-top="scrollTop"
       class="message-scroll-list"
+      @scrolltoupper="getHistoryMessage"
       :scroll-into-view="`msg-${currentViewMsgId}`"
+      :scroll-anchoring="true"
     >
-      <view class="loadMore" v-if="msgs && !isLast" @tap="loadMore">{{
-        t("loadMore")
-      }}</view>
+      <view v-if="isLoading" class="loading"></view>
       <view
         :class="['scroll-msg-item', { blink: blinkMsgId === msg.id }]"
         v-for="(msg, idx) in msgs"
@@ -56,7 +56,7 @@ interface Props {
 }
 const props = defineProps<Props>();
 
-const scrollHeight = ref(0);
+const scrollTop = ref(0);
 
 const isLoading = ref(false);
 
@@ -116,8 +116,8 @@ onMounted(() => {
   }
 });
 
-const loadMore = async () => {
-  if (isLoading.value === true) {
+const getHistoryMessage = async () => {
+  if (isLast.value || isLoading.value === true) {
     return;
   }
   isLoading.value = true;
@@ -144,9 +144,9 @@ const loadMore = async () => {
 };
 
 const scrollToBottom = () => {
-  scrollHeight.value = msgs.value.length * 300;
+  scrollTop.value = msgs.value.length * 999;
   setTimeout(() => {
-    scrollHeight.value += 1;
+    scrollTop.value += 1;
   }, 200);
 };
 
@@ -204,14 +204,27 @@ defineExpose({
   padding: 0 15px;
 }
 
-.loadMore {
-  text-align: center;
-  font-size: 14px;
-  margin: 5px 0;
-  color: #999;
-}
-
 .opacity {
   opacity: 0;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading {
+  width: 20px;
+  height: 20px;
+  margin: 10px auto;
+  background-position: center center;
+  background-image: url("../../../../assets/icon/spinner.png");
+  background-size: 100%;
+  animation: spin 1s linear infinite;
+  background-repeat: no-repeat;
 }
 </style>

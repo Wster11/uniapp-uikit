@@ -54,13 +54,8 @@ class MessageStore {
           conversation.conversationId
         );
         if (info) {
-          info.messageIds.unshift(
-            ...dt.messages
-              .map((msg) => {
-                return msg.id;
-              })
-              .reverse()
-          );
+          const messageIds = dt.messages.map((msg) => msg.id);
+          info.messageIds.unshift(...messageIds);
           info.cursor = dt.cursor || "";
           info.isLast = dt.isLast;
         }
