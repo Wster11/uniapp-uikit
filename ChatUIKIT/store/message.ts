@@ -366,6 +366,11 @@ class MessageStore {
     }
   }
 
+  // 检查是不是自己发的消息
+  checkMessageFromIsSelf(msg: MixedMessageBody) {
+    return msg.from === ChatUIKIT.getChatConn().user || msg.from === "";
+  }
+
   clear() {
     runInAction(() => {
       this.messageMap.clear();

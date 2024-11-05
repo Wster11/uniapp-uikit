@@ -106,7 +106,7 @@ const getUserInfo = (id: string) => {
 };
 
 const isSelf =
-  ChatUIKIT.connStore.getChatConn().user === props.msg.from ||
+  ChatUIKIT.getChatConn().user === props.msg.from ||
   props.msg.from === "";
 
 const extUserInfo = props.msg.ext?.ease_chat_uikit_user_info || {};

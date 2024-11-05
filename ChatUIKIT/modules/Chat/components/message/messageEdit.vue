@@ -7,6 +7,7 @@
         <textarea
           v-model="txt"
           class="edit-input"
+          cursor-spacing="20"
           :auto-height="true"
           :focus="isFocus"
           :confirm-type="'send'"

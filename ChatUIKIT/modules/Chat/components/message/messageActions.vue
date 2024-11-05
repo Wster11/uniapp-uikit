@@ -61,9 +61,7 @@ const windowSize = ref({
   height: 0
 });
 
-const isSelf =
-  ChatUIKIT.connStore.getChatConn().user === props.msg.from ||
-  props.msg.from === "";
+const isSelf = ChatUIKIT.messageStore.checkMessageFromIsSelf(props.msg);
 
 const setMenuItems = () => {
   const list: Array<MenuItem> = [];

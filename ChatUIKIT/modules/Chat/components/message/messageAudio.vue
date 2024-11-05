@@ -46,7 +46,7 @@ const conn = connStore.getChatConn();
 const props = defineProps<Props>();
 const audioContextMap = new Map<string, UniApp.InnerAudioContext>();
 const playing = ref(false);
-const isSelf = conn.user === props.msg.from || props.msg.from === "";
+const isSelf = ChatUIKIT.messageStore.checkMessageFromIsSelf(props.msg);
 const messageStore = ChatUIKIT.messageStore;
 
 const toggle = async () => {
