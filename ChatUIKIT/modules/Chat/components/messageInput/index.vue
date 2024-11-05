@@ -27,8 +27,11 @@
     <view class="icon-wrap">
       <image class="icon" @tap.stop="showEmojiPicker" :src="EmojiIcon"></image>
     </view>
-    <view class="icon-wrap">
+    <view class="icon-wrap" v-if="text.length === 0">
       <image class="icon" @tap.stop="showToolbar" :src="PlusIcon"></image>
+    </view>
+    <view class="icon-wrap" v-else>
+      <image class="icon" @tap.stop="handleSendMessage" :src="SendIcon"></image>
     </view>
   </view>
 </template>
@@ -41,6 +44,7 @@ import PlusIcon from "../../../../assets/icon/plus.png";
 import AudioIcon from "../../../../assets/icon/audioButton.png";
 import Keyboard from "../../../../assets/icon/keyboard.png";
 import EmojiIcon from "../../../../assets/icon/emoji.png";
+import SendIcon from "../../../../assets/icon/send.png";
 import { ChatUIKIT } from "../../../../index";
 import { t } from "../../../../locales/index";
 import { MessageQuoteExt } from "../../../../types/index";

@@ -256,6 +256,7 @@ export function splitArrayIntoChunks(arr: Array<any>, chunkSize: number) {
   return result;
 }
 
+
 export const formatMessage = (message: MixedMessageBody) => {
   let lastMsg = "";
   switch (message?.type) {
