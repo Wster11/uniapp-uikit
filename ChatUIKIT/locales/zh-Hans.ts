@@ -152,5 +152,8 @@ export default {
   deleteBtn: "删除",
   replyBtn: "回复",
   recallBtn: "撤回",
-  editBtn: "编辑"
+  editBtn: "编辑",
+  atAll: "所有人",
+  atTag: "[有人@你] ",
+  atAllTag: "[@所有人] "
 };

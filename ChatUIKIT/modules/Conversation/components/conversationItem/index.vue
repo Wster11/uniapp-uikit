@@ -32,6 +32,13 @@
           </view>
           <view class="msg-wrap">
             <view
+              v-if="conversation.atType && conversation.atType !== 'NONE'"
+              class="mention-tag"
+              >{{
+                conversation.atType === "ALL" ? t("atAllTag") : t("atTag")
+              }}</view
+            >
+            <view
               class="last-msg ellipsis"
               v-if="conversation.lastMessage?.type === 'txt'"
             >
@@ -89,10 +96,14 @@ import { ref, onUnmounted, computed } from "vue";
 import { ChatUIKIT } from "../../../../index";
 import { renderTxt, formatMessage } from "../../../../utils/index";
 import { autorun } from "mobx";
-import { MixedMessageBody, ChatSDK } from "../../../../types";
+import {
+  MixedMessageBody,
+  ChatSDK,
+  UIKITConversationItem
+} from "../../../../types";
 
 interface Props {
-  conversation: ChatSDK.ConversationItem;
+  conversation: UIKITConversationItem;
   showMenu: boolean;
 }
 

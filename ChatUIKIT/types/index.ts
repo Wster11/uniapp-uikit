@@ -49,9 +49,15 @@ type MessageStatus =
   | "unread"
   | "failed";
 
+type AT_TYPE = "NONE" | "ALL" | "ME";
+
 type MixedMessageBody = ChatSDK.ExcludeAckMessageBody & {
   noticeInfo?: MessageNoticeInfo;
-  status: MessageStatus;
+  status?: MessageStatus;
+};
+
+type UIKITConversationItem = ChatSDK.ConversationItem & {
+  atType?: AT_TYPE;
 };
 
 export type {
@@ -63,7 +69,9 @@ export type {
   MixedMessageBody,
   MessageStatus,
   MessageQuoteExt,
+  UIKITConversationItem,
   ConnState,
+  AT_TYPE,
   ChatSDK,
   ChatSDKStatic
 };

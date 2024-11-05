@@ -152,5 +152,8 @@ export default {
   deleteBtn: "Delete",
   replyBtn: "Reply",
   recallBtn: "Recall",
-  editBtn: "Edit"
+  editBtn: "Edit",
+  atAll: "All",
+  atTag: "[Someone@You] ",
+  atAllTag: "[@All] "
 };

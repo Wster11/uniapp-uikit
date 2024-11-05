@@ -192,7 +192,7 @@ class MessageStore {
     runInAction(() => {
       this.addMessageToMap(msg);
       this.insertMessage(msg);
-
+      ChatUIKIT.convStore.setAtTypeByMessage(msg);
       if (msg.chatType !== "chatRoom") {
         const convId = ChatUIKIT.convStore.getCvsIdFromMessage(msg);
         const conv = ChatUIKIT.convStore.getConversationById(convId);

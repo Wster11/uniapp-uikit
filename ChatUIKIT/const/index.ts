@@ -4,9 +4,11 @@ const GET_GROUP_MEMBERS_PAGESIZE = 100; // 获取群组成员列表的每页数�
 
 const GroupEventFromIds: Array<string> = [];
 
+const AT_ALL = "ALL";
 
 export {
+  AT_ALL,
   DEFAULT_GROUP_MEMBER_COUNT,
   GET_GROUP_MEMBERS_PAGESIZE,
-  GroupEventFromIds,
+  GroupEventFromIds
 };

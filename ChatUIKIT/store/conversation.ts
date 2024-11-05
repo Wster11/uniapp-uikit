@@ -1,11 +1,17 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { getTimeStringAutoShort, sortByPinned } from "../utils/index";
 import type { ConversationBaseInfo } from "./types/index";
-import type { MixedMessageBody, ChatSDK } from "../types/index";
+import type {
+  MixedMessageBody,
+  ChatSDK,
+  UIKITConversationItem,
+  AT_TYPE
+} from "../types/index";
+import { AT_ALL } from "../const/index";
 import { ChatUIKIT } from "../index";
 
 class ConversationStore {
-  conversationList: ChatSDK.ConversationItem[] = [];
+  conversationList: UIKITConversationItem[] = [];
   currConversation: ConversationBaseInfo | null = null;
   muteConvsMap: Map<string, boolean> = new Map();
   conversationParams: { pageSize: number; cursor: string } = {
@@ -208,9 +214,7 @@ class ConversationStore {
     }
   }
   // 获取会话的免打扰状态 (单次最多获取20条)
-  getSilentModeForConversations(
-    conversationList: ChatSDK.ConversationItem[]
-  ) {
+  getSilentModeForConversations(conversationList: ChatSDK.ConversationItem[]) {
     if (!conversationList || conversationList.length == 0) {
       return;
     }
@@ -309,6 +313,39 @@ class ConversationStore {
 
   getConversationMuteStatus(cvsId: string): boolean {
     return this.muteConvsMap.get(cvsId) || false;
+  }
+
+  setAtTypeByMessage(message: MixedMessageBody) {
+    const conversationId = this.getCvsIdFromMessage(message);
+    const isCurrentCvs =
+      // @ts-ignore
+      this.currConversation?.conversationType == message.chatType &&
+      this.currConversation?.conversationId == conversationId;
+
+    if (!isCurrentCvs && message.type === "txt") {
+      const mentionList = message?.ext?.em_at_list;
+      const user = ChatUIKIT.getChatConn().user;
+      if (mentionList && message.from !== user) {
+        if (mentionList === AT_ALL || mentionList.includes(user)) {
+          ChatUIKIT.convStore.setAtType(
+            message.chatType,
+            conversationId,
+            mentionList === AT_ALL ? "ALL" : "ME"
+          );
+        }
+      }
+    }
+  }
+
+  setAtType(chatType: ChatSDK.ChatType, cvsId: string, atType: AT_TYPE) {
+    const idx = this.conversationList.findIndex((item) => {
+      return (
+        item.conversationType === chatType && item.conversationId === cvsId
+      );
+    });
+    if (idx > -1) {
+      this.conversationList[idx].atType = atType;
+    }
   }
 
   clear() {
