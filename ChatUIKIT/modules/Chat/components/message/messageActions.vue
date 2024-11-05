@@ -37,6 +37,7 @@ import ReplyIcon from "../../../../assets/icon/reply.png";
 import EditIcon from "../../../../assets/icon/edit.png";
 import DeleteIcon from "../../../../assets/icon/delete.png";
 import { renderTxt } from "../../../../utils/index";
+import { t } from "../../../../locales";
 
 interface Props {
   msg: MixedMessageBody;
@@ -66,52 +67,64 @@ const isSelf =
 
 const setMenuItems = () => {
   const list: Array<MenuItem> = [];
-  const time = new Date().getTime();
+  const currentTime = Date.now();
   const msgTime = props.msg.time;
-  const recallTime = 1000 * 10;
-  const isRecall = time - msgTime < recallTime;
+  const recallLimit = 10 * 1000; // 撤回时间限制，单位为毫秒
+  const isRecallAllowed = currentTime - msgTime < recallLimit;
+  const isMsgEditable =
+    isSelf &&
+    props.msg.type === "txt" &&
+    props.msg.status !== "failed" &&
+    props.msg.status !== "sending";
+  const isMsgReplyable =
+    props.msg.status !== "failed" && props.msg.status !== "sending";
 
-  // 文本消息类型才显示 "复制"
+  // 文本消息类型时显示 "复制"
   if (props.msg.type === "txt") {
-    list.push(
-      {
-        label: "复制",
-        icon: CopyIcon,
-        action: copyMessage
-      },
-      {
-        label: "编辑",
-        icon: EditIcon,
-        action: editMessage
-      }
-    );
-  }
-  if (props.msg.status !== "failed" && props.msg.status !== "sending") {
-    // 回复消息
     list.push({
-      label: "回复",
+      label: t("copyBtn"),
+      icon: CopyIcon,
+      action: copyMessage
+    });
+  }
+
+  // 允许编辑的消息显示 "编辑"
+  if (isMsgEditable) {
+    list.push({
+      label: t("editBtn"),
+      icon: EditIcon,
+      action: editMessage
+    });
+  }
+
+  // 非发送中和失败状态的消息显示 "回复"
+  if (isMsgReplyable) {
+    list.push({
+      label: t("replyBtn"),
       icon: ReplyIcon,
       action: quoteMessage
     });
   }
 
-  // 自己的消息可以编辑、删除和撤回
+  // 自己的消息可以显示 "删除" 和可撤回的显示 "撤回"
   if (isSelf) {
     list.push({
-      label: "删除",
+      label: t("deleteBtn"),
       icon: DeleteIcon,
       action: deleteMessage
     });
 
-    if (isRecall) {
+    if (isRecallAllowed) {
       list.push({
-        label: "撤回",
+        label: t("recallBtn"),
         icon: RecallIcon,
         action: recallMessage
       });
     }
   }
-  menuItems.value = [...list];
+
+  // 更新菜单项
+  menuItems.value = list;
 };
 
 // 获取窗口尺寸
@@ -193,7 +206,10 @@ const quoteMessage = () => {
   showActions.value = false;
 };
 
-const editMessage = () => {};
+const editMessage = () => {
+  ChatUIKIT.messageStore.setEditingMessage(props.msg);
+  showActions.value = false;
+};
 
 const deleteMessage = () => {
   ChatUIKIT.messageStore.deleteMessage(

@@ -145,5 +145,12 @@ export default {
   otherRecallTip: "对方撤回了一条消息",
   you: "你",
   reply: "正在回复",
-  messageNotFound: "消息未找到"
+  messageNotFound: "消息未找到",
+  messageEdited: "已编辑",
+  messageEditing: "编辑中",
+  copyBtn: "复制",
+  deleteBtn: "删除",
+  replyBtn: "回复",
+  recallBtn: "撤回",
+  editBtn: "编辑"
 };

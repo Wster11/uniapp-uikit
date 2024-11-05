@@ -167,6 +167,10 @@ class ChatStore {
           conversationId: ChatUIKIT.convStore.getCvsIdFromMessage(msg),
           conversationType: msg.chatType
         });
+      },
+      onModifiedMessage: (msg) => {
+        //@ts-ignore
+        ChatUIKIT.messageStore.modifyLocalMessage(msg.id, msg);
       }
     });
 

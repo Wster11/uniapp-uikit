@@ -16,6 +16,7 @@ class MessageStore {
   conversationMessagesMap: Map<string, ConversationMessagesInfo> = new Map();
   playingAudioMsgId: string = "";
   quoteMessage: MixedMessageBody | null = null; // 当前引用的消息
+  editingMessage: EasemobChat.ModifiedMsg | null = null; // 当前编辑的消息
 
   constructor() {
     makeAutoObservable(this);
@@ -335,6 +336,35 @@ class MessageStore {
 
   setQuoteMessage(msg: MixedMessageBody | null) {
     this.quoteMessage = msg;
+  }
+
+  setEditingMessage(msg: EasemobChat.ModifiedMsg | null) {
+    this.editingMessage = msg;
+  }
+
+  modifyServerMessage(messageId: string, msg: EasemobChat.ModifiedMsg) {
+    if (!messageId || !msg) {
+      throw new Error("modifyServerMessage params error");
+    }
+    return ChatUIKIT.getChatConn()
+      .modifyMessage({
+        messageId,
+        modifiedMessage: msg
+      })
+      .then((res) => {
+        this.modifyLocalMessage(messageId, res.message);
+      });
+  }
+
+  modifyLocalMessage(messageId: string, msg: EasemobChat.ModifiedMsg) {
+    if (this.messageMap.has(messageId)) {
+      const oldMsg = this.messageMap.get(messageId);
+      //@ts-ignore
+      this.messageMap.set(messageId, {
+        ...oldMsg,
+        ...msg
+      });
+    }
   }
 
   clear() {

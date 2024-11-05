@@ -11,6 +11,8 @@
       />
     </view>
     <MessageQuotePanel />
+    <!-- 消息编辑 -->
+    <MessageEdit />
     <!-- 输入框 -->
     <view class="chat-input-wrap" @tap.stop="onInputWrapClick">
       <MessageInput
@@ -41,6 +43,7 @@ import MessageInput from "./components/messageInput/index.vue";
 import MessageInputToolbar from "./components/messageInputToolBar/index.vue";
 import EmojiPicker from "./components/messageInputToolBar/emojiPicker.vue";
 import MessageQuotePanel from "./components/message/messageQuotePanel.vue";
+import MessageEdit from "./components/message/messageEdit.vue";
 import { ref, onMounted, computed, onUnmounted, provide } from "vue";
 import type { EasemobChat } from "easemob-websdk/Easemob-chat";
 import { onLoad } from "@dcloudio/uni-app";

@@ -46,7 +46,6 @@ import NoticeMessageItem from "./noticeMessageItem.vue";
 import { ref, onMounted, onUnmounted, nextTick } from "vue";
 import type { MixedMessageBody } from "../../../../types/index";
 import { ChatUIKIT } from "../../../../index";
-import { t } from "../../../../locales/index";
 import { autorun } from "mobx";
 import { deepClone } from "../../../../utils/index";
 

@@ -146,4 +146,11 @@ export default {
   you: "You",
   reply: "replying",
   messageNotFound: "Message not found",
+  messageEdited: "Edited",
+  messageEditing: "Editing",
+  copyBtn: "Copy",
+  deleteBtn: "Delete",
+  replyBtn: "Reply",
+  recallBtn: "Recall",
+  editBtn: "Edit"
 };
