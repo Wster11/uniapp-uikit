@@ -13,11 +13,11 @@
 </template>
 
 <script lang="ts" setup>
-import type { EasemobChat } from "easemob-websdk/Easemob-chat";
+import type { ChatSDK } from "../../../../types/index";
 import ImageNotFound from "../../../../assets/img404.jpg";
 import { ref } from "vue";
 interface Props {
-  msg: EasemobChat.ImgMsgBody;
+  msg: ChatSDK.ImgMsgBody;
   mode?: string; // uni image mode
   width?: number;
   height?: number;

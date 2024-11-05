@@ -1,6 +1,5 @@
 import { makeAutoObservable, runInAction, set } from "mobx";
-import type { EasemobChat } from "easemob-websdk/Easemob-chat";
-import type { MixedMessageBody } from "../types/index";
+import type { MixedMessageBody, ChatSDK } from "../types/index";
 import { ChatUIKIT } from "../index";
 import { t } from "../locales/index";
 import { ConversationBaseInfo } from "./types";
@@ -16,7 +15,7 @@ class MessageStore {
   conversationMessagesMap: Map<string, ConversationMessagesInfo> = new Map();
   playingAudioMsgId: string = "";
   quoteMessage: MixedMessageBody | null = null; // 当前引用的消息
-  editingMessage: EasemobChat.ModifiedMsg | null = null; // 当前编辑的消息
+  editingMessage: ChatSDK.ModifiedMsg | null = null; // 当前编辑的消息
 
   constructor() {
     makeAutoObservable(this);
@@ -35,7 +34,7 @@ class MessageStore {
   }
 
   async getHistoryMessages(
-    conversation: EasemobChat.ConversationItem,
+    conversation: ChatSDK.ConversationItem,
     cursor?: string
   ) {
     const dt = await ChatUIKIT.getChatConn().getHistoryMessages({
@@ -131,7 +130,7 @@ class MessageStore {
     }
   }
 
-  sendMessage(msg: EasemobChat.MessageBody) {
+  sendMessage(msg: ChatSDK.MessageBody) {
     runInAction(async () => {
       if (
         msg.type !== "delivery" &&
@@ -279,7 +278,7 @@ class MessageStore {
               conversationId: cvsId,
               conversationType: recalledMessage.chatType
             },
-            lastMessage as EasemobChat.MessageBody,
+            lastMessage as ChatSDK.MessageBody,
             unreadCount < 0 ? 0 : unreadCount
           );
         }
@@ -326,7 +325,7 @@ class MessageStore {
                 conversationId: conv?.conversationId || "",
                 conversationType: conv?.conversationType as any
               },
-              {} as EasemobChat.MessageBody,
+              {} as ChatSDK.MessageBody,
               conv?.unReadCount || 0
             );
           }
@@ -338,11 +337,11 @@ class MessageStore {
     this.quoteMessage = msg;
   }
 
-  setEditingMessage(msg: EasemobChat.ModifiedMsg | null) {
+  setEditingMessage(msg: ChatSDK.ModifiedMsg | null) {
     this.editingMessage = msg;
   }
 
-  modifyServerMessage(messageId: string, msg: EasemobChat.ModifiedMsg) {
+  modifyServerMessage(messageId: string, msg: ChatSDK.ModifiedMsg) {
     if (!messageId || !msg) {
       throw new Error("modifyServerMessage params error");
     }
@@ -356,7 +355,7 @@ class MessageStore {
       });
   }
 
-  modifyLocalMessage(messageId: string, msg: EasemobChat.ModifiedMsg) {
+  modifyLocalMessage(messageId: string, msg: ChatSDK.ModifiedMsg) {
     if (this.messageMap.has(messageId)) {
       const oldMsg = this.messageMap.get(messageId);
       //@ts-ignore

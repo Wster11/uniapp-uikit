@@ -1,6 +1,5 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import type { EasemobChat } from "easemob-websdk/Easemob-chat";
-import type { GroupNotice, GroupNoticeInfo } from "../types/index";
+import type { GroupNotice, GroupNoticeInfo,ChatSDK } from "../types/index";
 import {
   DEFAULT_GROUP_MEMBER_COUNT,
   GET_GROUP_MEMBERS_PAGESIZE
@@ -8,13 +7,13 @@ import {
 import { ChatUIKIT } from "../index";
 
 class GroupStore {
-  joinedGroupList: EasemobChat.GroupInfo[] = [];
-  groupDetailMap: Map<string, EasemobChat.GroupDetailInfo> = new Map();
+  joinedGroupList: ChatSDK.GroupInfo[] = [];
+  groupDetailMap: Map<string, ChatSDK.GroupDetailInfo> = new Map();
   groupNoticeInfo: GroupNoticeInfo = {
     list: [],
     unReadCount: 0
   };
-  viewedGroupInfo: EasemobChat.GroupInfo = {} as EasemobChat.GroupInfo;
+  viewedGroupInfo: ChatSDK.GroupInfo = {} as ChatSDK.GroupInfo;
   isJoinedGroupListLast: boolean = true;
   getJoinedGroupListParams = {
     pageSize: 20, // 最大支持20
@@ -32,7 +31,7 @@ class GroupStore {
       .getJoinedGroups(this.getJoinedGroupListParams)
       .then((res) => {
         if (res.entities) {
-          this.setJoinedGroupList(res.entities as EasemobChat.GroupInfo[]);
+          this.setJoinedGroupList(res.entities as ChatSDK.GroupInfo[]);
           if (res.entities.length < this.getJoinedGroupListParams.pageSize) {
             this.isJoinedGroupListLast = true;
           } else {
@@ -43,7 +42,7 @@ class GroupStore {
       });
   };
 
-  setJoinedGroupList = (groups: EasemobChat.GroupInfo[]) => {
+  setJoinedGroupList = (groups: ChatSDK.GroupInfo[]) => {
     const currentGroupIds = this.joinedGroupList.map((item) => item.groupId);
     const filterJoinedGroups = groups.filter(
       ({ groupId }) => !currentGroupIds.includes(groupId)
@@ -69,7 +68,7 @@ class GroupStore {
           role: "owner",
           disabled: false,
           public: params.data.public
-        } as EasemobChat.GroupInfo);
+        } as ChatSDK.GroupInfo);
         return res;
       });
   };
@@ -120,7 +119,7 @@ class GroupStore {
     this.groupNoticeInfo.unReadCount++;
   };
 
-  setViewedGroupInfo = (group: EasemobChat.GroupInfo) => {
+  setViewedGroupInfo = (group: ChatSDK.GroupInfo) => {
     this.viewedGroupInfo = group;
   };
 
@@ -213,7 +212,7 @@ class GroupStore {
         unReadCount: 0
       };
       this.groupDetailMap.clear();
-      this.viewedGroupInfo = {} as EasemobChat.GroupInfo;
+      this.viewedGroupInfo = {} as ChatSDK.GroupInfo;
     });
   };
 }

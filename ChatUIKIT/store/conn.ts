@@ -1,31 +1,25 @@
-import type {
-  EasemobChat,
-  EasemobChatStatic
-} from "easemob-websdk/Easemob-chat";
+import type { ChatSDK, ChatSDKStatic } from "../types/index";
 
 class ConnStore {
   /** IM连接实例 */
-  conn: EasemobChat.Connection | null = null;
-  sdk: EasemobChatStatic | null = null;
+  conn: ChatSDK.Connection | null = null;
+  sdk: ChatSDKStatic | null = null;
   constructor() {}
 
   /** 初始化webIM */
-  initChatSDK(
-    sdk: EasemobChatStatic,
-    config: EasemobChat.ConnectionParameters
-  ) {
+  initChatSDK(sdk: ChatSDKStatic, config: ChatSDK.ConnectionParameters) {
     this.sdk = sdk;
     this.setChatConn(new sdk.connection(config));
     return this.conn;
   }
 
   /** 设置conn实例 */
-  setChatConn(connection: EasemobChat.Connection) {
+  setChatConn(connection: ChatSDK.Connection) {
     this.conn = connection;
   }
 
   /** 获取conn实例 */
-  getChatConn(): EasemobChat.Connection {
+  getChatConn(): ChatSDK.Connection {
     if (this.conn) {
       return this.conn;
     }
@@ -33,7 +27,7 @@ class ConnStore {
   }
 
   /** 获取 websdk */
-  getChatSDK(): EasemobChatStatic {
+  getChatSDK(): ChatSDKStatic {
     if (this.sdk) {
       return this.sdk;
     }

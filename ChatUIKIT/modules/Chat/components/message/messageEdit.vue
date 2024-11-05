@@ -25,7 +25,7 @@ import { ref, computed, onUnmounted } from "vue";
 import { ChatUIKIT } from "../../../../index";
 import { autorun } from "mobx";
 import { t } from "../../../../locales/index";
-import { EasemobChat } from "easemob-websdk";
+import { ChatSDK } from "../../../../types/index";
 
 const editingMsg = ref(null);
 const txt = ref("");
@@ -51,7 +51,7 @@ const editMessage = () => {
       type: editingMsg.value.type,
       chatType: editingMsg.value.chatType,
       msg: txt.value
-    }) as EasemobChat.ModifiedMsg;
+    }) as ChatSDK.ModifiedMsg;
     ChatUIKIT.messageStore.modifyServerMessage(
       editingMsg.value.id,
       modifiedMsg

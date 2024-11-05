@@ -81,7 +81,6 @@
 </template>
 
 <script setup lang="ts">
-import type { EasemobChat } from "easemob-websdk/Easemob-chat";
 import Avatar from "../../../common/avatar/index.vue";
 import defaultAvatar from "../../../../assets/defaultAvatar.png";
 import defaultGroupAvatar from "../../../../assets/defaultGroupAvatar.png";
@@ -90,10 +89,10 @@ import { ref, onUnmounted, computed } from "vue";
 import { ChatUIKIT } from "../../../../index";
 import { renderTxt, formatMessage } from "../../../../utils/index";
 import { autorun } from "mobx";
-import { MixedMessageBody } from "../../../../types";
+import { MixedMessageBody, ChatSDK } from "../../../../types";
 
 interface Props {
-  conversation: EasemobChat.ConversationItem;
+  conversation: ChatSDK.ConversationItem;
   showMenu: boolean;
 }
 
@@ -165,7 +164,7 @@ const toChatPage = () => {
   });
 };
 
-const formatLastMessage = (conversation: EasemobChat.ConversationItem) => {
+const formatLastMessage = (conversation: ChatSDK.ConversationItem) => {
   return formatMessage(conversation.lastMessage as MixedMessageBody);
 };
 

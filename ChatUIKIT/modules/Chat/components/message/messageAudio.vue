@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { EasemobChat } from "easemob-websdk/Easemob-chat";
+import type { ChatSDK } from "../../../../types/index";
 import { ChatUIKIT } from "../../../../index";
 import ReceiveAudioIcon from "../../../../assets/icon/receiveAudio.png";
 import SendAudioIcon from "../../../../assets/icon/sendAudio.png";
@@ -39,7 +39,7 @@ import ReceiveAudioPlayingIcon from "../../../../assets/icon/receiveAudioPlaying
 import { ref, onUnmounted, watch } from "vue";
 
 interface Props {
-  msg: EasemobChat.AudioMsgBody;
+  msg: ChatSDK.AudioMsgBody;
 }
 const connStore = ChatUIKIT.connStore;
 const conn = connStore.getChatConn();

@@ -1,4 +1,7 @@
-import type { EasemobChat } from "easemob-websdk/Easemob-chat";
+import type {
+  EasemobChat as ChatSDK,
+  EasemobChatStatic as ChatSDKStatic
+} from "easemob-websdk/Easemob-chat";
 
 type InputToolbarEvent = {
   onMessageSend: () => void;
@@ -7,13 +10,13 @@ type InputToolbarEvent = {
 
 type ConnState = "none" | "reconnecting" | "connected" | "disconnected";
 
-type ContactNotice = EasemobChat.ContactMsgBody & {
+type ContactNotice = ChatSDK.ContactMsgBody & {
   ext: "invited" | "agreed" | "refused" | "deleted" | "added";
   time: number;
   showOperation?: boolean;
 };
 
-type GroupNotice = EasemobChat.GroupEvent & {
+type GroupNotice = ChatSDK.GroupEvent & {
   time: number;
   showOperation?: boolean;
 };
@@ -49,7 +52,7 @@ type MessageStatus =
   | "unread"
   | "failed";
 
-type MixedMessageBody = EasemobChat.ExcludeAckMessageBody & {
+type MixedMessageBody = ChatSDK.ExcludeAckMessageBody & {
   noticeInfo?: MessageNoticeInfo;
   status: MessageStatus;
 };
@@ -63,5 +66,7 @@ export type {
   MixedMessageBody,
   MessageStatus,
   MessageQuoteExt,
-  ConnState
+  ConnState,
+  ChatSDK,
+  ChatSDKStatic
 };

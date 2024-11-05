@@ -39,19 +39,18 @@
 </template>
 
 <script lang="ts" setup>
-import type { EasemobChat } from "easemob-websdk/Easemob-chat";
 import MessageItem from "./messageItem.vue";
 import MessageTime from "./messageTime.vue";
 import NoticeMessageItem from "./noticeMessageItem.vue";
 import { ref, onMounted, onUnmounted, nextTick } from "vue";
-import type { MixedMessageBody } from "../../../../types/index";
+import type { MixedMessageBody, ChatSDK } from "../../../../types/index";
 import { ChatUIKIT } from "../../../../index";
 import { autorun } from "mobx";
 import { deepClone } from "../../../../utils/index";
 
 interface Props {
   conversationId: string;
-  conversationType: EasemobChat.ConversationItem["conversationType"];
+  conversationType: ChatSDK.ConversationItem["conversationType"];
 }
 const props = defineProps<Props>();
 
@@ -111,7 +110,7 @@ onMounted(() => {
     messageStore.getHistoryMessages({
       conversationId: props.conversationId,
       conversationType: props.conversationType
-    } as EasemobChat.ConversationItem);
+    } as ChatSDK.ConversationItem);
   }
 });
 
@@ -126,7 +125,7 @@ const getHistoryMessage = async () => {
       {
         conversationId: props.conversationId,
         conversationType: props.conversationType
-      } as EasemobChat.ConversationItem,
+      } as ChatSDK.ConversationItem,
       cursor.value
     );
     nextTick(() => {

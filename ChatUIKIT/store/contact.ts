@@ -1,15 +1,18 @@
 import { makeAutoObservable } from "mobx";
-import type { EasemobChat } from "easemob-websdk/Easemob-chat";
-import type { ContactNotice, ContactNoticeInfo } from "../types/index";
+import type {
+  ContactNotice,
+  ContactNoticeInfo,
+  ChatSDK
+} from "../types/index";
 import { ChatUIKIT } from "../index";
 
 class ContactStore {
-  contacts: EasemobChat.ContactItem[] = [];
+  contacts: ChatSDK.ContactItem[] = [];
   contactsNoticeInfo: ContactNoticeInfo = {
     list: [],
     unReadCount: 0
   };
-  viewedUserInfo: EasemobChat.ContactItem = {} as EasemobChat.ContactItem;
+  viewedUserInfo: ChatSDK.ContactItem = {} as ChatSDK.ContactItem;
 
   constructor() {
     makeAutoObservable(this);
@@ -96,13 +99,13 @@ class ContactStore {
   }
 
   /** 添加 store 的联系人 */
-  addStoreContact(user: EasemobChat.ContactItem) {
+  addStoreContact(user: ChatSDK.ContactItem) {
     if (!this.contacts.find((item) => item.userId === user.userId)) {
       this.contacts.unshift(user);
     }
   }
 
-  setViewedUserInfo(user: EasemobChat.ContactItem) {
+  setViewedUserInfo(user: ChatSDK.ContactItem) {
     this.viewedUserInfo = user;
   }
 
@@ -128,7 +131,7 @@ class ContactStore {
   clear() {
     this.contacts = [];
     this.contactsNoticeInfo = { list: [], unReadCount: 0 };
-    this.viewedUserInfo = {} as EasemobChat.ContactItem;
+    this.viewedUserInfo = {} as ChatSDK.ContactItem;
   }
 }
 

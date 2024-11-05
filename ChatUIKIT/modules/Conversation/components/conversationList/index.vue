@@ -25,35 +25,35 @@
 <script setup lang="ts">
 import ConversationItem from "../conversationItem/index.vue";
 import { ref, onUnmounted } from "vue";
-import type { EasemobChat } from "easemob-websdk";
+import type { ChatSDK } from "../../../../types/index";
 import { ChatUIKIT } from "../../../../index";
 import { deepClone } from "../../../../utils/index";
 import { autorun } from "mobx";
 
-const selectedConvId = ref<EasemobChat.ConversationItem | null>(null);
-const conversationList = ref<EasemobChat.ConversationItem[]>([]);
+const selectedConvId = ref<ChatSDK.ConversationItem | null>(null);
+const conversationList = ref<ChatSDK.ConversationItem[]>([]);
 
 const uninstallConvListWatch = autorun(() => {
   conversationList.value = deepClone(ChatUIKIT.convStore.conversationList);
 });
 
-const deleteConversation = (conv: EasemobChat.ConversationItem) => {
+const deleteConversation = (conv: ChatSDK.ConversationItem) => {
   ChatUIKIT.convStore.deleteConversation(conv);
 };
 
-const muteConversation = (conv: EasemobChat.ConversationItem) => {
+const muteConversation = (conv: ChatSDK.ConversationItem) => {
   ChatUIKIT.convStore.setSilentModeForConversation(conv);
 };
 
-const unMuteConversation = (conv: EasemobChat.ConversationItem) => {
+const unMuteConversation = (conv: ChatSDK.ConversationItem) => {
   ChatUIKIT.convStore.clearRemindTypeForConversation(conv);
 };
 
-const pinConversation = (conv: EasemobChat.ConversationItem) => {
+const pinConversation = (conv: ChatSDK.ConversationItem) => {
   ChatUIKIT.convStore.pinConversation(conv, !conv.isPinned);
 };
 
-const onMuteButtonClick = (conv: EasemobChat.ConversationItem) => {
+const onMuteButtonClick = (conv: ChatSDK.ConversationItem) => {
   const isMute = ChatUIKIT.convStore.getConversationMuteStatus(
     conv.conversationId
   );

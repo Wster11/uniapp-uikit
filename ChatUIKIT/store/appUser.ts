@@ -1,9 +1,9 @@
 import { makeAutoObservable } from "mobx";
-import type { EasemobChat } from "easemob-websdk";
+import type { ChatSDK } from "../types/index";
 import { ChatUIKIT } from "../index";
 
 class AppUserStore {
-  appUserInfo: Map<string, EasemobChat.UpdateOwnUserInfoParams> = new Map();
+  appUserInfo: Map<string, ChatSDK.UpdateOwnUserInfoParams> = new Map();
 
   constructor() {
     makeAutoObservable(this);
@@ -22,7 +22,7 @@ class AppUserStore {
         "sign",
         "birth",
         "ext"
-      ] as EasemobChat.ConfigurableKey[];
+      ] as ChatSDK.ConfigurableKey[];
 
       if (userIdList.length === 0) {
         resolve({});
@@ -54,12 +54,12 @@ class AppUserStore {
     });
   }
 
-  addUserInfo(userId: string, userInfo: EasemobChat.UpdateOwnUserInfoParams) {
+  addUserInfo(userId: string, userInfo: ChatSDK.UpdateOwnUserInfoParams) {
     this.appUserInfo.set(userId, userInfo);
   }
 
   /** 更新用户信息 */
-  updateUserInfo(params: EasemobChat.UpdateOwnUserInfoParams) {
+  updateUserInfo(params: ChatSDK.UpdateOwnUserInfoParams) {
     return ChatUIKIT.getChatConn()
       .updateUserInfo(params)
       .then((res) => {

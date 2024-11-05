@@ -1,6 +1,6 @@
-import type { EasemobChat } from "easemob-websdk/Easemob-chat";
+import type { ChatSDK } from "../../types/index";
 
 export type ConversationBaseInfo = Pick<
-  EasemobChat.ConversationItem,
+  ChatSDK.ConversationItem,
   "conversationId" | "conversationType"
 >;

@@ -20,14 +20,14 @@
 </template>
 
 <script lang="ts" setup>
-import type { EasemobChat } from "easemob-websdk/Easemob-chat";
+import type { ChatSDK } from "../../../../types/index";
 import { renderTxt } from "../../../../utils/index";
 import { t } from "../../../../locales/index";
 import { computed } from "vue";
 import { ChatUIKIT } from "../../../../index";
 
 interface Props {
-  msg: EasemobChat.TextMsgBody;
+  msg: ChatSDK.TextMsgBody;
 }
 const props = defineProps<Props>();
 

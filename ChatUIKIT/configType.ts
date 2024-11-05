@@ -1,4 +1,4 @@
-import { EasemobChat, EasemobChatStatic } from "easemob-websdk";
+import { ChatSDK, ChatSDKStatic } from "./types";
 
 interface FeatureConfig {
   // 是否开启置顶会话功能，默认开启
@@ -6,8 +6,8 @@ interface FeatureConfig {
 }
 
 interface ChatUIKITConfig {
-  sdk: EasemobChatStatic;
-  sdkConfig: EasemobChat.ConnectionParameters;
+  sdk: ChatSDKStatic;
+  sdkConfig: ChatSDK.ConnectionParameters;
   uikit: {
     features?: FeatureConfig;
     theme?: {

@@ -45,9 +45,8 @@ import EmojiPicker from "./components/messageInputToolBar/emojiPicker.vue";
 import MessageQuotePanel from "./components/message/messageQuotePanel.vue";
 import MessageEdit from "./components/message/messageEdit.vue";
 import { ref, onMounted, computed, onUnmounted, provide } from "vue";
-import type { EasemobChat } from "easemob-websdk/Easemob-chat";
 import { onLoad } from "@dcloudio/uni-app";
-import type { InputToolbarEvent } from "../../types/index";
+import type { InputToolbarEvent, ChatSDK } from "../../types/index";
 import { autorun } from "mobx";
 import { ChatUIKIT } from "../../index";
 
@@ -56,8 +55,8 @@ const msgInputRef = ref(null);
 const conversationId = ref("");
 const isShowToolbar = ref(false);
 const isShowEmojiPicker = ref(false);
-const conversationType = ref<EasemobChat.ConversationItem["conversationType"]>(
-  "" as EasemobChat.ConversationItem["conversationType"]
+const conversationType = ref<ChatSDK.ConversationItem["conversationType"]>(
+  "" as ChatSDK.ConversationItem["conversationType"]
 );
 const appUserStore = ChatUIKIT.appUserStore;
 const groupStore = ChatUIKIT.groupStore;

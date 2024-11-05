@@ -2,8 +2,7 @@ import { makeAutoObservable, runInAction } from "mobx";
 import { GroupEventFromIds } from "../const/index";
 import { throttle } from "../utils/index";
 import { ChatUIKIT } from "../index";
-import { EasemobChat } from "easemob-websdk/Easemob-chat";
-import { ConnState } from "../types";
+import { ConnState, ChatSDK } from "../types";
 
 class ChatStore {
   isInitEvent = false;
@@ -101,10 +100,10 @@ class ChatStore {
             ChatUIKIT.convStore.setSilentModeForConversationSync(
               {
                 conversationType: (
-                  e as EasemobChat.NotificationConMultiDeviceInfo
+                  e as ChatSDK.NotificationConMultiDeviceInfo
                 ).type,
                 conversationId: (
-                  e as EasemobChat.NotificationConMultiDeviceInfo
+                  e as ChatSDK.NotificationConMultiDeviceInfo
                 ).conversationId
               },
               true
@@ -114,10 +113,10 @@ class ChatStore {
             ChatUIKIT.convStore.setSilentModeForConversationSync(
               {
                 conversationType: (
-                  e as EasemobChat.NotificationConMultiDeviceInfo
+                  e as ChatSDK.NotificationConMultiDeviceInfo
                 ).type,
                 conversationId: (
-                  e as EasemobChat.NotificationConMultiDeviceInfo
+                  e as ChatSDK.NotificationConMultiDeviceInfo
                 ).conversationId
               },
               false
@@ -128,7 +127,7 @@ class ChatStore {
               {
                 conversationId: e.conversationId,
                 conversationType: e.conversationType
-              } as EasemobChat.ConversationItem,
+              } as ChatSDK.ConversationItem,
               true,
               e.timestamp
             );
@@ -138,7 +137,7 @@ class ChatStore {
               {
                 conversationId: e.conversationId,
                 conversationType: e.conversationType
-              } as EasemobChat.ConversationItem,
+              } as ChatSDK.ConversationItem,
               false,
               e.timestamp
             );

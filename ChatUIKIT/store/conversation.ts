@@ -1,12 +1,11 @@
-import { action, makeAutoObservable, runInAction } from "mobx";
-import type { EasemobChat } from "easemob-websdk/Easemob-chat";
+import { makeAutoObservable, runInAction } from "mobx";
 import { getTimeStringAutoShort, sortByPinned } from "../utils/index";
 import type { ConversationBaseInfo } from "./types/index";
-import type { MixedMessageBody } from "../types/index";
+import type { MixedMessageBody, ChatSDK } from "../types/index";
 import { ChatUIKIT } from "../index";
 
 class ConversationStore {
-  conversationList: EasemobChat.ConversationItem[] = [];
+  conversationList: ChatSDK.ConversationItem[] = [];
   currConversation: ConversationBaseInfo | null = null;
   muteConvsMap: Map<string, boolean> = new Map();
   conversationParams: { pageSize: number; cursor: string } = {
@@ -31,7 +30,7 @@ class ConversationStore {
     }, 0);
   }
 
-  setConversations(conversations: EasemobChat.ConversationItem[]) {
+  setConversations(conversations: ChatSDK.ConversationItem[]) {
     if (!Array.isArray(conversations)) {
       return console.error("Invalid parameter: conversations");
     }
@@ -84,7 +83,7 @@ class ConversationStore {
     return res;
   }
 
-  deleteStoreConversation(conversation: EasemobChat.ConversationItem) {
+  deleteStoreConversation(conversation: ChatSDK.ConversationItem) {
     const idx = this.conversationList.findIndex(
       (cvs) =>
         cvs.conversationType === conversation.conversationType &&
@@ -96,7 +95,7 @@ class ConversationStore {
   }
 
   async deleteConversation(
-    conversation: EasemobChat.ConversationItem,
+    conversation: ChatSDK.ConversationItem,
     deleteMessage = false
   ) {
     if (typeof conversation !== "object") {
@@ -116,7 +115,7 @@ class ConversationStore {
     );
   }
 
-  getConversationTime(message: EasemobChat.ConversationItem["lastMessage"]) {
+  getConversationTime(message: ChatSDK.ConversationItem["lastMessage"]) {
     if (!message || !message.time) {
       return "";
     }
@@ -144,7 +143,7 @@ class ConversationStore {
     this.currConversation = conversation;
   }
 
-  moveConversationTop(conversation: EasemobChat.ConversationItem) {
+  moveConversationTop(conversation: ChatSDK.ConversationItem) {
     const conv = this.getConversationById(conversation.conversationId);
     const conversationList = [...this.conversationList];
     if (conv) {
@@ -165,10 +164,10 @@ class ConversationStore {
 
   createConversation(
     conversation: ConversationBaseInfo,
-    msg: EasemobChat.MessageBody,
+    msg: ChatSDK.MessageBody,
     unReadCount = 0
   ) {
-    const conv: EasemobChat.ConversationItem = {
+    const conv: ChatSDK.ConversationItem = {
       conversationId: conversation.conversationId,
       conversationType: conversation.conversationType,
       lastMessage: msg,
@@ -184,7 +183,7 @@ class ConversationStore {
 
   updateConversationLastMessage(
     conversation: ConversationBaseInfo,
-    msg: EasemobChat.MessageBody,
+    msg: ChatSDK.MessageBody,
     unReadCount = 0
   ) {
     const conv = this.getConversationById(conversation.conversationId);
@@ -210,7 +209,7 @@ class ConversationStore {
   }
   // 获取会话的免打扰状态 (单次最多获取20条)
   getSilentModeForConversations(
-    conversationList: EasemobChat.ConversationItem[]
+    conversationList: ChatSDK.ConversationItem[]
   ) {
     if (!conversationList || conversationList.length == 0) {
       return;
@@ -247,7 +246,7 @@ class ConversationStore {
     this.muteConvsMap.set(cvs.conversationId, mute);
   }
 
-  setSilentModeForConversation(cvs: EasemobChat.ConversationItem) {
+  setSilentModeForConversation(cvs: ChatSDK.ConversationItem) {
     ChatUIKIT.getChatConn()
       .setSilentModeForConversation({
         conversationId: cvs.conversationId,
@@ -264,7 +263,7 @@ class ConversationStore {
       });
   }
 
-  clearRemindTypeForConversation(cvs: EasemobChat.ConversationItem) {
+  clearRemindTypeForConversation(cvs: ChatSDK.ConversationItem) {
     ChatUIKIT.getChatConn()
       .clearRemindTypeForConversation({
         conversationId: cvs.conversationId,
@@ -276,7 +275,7 @@ class ConversationStore {
       });
   }
 
-  pinConversation(cvs: EasemobChat.ConversationItem, isPinned: boolean) {
+  pinConversation(cvs: ChatSDK.ConversationItem, isPinned: boolean) {
     ChatUIKIT.getChatConn()
       .pinConversation({
         conversationType: cvs.conversationType,
@@ -293,7 +292,7 @@ class ConversationStore {
   }
 
   pinConversationSync(
-    cvs: EasemobChat.ConversationItem,
+    cvs: ChatSDK.ConversationItem,
     isPinned: boolean,
     pinnedTime: number
   ) {

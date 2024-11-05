@@ -22,12 +22,12 @@
 </template>
 
 <script lang="ts" setup>
-import type { EasemobChat } from "easemob-websdk/Easemob-chat";
+import type { ChatSDK } from "../../../../types/index";
 import ImageNotFound from "../../../../assets/img404.jpg";
 import VideoPlayBtn from "../../../../assets/videoplay.png";
 import { ref } from "vue";
 interface Props {
-  msg: EasemobChat.VideoMsgBody;
+  msg: ChatSDK.VideoMsgBody;
   mode?: string; // uni image mode
   width?: number;
   height?: number;
