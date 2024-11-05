@@ -142,6 +142,11 @@ class ConversationStore {
       to: conversation.conversationId
     });
     await ChatUIKIT.getChatConn().send(msg);
+    this.setAtType(
+      conversation.conversationType,
+      conversation.conversationId,
+      "NONE"
+    );
     this.clearConversationUnreadCount(conversation.conversationId);
   }
 
