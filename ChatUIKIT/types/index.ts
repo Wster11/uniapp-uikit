@@ -1,7 +1,4 @@
-import type {
-  EasemobChat as ChatSDK,
-  EasemobChatStatic as ChatSDKStatic
-} from "easemob-websdk/Easemob-chat";
+import type { ChatSDK, ChatSDKStatic } from "./sdk";
 
 type InputToolbarEvent = {
   onMessageSend: () => void;
