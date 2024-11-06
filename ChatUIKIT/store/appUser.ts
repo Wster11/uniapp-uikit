@@ -9,10 +9,14 @@ class AppUserStore {
     makeAutoObservable(this);
   }
 
-  /** 获取用户信息 */
+  /** 获取用户属性 */
   getUsersInfo(props: { userIdList: string[]; withPresence?: boolean }) {
     const { userIdList = [], withPresence = true } = props;
     return new Promise((resolve, reject) => {
+      if (ChatUIKIT.getFeatureConfig().useUserInfo === false) {
+        resolve({});
+        return;
+      }
       const type = [
         "nickname",
         "avatarurl",
@@ -54,11 +58,12 @@ class AppUserStore {
     });
   }
 
+  /** 添加用户属性 */
   addUserInfo(userId: string, userInfo: ChatSDK.UpdateOwnUserInfoParams) {
     this.appUserInfo.set(userId, userInfo);
   }
 
-  /** 更新用户信息 */
+  /** 更新用户属性 */
   updateUserInfo(params: ChatSDK.UpdateOwnUserInfoParams) {
     return ChatUIKIT.getChatConn()
       .updateUserInfo(params)
@@ -68,7 +73,7 @@ class AppUserStore {
       });
   }
 
-  /** 从Store中获取用户信息 */
+  /** 从Store中获取用户属性 */
   getUserInfoFromStore(userId: string) {
     const userInfo = this.appUserInfo.get(userId);
     return {
@@ -79,12 +84,12 @@ class AppUserStore {
     };
   }
 
-  /** 获取当前用户信息 */
+  /** 获取当前用户属性 */
   getSelfUserInfo() {
     return this.getUserInfoFromStore(ChatUIKIT.getChatConn().user);
   }
 
-  /** 清空用户信息 */
+  /** 清空用户属性 */
   clear() {
     this.appUserInfo.clear();
   }

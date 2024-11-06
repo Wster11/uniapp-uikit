@@ -218,7 +218,7 @@ class ConversationStore {
       return message.from || "";
     }
   }
-  // 获取会话的免打扰状态 (单次最多获取20条)
+  /** 获取会话的免打扰状态 (单次最多获取20条)*/
   getSilentModeForConversations(conversationList: ChatSDK.ConversationItem[]) {
     if (!conversationList || conversationList.length == 0) {
       return;

@@ -3,10 +3,10 @@
     <swiper class="swiper">
       <swiper-item class="swiper-item">
         <view class="item-wrap">
-          <view class="item">
+          <view v-if="featureConfig.InputImage" class="item">
             <ImageUpload />
           </view>
-          <view class="item" style="width: 25%">
+          <view v-if="featureConfig.inputVideo" class="item" style="width: 25%">
             <VideoUpload />
           </view>
         </view>
@@ -18,6 +18,10 @@
 <script setup lang="ts">
 import ImageUpload from "./imageUpload.vue";
 import VideoUpload from "./videoUpload.vue";
+import { ChatUIKIT } from "../../../../index";
+
+const featureConfig = ChatUIKIT.getFeatureConfig();
+
 const emits = defineEmits(["onMessageSend"]);
 </script>
 <style lang="scss" scoped>

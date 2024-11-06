@@ -121,24 +121,34 @@ const conversationInfo = ref<any>({});
 
 const isMute = ref<Boolean>(false);
 
+const featureConfig = ChatUIKIT.getFeatureConfig();
+
 const menuList = computed(() => {
-  return [
-    {
+  let list: any[] = [];
+  if (featureConfig.muteConversation) {
+    list.push({
       name: isMute.value ? t("unmute") : t("mute"),
       action: "mute",
       class: "mute"
-    },
-    {
+    });
+  }
+  if (featureConfig.pinConversation) {
+    list.push({
       name: props.conversation.isPinned ? t("unpin") : t("pin"),
       action: "pin",
       class: "pin"
-    },
-    {
+    });
+  }
+
+  if (featureConfig.deleteConversation) {
+    list.push({
       name: t("deleteConv"),
       action: "delete",
       class: "delete"
-    }
-  ];
+    });
+  }
+
+  return list;
 });
 
 const uninstallIsMuteWatch = autorun(() => {
@@ -197,6 +207,7 @@ const touchStartHandler = (e) => {
 
 // 滑动事件处理
 const touchMoveHandler = (e) => {
+  if (menuList.value.length === 0) return;
   const pageX = e.touches[0].pageX;
   const moveX = pageX - startX;
 

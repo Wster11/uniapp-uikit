@@ -38,9 +38,17 @@ class ChatKIT {
     this.messageStore = new MessageStore();
   }
 
-  // 获取IM连接实例
+  /** 获取IM连接实例 */
   public getChatConn() {
     return this.connStore.getChatConn();
+  }
+  /** 获取UIKIT主题配置 */
+  public getThemeConfig() {
+    return this.configStore.getThemeConfig();
+  }
+  /** 获取UIKIT功能配置 */
+  public getFeatureConfig() {
+    return this.configStore.getFeatureConfig();
   }
 }
 

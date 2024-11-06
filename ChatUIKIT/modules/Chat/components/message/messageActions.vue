@@ -1,6 +1,6 @@
 <template>
   <view
-    v-if="showActions"
+    v-if="showActions && menuItems.length"
     :class="['message-popup-box', popupClassName]"
     :style="
       elementPosition == 'overstep'
@@ -76,9 +76,10 @@ const setMenuItems = () => {
     props.msg.status !== "sending";
   const isMsgReplyable =
     props.msg.status !== "failed" && props.msg.status !== "sending";
+  const featureConfig = ChatUIKIT.getFeatureConfig();
 
   // 文本消息类型时显示 "复制"
-  if (props.msg.type === "txt") {
+  if (featureConfig.copyMessage && props.msg.type === "txt") {
     list.push({
       label: t("copyBtn"),
       icon: CopyIcon,
@@ -87,7 +88,7 @@ const setMenuItems = () => {
   }
 
   // 允许编辑的消息显示 "编辑"
-  if (isMsgEditable) {
+  if (featureConfig.editMessage && isMsgEditable) {
     list.push({
       label: t("editBtn"),
       icon: EditIcon,
@@ -96,7 +97,7 @@ const setMenuItems = () => {
   }
 
   // 非发送中和失败状态的消息显示 "回复"
-  if (isMsgReplyable) {
+  if (featureConfig.replyMessage && isMsgReplyable) {
     list.push({
       label: t("replyBtn"),
       icon: ReplyIcon,
@@ -106,13 +107,14 @@ const setMenuItems = () => {
 
   // 自己的消息可以显示 "删除" 和可撤回的显示 "撤回"
   if (isSelf) {
-    list.push({
-      label: t("deleteBtn"),
-      icon: DeleteIcon,
-      action: deleteMessage
-    });
+    featureConfig.deleteMessage &&
+      list.push({
+        label: t("deleteBtn"),
+        icon: DeleteIcon,
+        action: deleteMessage
+      });
 
-    if (isRecallAllowed) {
+    if (featureConfig.recallMessage && isRecallAllowed) {
       list.push({
         label: t("recallBtn"),
         icon: RecallIcon,

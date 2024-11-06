@@ -1,9 +1,6 @@
 import { makeAutoObservable } from "mobx";
-import { ChatUIKITConfig, FeatureConfig } from "../configType";
-
-const DEFAULT_FEATURES_CONFIG: FeatureConfig = {
-  pinConversation: true
-};
+import type { ChatUIKITConfig } from "../configType";
+import { DEFAULT_FEATURES_CONFIG, DEFAULT_THEME_CONFIG } from "../const/index";
 
 class ConfigStore {
   /** UIKIT全局配置 */
@@ -15,10 +12,18 @@ class ConfigStore {
   initConfig(config: ChatUIKITConfig) {
     this.config = config;
   }
-
+  /** 获取全局配置 */
   getConfig() {
     return this.config;
   }
+  /** 获取主题配置 */
+  getThemeConfig() {
+    return {
+      ...DEFAULT_THEME_CONFIG,
+      ...(this.config.uikit.theme || {})
+    };
+  }
+  /** 获取功能配置 */
   getFeatureConfig() {
     return {
       ...DEFAULT_FEATURES_CONFIG,

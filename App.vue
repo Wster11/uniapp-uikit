@@ -15,10 +15,33 @@ ChatUIKIT.init({
   },
   uikit: {
     theme: {
-      avatarShape: "square"
+      avatarShape: "circle"
+    },
+    features: {
+      // useUserInfo: false,
+      // muteConversation: false,
+      // pinConversation: false,
+      // deleteConversation: false,
+      // messageStatus: false,
+      // copyMessage: false,
+      // deleteMessage: false,
+      // recallMessage: false,
+      // editMessage: false,
+      // replyMessage: false,
+      // inputEmoji: false,
+      // InputImage: false,
+      // inputAudio: false,
+      // inputVideo: false,
+      // InputMention: false
     }
   }
 });
+
+// 手动设置用户属性
+// ChatUIKIT.appUserStore.addUserInfo("0c1bdd28c7", {
+//   nickname: "小明",
+//   avatarurl: "https://img.yzcdn.cn/vant/cat.jpeg"
+// });
 
 uni.$UIKIT = ChatUIKIT;
 

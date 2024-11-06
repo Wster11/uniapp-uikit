@@ -28,8 +28,7 @@ const imageSrc = computed(() => {
   return props.src || props.placeholder;
 });
 const size = props.size || 50; // 默认大小为50px
-const shape =
-  props.shape || ChatUIKIT.configStore.config.uikit?.theme?.avatarShape || "square"; // 默认形状为圆形
+const shape = props.shape || ChatUIKIT.getThemeConfig().avatarShape;
 
 const onError = () => {
   isError.value = true;

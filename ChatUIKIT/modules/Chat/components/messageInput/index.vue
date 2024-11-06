@@ -1,10 +1,14 @@
 <template>
   <view class="message-input-wrap">
     <!-- #1ifndef WEB -->
-    <view class="icon-wrap" @tap="isSendAudio = !isSendAudio">
+    <view
+      v-if="featureConfig.inputAudio"
+      class="icon-wrap"
+      @tap="isSendAudio = !isSendAudio"
+    >
       <image class="icon" :src="isSendAudio ? Keyboard : AudioIcon"></image>
     </view>
-    <view class="send-audio" v-if="isSendAudio">
+    <view class="send-audio" v-if="featureConfig.inputAudio && isSendAudio">
       <AudioMessageSender />
     </view>
     <!-- #1endif -->
@@ -24,10 +28,10 @@
         :placeholder="t('sendMessagePlaceholder')"
       />
     </view>
-    <view class="icon-wrap">
+    <view v-if="featureConfig.inputEmoji" class="icon-wrap">
       <image class="icon" @tap.stop="showEmojiPicker" :src="EmojiIcon"></image>
     </view>
-    <view class="icon-wrap" v-if="text.length === 0">
+    <view class="icon-wrap" v-if="isShowToolbar && text.length === 0">
       <image class="icon" @tap.stop="showToolbar" :src="PlusIcon"></image>
     </view>
     <view class="icon-wrap" v-else>
@@ -52,6 +56,10 @@ import { MessageQuoteExt } from "../../../../types/index";
 interface Props {
   preventEvent: boolean; // 输入框是否禁止事件
 }
+
+const featureConfig = ChatUIKIT.getFeatureConfig();
+
+const isShowToolbar = featureConfig.inputVideo || featureConfig.InputImage;
 
 const props = defineProps<Props>();
 

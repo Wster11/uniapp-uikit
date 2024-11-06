@@ -37,40 +37,51 @@ class MessageStore {
     conversation: ChatSDK.ConversationItem,
     cursor?: string
   ) {
-    const dt = await ChatUIKIT.getChatConn().getHistoryMessages({
-      targetId: conversation.conversationId,
-      chatType: conversation.conversationType,
-      pageSize: 15,
-      cursor: cursor || ""
-    });
-
-    runInAction(() => {
-      dt.messages.forEach((msg: any) => {
-        this.addMessageToMap(msg);
+    try {
+      const dt = await ChatUIKIT.getChatConn().getHistoryMessages({
+        targetId: conversation.conversationId,
+        chatType: conversation.conversationType,
+        pageSize: 15,
+        cursor: cursor || ""
       });
 
-      if (this.conversationMessagesMap.has(conversation.conversationId)) {
-        const info = this.conversationMessagesMap.get(
-          conversation.conversationId
-        );
-        if (info) {
-          const messageIds = dt.messages.map((msg) => msg.id);
-          info.messageIds.unshift(...messageIds);
-          info.cursor = dt.cursor || "";
-          info.isLast = dt.isLast;
-        }
-      } else {
-        this.conversationMessagesMap.set(conversation.conversationId, {
-          messageIds: dt.messages
-            .map((msg) => {
-              return msg.id;
-            })
-            .reverse(),
-          cursor: dt.cursor || "",
-          isLast: dt.isLast
+      runInAction(() => {
+        dt.messages.forEach((msg: any) => {
+          this.addMessageToMap(msg);
         });
-      }
-    });
+
+        if (this.conversationMessagesMap.has(conversation.conversationId)) {
+          const info = this.conversationMessagesMap.get(
+            conversation.conversationId
+          );
+          if (info) {
+            const messageIds = dt.messages.map((msg) => msg.id);
+            info.messageIds.unshift(...messageIds);
+            info.cursor = dt.cursor || "";
+            info.isLast = dt.isLast;
+          }
+        } else {
+          this.conversationMessagesMap.set(conversation.conversationId, {
+            messageIds: dt.messages
+              .map((msg) => {
+                return msg.id;
+              })
+              .reverse(),
+            cursor: dt.cursor || "",
+            isLast: dt.isLast
+          });
+        }
+      });
+    } catch (error) {
+      console.warn("获取漫游消息失败，请检查是否开通漫游消息", error);
+      runInAction(() => {
+        this.conversationMessagesMap.set(conversation.conversationId, {
+          messageIds: [],
+          cursor: "",
+          isLast: true
+        });
+      });
+    }
   }
 
   insertMessage(msg: MixedMessageBody) {
@@ -142,8 +153,6 @@ class MessageStore {
           this.addMessageToMap(msgCopy);
           this.insertMessage(msgCopy);
           const res = await ChatUIKIT.getChatConn().send(msg);
-          // 消息发送成功删除本地的消息
-          this.removeMessageFromMap(msgCopy.id);
           const convId = ChatUIKIT.convStore.getCvsIdFromMessage(msgCopy);
           const conv = ChatUIKIT.convStore.getConversationById(convId);
           const sentMessage = {
@@ -151,6 +160,8 @@ class MessageStore {
             status: "sent"
           } as MixedMessageBody;
           this.replaceConvMessageId(msgCopy.id, sentMessage);
+          // 消息发送成功删除本地的消息
+          this.removeMessageFromMap(msgCopy.id);
           res.message &&
             this.addMessageToMap({
               ...sentMessage,
@@ -366,7 +377,7 @@ class MessageStore {
     }
   }
 
-  // 检查是不是自己发的消息
+  /** 检查是不是自己发的消息 */
   checkMessageFromIsSelf(msg: MixedMessageBody) {
     return msg.from === ChatUIKIT.getChatConn().user || msg.from === "";
   }

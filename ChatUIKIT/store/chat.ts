@@ -35,7 +35,7 @@ class ChatStore {
           }
           ChatUIKIT.contactStore.getContacts();
           ChatUIKIT.groupStore.getJoinedGroupList();
-          ChatUIKIT.blockStore.getBlockList();
+          // ChatUIKIT.blockStore.getBlockList();
           ChatUIKIT.appUserStore.getUsersInfo({
             userIdList: [params.user]
           });

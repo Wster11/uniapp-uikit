@@ -35,7 +35,10 @@
             }
           "
         >
-          <MessageStatus v-if="isSelf && msg.status" :msg="msg" />
+          <MessageStatus
+            v-if="messageStatus && isSelf && msg.status"
+            :msg="msg"
+          />
           <view v-if="msg.type === 'txt'">
             <TextMessage :msg="msg" />
           </view>
@@ -100,14 +103,13 @@ const actionRef = ref(null);
 const appUserStore = ChatUIKIT.appUserStore;
 
 const getUserInfo = (id: string) => {
-  return (
-    appUserStore.getUserInfoFromStore(id || "").nickname || extUserInfo.nickname
-  );
+  return appUserStore.getUserInfoFromStore(id || "") || {};
 };
 
+const messageStatus = ChatUIKIT.getFeatureConfig().messageStatus;
+
 const isSelf =
-  ChatUIKIT.getChatConn().user === props.msg.from ||
-  props.msg.from === "";
+  ChatUIKIT.getChatConn().user === props.msg.from || props.msg.from === "";
 
 const extUserInfo = props.msg.ext?.ease_chat_uikit_user_info || {};
 
