@@ -3,16 +3,16 @@
     <!-- #1ifndef WEB -->
     <view
       v-if="featureConfig.inputAudio"
+      @tap="showAudioPopup"
       class="icon-wrap"
-      @tap="isSendAudio = !isSendAudio"
     >
-      <image class="icon" :src="isSendAudio ? Keyboard : AudioIcon"></image>
+      <image class="icon" :src="AudioIcon"></image>
     </view>
-    <view class="send-audio" v-if="featureConfig.inputAudio && isSendAudio">
-      <AudioMessageSender />
-    </view>
+
+    <AudioMessageSender v-if="featureConfig.inputAudio" ref="audioPopupRef" />
+
     <!-- #1endif -->
-    <view class="send-input" v-if="!isSendAudio">
+    <view class="send-input" @tap="onInputTap">
       <input
         :class="[{ 'prevent-event': props.preventEvent }]"
         v-model="text"
@@ -67,29 +67,35 @@ const emits = defineEmits([
   "onMessageSend",
   "onShowToolbar",
   "onShowEmojiPicker",
+  "onInputTap",
   "onBlur",
   "onFocus"
 ]);
 
 const convStore = ChatUIKIT.convStore;
 
-// 是否发送语音消息
-const isSendAudio = ref(false);
-
 const isFocus = ref(false);
+
+const audioPopupRef = ref(null);
 
 const SDK = ChatUIKIT.connStore.getChatSDK();
 
 const text = ref("");
 
+const showAudioPopup = () => {
+  audioPopupRef.value.showAudioPopup();
+};
+
 const showToolbar = () => {
-  // 切换语音发送，否则发送语音计算位置有问题
-  isSendAudio.value = false;
   emits("onShowToolbar");
 };
 
 const showEmojiPicker = () => {
   emits("onShowEmojiPicker");
+};
+
+const onInputTap = () => {
+  emits("onInputTap");
 };
 
 const handleSendMessage = async () => {

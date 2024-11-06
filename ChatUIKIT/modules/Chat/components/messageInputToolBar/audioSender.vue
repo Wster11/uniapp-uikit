@@ -1,146 +1,180 @@
 <template>
   <view>
-    <view :class="['mic-layer', { 'mic-layer-talking': isTalking }]">
-      <!-- 按钮样式 -->
-      <view
-        :class="isTalking ? 'mic-btn-talking' : 'mic-btn'"
-        @touchstart="touchStart"
-        @touchend="onEnd"
-        @longpress="onStart"
-        @touchmove="handleRecordMove"
-      >
-        <view v-show="!isTalking" class="record-button">
-          <text>
-            {{ t("holdToTalk") }}
-          </text>
+    <Popup :height="200" :maskClosable="maskClosable" ref="audioPopupRef">
+      <view class="record-btn-wrap">
+        <view class="btn-wrap">
+          <view
+            v-if="recordStatus === 'recordEnd'"
+            class="reset-btn"
+            @tap="resetRecording"
+          ></view>
+          <view
+            :class="['record-btn', { ripple: isRecordingOrPlaying }]"
+            @tap="toggleRecording"
+          >
+            <view v-if="recordStatus === 'record'" class="mic"></view>
+            <view class="duration" v-else> {{ elapsedTime }} s</view>
+          </view>
+          <view
+            v-if="recordStatus === 'recordEnd'"
+            class="send-btn"
+            @tap="uploadAndSendAudio"
+          ></view>
         </view>
-        <view v-show="isTalking" class="mic-btn-talking_text">
-          {{ t("recording") }}
-        </view>
-        <view v-show="isTalking && !sendLock" class="tip-text"
-          ><text class="mr-10">
-            {{ t("loose") }}
-          </text>
-          {{ t("sendAudio") }}
-        </view>
-      </view>
-      <!-- 语音音阶动画 -->
-      <view
-        v-if="isTalking"
-        :class="['record-animate-box', { active: sendLock }]"
-      >
-        <view class="voice-scale">
-          <view class="item" v-for="(item, index) in 10" :key="index"></view>
-        </view>
-      </view>
-      <!-- 取消发送 -->
-      <view v-if="isTalking" :class="['record-cancel', { active: sendLock }]">
-        <text class="close-icon">x</text>
-        <view class="tip-text" v-show="sendLock"
-          ><text class="mr-10">
-            {{ t("loose") }}
-          </text>
-          {{ t("cancel") }}
+        <view class="record-txt">
+          <span v-if="recordStatus === 'record'">
+            {{ t("tapRecord") }}
+          </span>
+          <span v-if="recordStatus === 'recording'">
+            {{ t("recording") }}
+          </span>
+          <span v-if="recordStatus === 'recordEnd'">
+            {{ isPlaying ? t("playing") : t("tapPlay") }}
+          </span>
         </view>
       </view>
-    </view>
+    </Popup>
   </view>
 </template>
 
 <script setup lang="ts">
-import { ref, inject, onMounted } from "vue";
-import type { InputToolbarEvent } from "../../../../types/index";
+import { ref, onMounted, onUnmounted, computed } from "vue";
+import Popup from "../../../common/popup/index.vue";
 import { t } from "../../../../locales/index";
 import { ChatUIKIT } from "../../../../index";
+
+type RecordStatus = "record" | "recording" | "recordEnd";
+
+const audioPopupRef = ref(null);
 const connStore = ChatUIKIT.connStore;
 const conn = connStore.getChatConn();
-
 const SDK = connStore.getChatSDK();
 const convStore = ChatUIKIT.convStore;
-
-const isTalking = ref(false); // 是否正在讲话
-const sendLock = ref(false); // 语音是否发送锁，true-不发送，false-发送（用于上滑取消发送）
-const record = ref<UniApp.RecorderManager>(); // 语音对象
-const startPoint = ref<any>({}); //记录长按录音开始点信息,用于后面计算滑动距离。
+const recordStatus = ref<RecordStatus>("record");
+const recorder = ref<UniApp.RecorderManager>();
 const startTime = ref<number>(0);
 const duration = ref<number>(0);
+const isPlaying = ref(false);
+const audioFilePath = ref("");
+const maskClosable = computed(() => {
+  return recordStatus.value === "record";
+});
 
-/**
- * 开始录音
- */
-const onStart = () => {
-  console.log("start");
-  // 录音时清空播放中的音频
-  ChatUIKIT.messageStore.setPlayingAudioMessageId("");
-  const option = {
-    format: "mp3"
-  };
+let audioContext: UniApp.InnerAudioContext | null = null;
+
+let timerId: any = 0;
+
+// 计算已经录制的时长
+const elapsedTime = computed(() => Math.floor(duration.value / 1000));
+
+// 判断是否正在录音或播放
+const isRecordingOrPlaying = computed(
+  () => recordStatus.value === "recording" || isPlaying.value
+);
+
+// 显示和隐藏弹窗的函数
+const showAudioPopup = () => audioPopupRef.value.openPopup();
+const hideAudioPopup = () => audioPopupRef.value.closePopup();
+
+// 开始录音
+const startRecording = () => {
+  ChatUIKIT.messageStore.setPlayingAudioMessageId(""); // 清空播放的音频
   duration.value = 0;
-  startTime.value = new Date().getTime();
-  isTalking.value = true;
-  uni.vibrateShort();
-  record.value?.start(option);
+  startTime.value = Date.now();
+  recordStatus.value = "recording";
+  timerId = setInterval(() => {
+    if (recordStatus.value === "recording") {
+      duration.value = Date.now() - startTime.value;
+    }
+  }, 1000);
+  uni.vibrateShort(); // 短暂震动提示
+  recorder.value?.start({ format: "mp3" });
 };
 
-/**
- * 结束录音
- */
-const onEnd = () => {
-  console.log("onend");
-  duration.value = new Date().getTime() - startTime.value;
+// 停止录音
+const stopRecording = () => {
+  duration.value = Date.now() - startTime.value;
   startTime.value = 0;
-  isTalking.value = false;
-  record.value?.stop();
+  recordStatus.value = "recordEnd";
+  recorder.value?.stop();
+  clearInterval(timerId);
 };
 
-/**
- * 开始触屏
- * @param {Object} e
- */
-const touchStart = (e: any) => {
-  startPoint.value.clientX = e.changedTouches[0].clientX; //手指按下时的X坐标
-  startPoint.value.clientY = e.changedTouches[0].clientY; //手指按下时的Y坐标
+// 重置录音状态
+const resetRecording = () => {
+  recordStatus.value = "record";
+  duration.value = 0;
+  audioFilePath.value = "";
+  toggleAudioPlayback(false);
 };
-/**
- * 录音时手指滑动
- * @param {Object} e
- */
-const handleRecordMove = (e: any) => {
-  let touchData = e.touches[0]; //滑动过程中，手指滑动的坐标信息
-  let moveX = touchData.clientX - startPoint.value.clientX;
-  let moveY = touchData.clientY - startPoint.value.clientY;
-  if (moveY > -45) {
-    // 滑动距离不够则不取消发送
-    sendLock.value = false;
+
+// 切换录音或音频播放
+const toggleRecording = () => {
+  switch (recordStatus.value) {
+    case "record":
+      startRecording();
+      break;
+    case "recording":
+      stopRecording();
+      break;
+    case "recordEnd":
+      toggleAudioPlayback();
+      break;
+  }
+};
+
+// 切换音频播放状态
+const toggleAudioPlayback = (forceStop: boolean = false) => {
+  if (forceStop || isPlaying.value) {
+    audioContext?.stop();
   } else {
-    sendLock.value = true;
+    if (!audioContext) {
+      createAudioContext(); // 创建新的 audioContext
+    }
+    audioContext.src = audioFilePath.value;
+    audioContext.play();
   }
 };
 
-/**
- * 上传录音文件并发送
- */
+// 创建音频上下文
+const createAudioContext = () => {
+  audioContext = uni.createInnerAudioContext();
+  // 设置音频选项（在 MP 平台上）
+  // #ifdef MP
+  uni.setInnerAudioOption({
+    obeyMuteSwitch: false
+  });
+  // #endif
 
-const sendAudioMessage = (tempFilePath: string) => {
+  audioContext.onPlay(() => (isPlaying.value = true));
+  audioContext.onStop(() => (isPlaying.value = false));
+  audioContext.onPause(() => (isPlaying.value = false));
+  audioContext.onError((e) => {
+    isPlaying.value = false;
+    console.warn("audio play error", e);
+  });
+  audioContext.onEnded(() => (isPlaying.value = false));
+};
+
+// 上传并发送音频
+const uploadAndSendAudio = () => {
+  if (!audioFilePath.value) return;
   const uploadUrl = `${conn.apiUrl}/${conn.orgName}/${conn.appName}/chatfiles`;
+  const file = audioFilePath.value;
+  const audioLength = elapsedTime.value;
 
-  if (!tempFilePath) {
-    return;
-  }
+  hideAudioPopup();
   uni.showLoading();
+
   const token = conn.token;
   const requestParams = {
     url: uploadUrl,
-    filePath: tempFilePath,
-    fileType: "image",
+    filePath: file,
+    fileType: "audio",
     name: "file",
-    header: {
-      Authorization: "Bearer " + token
-    },
+    header: { Authorization: "Bearer " + token },
     success: async (res: any) => {
-      console.log("音频上传成功", res);
       const data = JSON.parse(res.data);
-      //@ts-ignore TODO: 发送附件消息类型问题
       const audioMsg = SDK.message.create({
         type: "audio",
         to: convStore.currConversation!.conversationId,
@@ -150,8 +184,7 @@ const sendAudioMessage = (tempFilePath: string) => {
           url: data.uri + "/" + data.entities[0].uuid,
           filename: "audio.mp3",
           type: "mp3",
-          //@ts-ignore
-          length: Math.ceil(duration.value / 1000)
+          length: audioLength
         },
         ext: {
           ease_chat_uikit_user_info: {
@@ -161,7 +194,6 @@ const sendAudioMessage = (tempFilePath: string) => {
         }
       });
       try {
-        duration.value = 0;
         await ChatUIKIT.messageStore.sendMessage(audioMsg);
       } catch (error: any) {
         uni.showToast({
@@ -169,207 +201,131 @@ const sendAudioMessage = (tempFilePath: string) => {
           icon: "none"
         });
       }
-
       uni.hideLoading();
     },
-    fail: (e: any) => {
+    fail: () => {
       uni.hideLoading();
       uni.showToast({ title: t("uploadFailed"), icon: "none" });
     }
   };
+  resetRecording();
   //@ts-ignore
   uni.uploadFile(requestParams);
 };
 
+// 在组件挂载时，初始化录音管理器
 onMounted(() => {
-  record.value = uni.getRecorderManager();
-  record.value?.onStart((res) => {
-    console.log("onStart", res);
+  recorder.value = uni.getRecorderManager();
+  recorder.value?.onStart(() => {
+    console.log("recording start");
   });
-  record.value?.onError((res) => {
-    console.log("录音错误事件：", res);
+  recorder.value?.onError(() => {
+    console.log("recording error");
   });
-  record.value?.onStop((res) => {
-    console.log(res, "录音回调地址", duration);
-    if (sendLock.value) {
-      sendLock.value = false; // 恢复锁状态
-      console.log("取消发送");
-      return;
-    } // 取消发送
-    if (duration.value < 1000) {
-      uni.showToast({
-        icon: "error",
-        title: t("audioDurationIsShort")
-      });
-      return;
-    }
-    sendAudioMessage(res.tempFilePath);
+  recorder.value?.onStop((res) => {
+    console.log("recording stop");
+    audioFilePath.value = res.tempFilePath;
   });
+});
+
+// 在组件卸载时，清理音频资源
+onUnmounted(() => {
+  if (isPlaying.value) {
+    audioContext?.stop();
+  }
+  audioContext?.destroy?.();
+});
+
+defineExpose({
+  showAudioPopup,
+  hideAudioPopup
 });
 </script>
 
 <style lang="scss" scoped>
-.mr-10 {
-  margin-right: 5px;
-}
-.mic-layer {
-  width: 100%;
-  box-sizing: border-box;
-  .record-button {
-    border-radius: 10rpx;
-    background-color: #f3f3f3;
-    color: black;
-    text-align: center;
-    line-height: 22px;
+@keyframes ripple {
+  0% {
+    box-shadow: 0 0 0 5px #e5f5ff;
+  }
+  50% {
+    box-shadow: 0 0 0 10px #e5f5ff;
+  }
+  100% {
+    box-shadow: 0 0 0 5px #e5f5ff;
   }
 }
-/* 讲话中样式 */
-.mic-layer-talking {
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  left: 0;
-  top: 0;
-  z-index: 99;
-  background-color: rgba(0, 0, 0, 0.6);
-  .mic-btn-talking {
-    position: absolute;
-    bottom: 0;
-    width: 100vw;
-    height: 200rpx;
-    border-radius: 80px 80px 0 0;
-    background-color: #f2f2f2;
-    z-index: 999;
-    &_text {
-      color: #999999;
-      padding: 60rpx 0;
-      text-align: center;
-    }
-  }
-  /* 发送、取消提示文字 */
-  .tip-text {
-    position: absolute;
-    top: -60rpx;
-    left: 50%;
-    width: 160rpx;
-    text-align: center;
-    transform: translateX(-50%);
-    color: #e3e4ea;
-    font-size: 24rpx;
-  }
-  /* 上方语音动画 */
-  .record-animate-box {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 300rpx;
-    height: 140rpx;
-    background-color: #2878f4;
-    border-radius: 28rpx;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s;
-    &.active {
-      background-color: #f56c6c;
-      width: 140rpx;
-    }
-    /* 语音音阶 */
-    .voice-scale {
-      width: 60%;
-      height: 40rpx;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      .item {
-        display: block;
-        background: #333333;
-        width: 4rpx;
-        height: 10%;
-        margin-right: 2.5px;
-        float: left;
-        &:last-child {
-          margin-right: 0px;
-        }
-        &:nth-child(1) {
-          animation: load 1s 0.8s infinite linear;
-        }
 
-        &:nth-child(2) {
-          animation: load 1s 0.6s infinite linear;
-        }
+.record-btn-wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 200px;
+}
 
-        &:nth-child(3) {
-          animation: load 1s 0.4s infinite linear;
-        }
+.btn-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-        &:nth-child(4) {
-          animation: load 1s 0.2s infinite linear;
-        }
+.ripple {
+  animation: ripple 1.5s infinite;
+}
 
-        &:nth-child(5) {
-          animation: load 1s 0s infinite linear;
-        }
+.record-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 48px;
+  background-color: #009dff;
+  border-radius: 30px;
+  box-shadow: 0 0 0 8px #e5f5ff;
+}
 
-        &:nth-child(6) {
-          animation: load 1s 0.2s infinite linear;
-        }
+.mic {
+  width: 24px;
+  height: 24px;
+  background-image: url("../../../../assets/icon/mic_on.png");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: center center;
+}
 
-        &:nth-child(7) {
-          animation: load 1s 0.4s infinite linear;
-        }
+.record-txt {
+  color: #75828a;
+  font-size: 14px;
+  line-height: 18px;
+  margin-top: 16px;
+}
 
-        &:nth-child(8) {
-          animation: load 1s 0.6s infinite linear;
-        }
+.duration {
+  font-size: 16px;
+  line-height: 22px;
+  color: #f9fafa;
+}
 
-        &:nth-child(9) {
-          animation: load 1s 0.8s infinite linear;
-        }
+.reset-btn {
+  width: 36px;
+  height: 36px;
+  background-color: #e3e6e8;
+  border-radius: 50%;
+  background-image: url("../../../../assets/icon/trash.png");
+  background-size: 24px 24px;
+  background-repeat: no-repeat;
+  background-position: center center;
+  margin-right: 60px;
+}
 
-        &:nth-child(10) {
-          animation: load 1s 1s infinite linear;
-        }
-      }
-    }
-
-    @keyframes load {
-      0% {
-        height: 10%;
-      }
-
-      50% {
-        height: 100%;
-      }
-
-      100% {
-        height: 10%;
-      }
-    }
-  }
-  /* 取消按钮 */
-  .record-cancel {
-    position: absolute;
-    left: 50%;
-    bottom: 300rpx;
-    transform: translateX(-50%);
-    width: 100rpx;
-    height: 100rpx;
-    border-radius: 50%;
-    background-color: rgba(0, 0, 0, 0.2);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: all 0.3s;
-    &.active {
-      transform: translateX(-50%) scale(1.2);
-      background-color: #f56c6c;
-    }
-    .close-icon {
-      font-size: 40rpx;
-      color: #ffffff;
-    }
-  }
+.send-btn {
+  width: 36px;
+  height: 36px;
+  background-color: #009dff;
+  border-radius: 50%;
+  background-image: url("../../../../assets/icon/airplane.png");
+  background-size: 24px 24px;
+  background-repeat: no-repeat;
+  background-position: center center;
+  margin-left: 60px;
 }
 </style>

@@ -14,10 +14,11 @@
     <!-- 消息编辑 -->
     <MessageEdit />
     <!-- 输入框 -->
-    <view class="chat-input-wrap" @tap.stop="onInputWrapClick">
+    <view class="chat-input-wrap">
       <MessageInput
         ref="msgInputRef"
         :preventEvent="isShowToolbar || isShowEmojiPicker"
+        @onInputTap="onInputTap"
         @onShowToolbar="
           isShowToolbar = true;
           isShowEmojiPicker = false;
@@ -73,7 +74,7 @@ const unwatchQuoteMsg = autorun(() => {
   }
 });
 
-const onInputWrapClick = () => {
+const onInputTap = () => {
   closeToolbar();
   msgInputRef?.value?.setIsFocus(true);
 };

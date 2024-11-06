@@ -4,19 +4,16 @@
     <view
       v-show="show"
       class="mask"
-      @click="closePopup"
+      @click="onMaskClick"
       :animation="maskAnimation"
     ></view>
-    <!-- 弹窗 -->
     <view
       :class="['popup', { 'popup-show': show }]"
       :style="popupStyle"
       :animation="popupAnimation"
     >
       <view class="popup-content">
-        <view class="divider"></view>
         <slot></slot>
-        <!-- 支持自定义菜单 -->
       </view>
     </view>
   </view>
@@ -27,6 +24,7 @@ import { ref, computed } from "vue";
 
 interface Props {
   height?: number;
+  maskClosable?: boolean;
 }
 
 const props = defineProps<Props>();
@@ -40,7 +38,6 @@ const popupStyle = computed(() => `height: ${popupHeight.value}px;`);
 
 // 打开弹窗
 const openPopup = () => {
-  uni.hideTabBar();
   show.value = true;
   animatePopup(true);
 };
@@ -48,9 +45,14 @@ const openPopup = () => {
 // 关闭弹窗
 const closePopup = () => {
   animatePopup(false, () => {
-    uni.showTabBar();
     show.value = false;
   });
+};
+
+const onMaskClick = () => {
+  if (props.maskClosable) {
+    closePopup();
+  }
 };
 
 // 弹窗动画
@@ -120,8 +122,6 @@ defineExpose({
   right: 0;
   bottom: 0;
   background: #f9fafa;
-  border-top-left-radius: 16px;
-  border-top-right-radius: 16px;
   transform: translateY(100%);
   transition: transform 0.3s ease;
 }
@@ -137,13 +137,5 @@ defineExpose({
 
 .popup-content {
   text-align: center;
-}
-
-.divider {
-  display: inline-block;
-  width: 36px;
-  height: 5px;
-  border-radius: 2.5px;
-  background: #c8cdd0;
 }
 </style>

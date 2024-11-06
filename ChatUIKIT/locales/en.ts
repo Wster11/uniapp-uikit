@@ -124,7 +124,6 @@ export default {
   serverConfig: "Server Configuration",
   systemNotice: "System Notifications",
   holdToTalk: "Hold to talk",
-  recording: "Recording...",
   loose: "Loose",
   sendAudio: "Send",
   recall: "Recall",
@@ -155,5 +154,9 @@ export default {
   editBtn: "Edit",
   atAll: "All",
   atTag: "[Someone@You] ",
-  atAllTag: "[@All] "
+  atAllTag: "[@All] ",
+  tapRecord: "Tap to record",
+  recording: "Recording",
+  playing: "Playing",
+  tapPlay: "Tap to play"
 };

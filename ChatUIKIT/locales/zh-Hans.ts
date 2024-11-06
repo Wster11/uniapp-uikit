@@ -124,7 +124,6 @@ export default {
   serverConfig: "服务器自定义配置",
   systemNotice: "系统通知",
   holdToTalk: "按住 说话",
-  recording: "说话中...",
   loose: "松开",
   sendAudio: "发送",
   recall: "撤回",
@@ -155,5 +154,9 @@ export default {
   editBtn: "编辑",
   atAll: "所有人",
   atTag: "[有人@你] ",
-  atAllTag: "[@所有人] "
+  atAllTag: "[@所有人] ",
+  tapRecord: "点击录音",
+  recording: "录音中",
+  playing: "播放中",
+  tapPlay: "点击播放"
 };
