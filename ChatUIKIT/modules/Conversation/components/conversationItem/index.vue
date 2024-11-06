@@ -89,12 +89,11 @@
 
 <script setup lang="ts">
 import Avatar from "../../../common/avatar/index.vue";
-import defaultAvatar from "../../../../assets/defaultAvatar.png";
-import defaultGroupAvatar from "../../../../assets/defaultGroupAvatar.png";
 import { t } from "../../../../locales/index";
 import { ref, onUnmounted, computed } from "vue";
 import { ChatUIKIT } from "../../../../index";
 import { renderTxt, formatMessage } from "../../../../utils/index";
+import { USER_AVATAR_URL, GROUP_AVATAR_URL } from "../../../../const/index";
 import { autorun } from "mobx";
 import {
   MixedMessageBody,
@@ -174,8 +173,8 @@ const { getConversationTime } = ChatUIKIT.convStore;
 
 const getAvatarPlaceholder = () => {
   return props.conversation.conversationType === "groupChat"
-    ? defaultGroupAvatar
-    : defaultAvatar;
+    ? GROUP_AVATAR_URL
+    : USER_AVATAR_URL;
 };
 
 const toChatPage = () => {

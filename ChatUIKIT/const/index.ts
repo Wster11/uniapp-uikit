@@ -29,11 +29,17 @@ const DEFAULT_FEATURES_CONFIG: FeatureConfig = {
   InputMention: true
 };
 
+const USER_AVATAR_URL = "https://img.yzcdn.cn/vant/cat.jpeg";
+
+const GROUP_AVATAR_URL = "https://img.yzcdn.cn/2.jpg";
+
 export {
   AT_ALL,
   DEFAULT_THEME_CONFIG,
   DEFAULT_FEATURES_CONFIG,
   DEFAULT_GROUP_MEMBER_COUNT,
   GET_GROUP_MEMBERS_PAGESIZE,
+  USER_AVATAR_URL,
+  GROUP_AVATAR_URL,
   GroupEventFromIds
 };

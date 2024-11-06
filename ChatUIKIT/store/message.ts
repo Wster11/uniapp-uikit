@@ -101,7 +101,7 @@ class MessageStore {
     const idx =
       this.conversationMessagesMap
         .get(convId)
-        ?.messageIds.findIndex((id) => id === localMsgId) || -1;
+        ?.messageIds.findIndex((id) => id === localMsgId) ?? -1;
 
     if (idx > -1) {
       this.conversationMessagesMap

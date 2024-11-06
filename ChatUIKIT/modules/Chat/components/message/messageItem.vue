@@ -7,7 +7,7 @@
       <Avatar
         :size="28"
         :src="getUserInfo(msg.from || '').avatar || extUserInfo.avatarURL || ''"
-        :placeholder="defaultAvatar"
+        :placeholder="USER_AVATAR_URL"
       />
     </view>
     <view class="msg-content" :style="{ textAlign: isSelf ? 'right' : 'left' }">
@@ -78,11 +78,11 @@ import AudioMessage from "./messageAudio.vue";
 import MessageQuote from "./messageQuote.vue";
 import MessageActions from "./messageActions.vue";
 import MessageStatus from "./messageStatus.vue";
-import defaultAvatar from "../../../../assets/defaultAvatar.png";
 import type { MixedMessageBody } from "../../../../types/index";
 import { ref, computed, getCurrentInstance } from "vue";
 import { ChatUIKIT } from "../../../../index";
 import { getTimeStringAutoShort } from "../../../../utils/index";
+import { USER_AVATAR_URL } from "../../../../const/index";
 
 interface Props {
   msg: MixedMessageBody;
