@@ -54,6 +54,9 @@
           <view v-else-if="msg.type === 'custom'">
             <view>[Custom]</view>
           </view>
+          <view v-else-if="msg.type === 'file'">
+            <view>[File]</view>
+          </view>
         </view>
       </view>
       <view class="msg-time"

@@ -119,17 +119,20 @@ const getHistoryMessage = async () => {
     return;
   }
   isLoading.value = true;
-  const viewedMsgId = msgs.value[0].id;
   try {
     await messageStore.getHistoryMessages(
       {
         conversationId: props.conversationId,
         conversationType: props.conversationType
       } as ChatSDK.ConversationItem,
-      cursor.value
+      cursor.value,
+      () => {
+        // 获取历史消息接口成功，获取当前可视区域的第一条消息id
+        currentViewMsgId.value = msgs.value[0].id;
+      }
     );
+
     nextTick(() => {
-      currentViewMsgId.value = viewedMsgId;
       const timer = setTimeout(() => {
         isLoading.value = false;
         currentViewMsgId.value = "";

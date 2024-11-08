@@ -35,7 +35,8 @@ class MessageStore {
 
   async getHistoryMessages(
     conversation: ChatSDK.ConversationItem,
-    cursor?: string
+    cursor?: string,
+    onSuccess?: () => void // 调用接口获取成功的回调， msgIds为获取到的消息id列表
   ) {
     try {
       const dt = await ChatUIKIT.getChatConn().getHistoryMessages({
@@ -49,24 +50,22 @@ class MessageStore {
         dt.messages.forEach((msg: any) => {
           this.addMessageToMap(msg);
         });
-
+        const messageIds = dt.messages.map((msg) => msg.id);
+        onSuccess?.();
         if (this.conversationMessagesMap.has(conversation.conversationId)) {
           const info = this.conversationMessagesMap.get(
             conversation.conversationId
           );
           if (info) {
-            const messageIds = dt.messages.map((msg) => msg.id);
-            info.messageIds.unshift(...messageIds);
+            const list = [...info.messageIds];
+            list.unshift(...messageIds);
+            info.messageIds = list;
             info.cursor = dt.cursor || "";
             info.isLast = dt.isLast;
           }
         } else {
           this.conversationMessagesMap.set(conversation.conversationId, {
-            messageIds: dt.messages
-              .map((msg) => {
-                return msg.id;
-              })
-              .reverse(),
+            messageIds: messageIds.reverse(),
             cursor: dt.cursor || "",
             isLast: dt.isLast
           });
