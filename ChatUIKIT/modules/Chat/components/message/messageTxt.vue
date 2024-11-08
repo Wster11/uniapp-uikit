@@ -20,14 +20,14 @@
 </template>
 
 <script lang="ts" setup>
-import type { ChatSDK } from "../../../../types/index";
+import type { Chat } from "../../../../types/index";
 import { renderTxt } from "../../../../utils/index";
 import { t } from "../../../../locales/index";
 import { computed } from "vue";
 import { ChatUIKIT } from "../../../../index";
 
 interface Props {
-  msg: ChatSDK.TextMsgBody;
+  msg: Chat.TextMsgBody;
 }
 const props = defineProps<Props>();
 

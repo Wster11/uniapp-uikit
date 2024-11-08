@@ -3,12 +3,13 @@ import { getTimeStringAutoShort, sortByPinned } from "../utils/index";
 import type { ConversationBaseInfo } from "./types/index";
 import type {
   MixedMessageBody,
-  ChatSDK,
+  Chat,
   UIKITConversationItem,
   AT_TYPE
 } from "../types/index";
 import { AT_ALL } from "../const/index";
 import { ChatUIKIT } from "../index";
+import { chatSDK } from "../sdk";
 
 class ConversationStore {
   conversationList: UIKITConversationItem[] = [];
@@ -36,7 +37,7 @@ class ConversationStore {
     }, 0);
   }
 
-  setConversations(conversations: ChatSDK.ConversationItem[]) {
+  setConversations(conversations: Chat.ConversationItem[]) {
     if (!Array.isArray(conversations)) {
       return console.error("Invalid parameter: conversations");
     }
@@ -89,7 +90,7 @@ class ConversationStore {
     return res;
   }
 
-  deleteStoreConversation(conversation: ChatSDK.ConversationItem) {
+  deleteStoreConversation(conversation: Chat.ConversationItem) {
     const idx = this.conversationList.findIndex(
       (cvs) =>
         cvs.conversationType === conversation.conversationType &&
@@ -101,7 +102,7 @@ class ConversationStore {
   }
 
   async deleteConversation(
-    conversation: ChatSDK.ConversationItem,
+    conversation: Chat.ConversationItem,
     deleteMessage = false
   ) {
     if (typeof conversation !== "object") {
@@ -121,7 +122,7 @@ class ConversationStore {
     );
   }
 
-  getConversationTime(message: ChatSDK.ConversationItem["lastMessage"]) {
+  getConversationTime(message: Chat.ConversationItem["lastMessage"]) {
     if (!message || !message.time) {
       return "";
     }
@@ -136,7 +137,7 @@ class ConversationStore {
   }
 
   async markConversationRead(conversation: ConversationBaseInfo) {
-    const msg = ChatUIKIT.connStore.getChatSDK().message.create({
+    const msg = chatSDK.message.create({
       type: "channel",
       chatType: conversation.conversationType,
       to: conversation.conversationId
@@ -154,7 +155,7 @@ class ConversationStore {
     this.currConversation = conversation;
   }
 
-  moveConversationTop(conversation: ChatSDK.ConversationItem) {
+  moveConversationTop(conversation: Chat.ConversationItem) {
     const conv = this.getConversationById(conversation.conversationId);
     const conversationList = [...this.conversationList];
     if (conv) {
@@ -175,10 +176,10 @@ class ConversationStore {
 
   createConversation(
     conversation: ConversationBaseInfo,
-    msg: ChatSDK.MessageBody,
+    msg: Chat.MessageBody,
     unReadCount = 0
   ) {
-    const conv: ChatSDK.ConversationItem = {
+    const conv: Chat.ConversationItem = {
       conversationId: conversation.conversationId,
       conversationType: conversation.conversationType,
       lastMessage: msg,
@@ -194,7 +195,7 @@ class ConversationStore {
 
   updateConversationLastMessage(
     conversation: ConversationBaseInfo,
-    msg: ChatSDK.MessageBody,
+    msg: Chat.MessageBody,
     unReadCount = 0
   ) {
     const conv = this.getConversationById(conversation.conversationId);
@@ -219,7 +220,7 @@ class ConversationStore {
     }
   }
   /** 获取会话的免打扰状态 (单次最多获取20条)*/
-  getSilentModeForConversations(conversationList: ChatSDK.ConversationItem[]) {
+  getSilentModeForConversations(conversationList: Chat.ConversationItem[]) {
     if (!conversationList || conversationList.length == 0) {
       return;
     }
@@ -255,7 +256,7 @@ class ConversationStore {
     this.muteConvsMap.set(cvs.conversationId, mute);
   }
 
-  setSilentModeForConversation(cvs: ChatSDK.ConversationItem) {
+  setSilentModeForConversation(cvs: Chat.ConversationItem) {
     ChatUIKIT.getChatConn()
       .setSilentModeForConversation({
         conversationId: cvs.conversationId,
@@ -272,7 +273,7 @@ class ConversationStore {
       });
   }
 
-  clearRemindTypeForConversation(cvs: ChatSDK.ConversationItem) {
+  clearRemindTypeForConversation(cvs: Chat.ConversationItem) {
     ChatUIKIT.getChatConn()
       .clearRemindTypeForConversation({
         conversationId: cvs.conversationId,
@@ -284,7 +285,7 @@ class ConversationStore {
       });
   }
 
-  pinConversation(cvs: ChatSDK.ConversationItem, isPinned: boolean) {
+  pinConversation(cvs: Chat.ConversationItem, isPinned: boolean) {
     ChatUIKIT.getChatConn()
       .pinConversation({
         conversationType: cvs.conversationType,
@@ -301,7 +302,7 @@ class ConversationStore {
   }
 
   pinConversationSync(
-    cvs: ChatSDK.ConversationItem,
+    cvs: Chat.ConversationItem,
     isPinned: boolean,
     pinnedTime: number
   ) {
@@ -342,7 +343,7 @@ class ConversationStore {
     }
   }
 
-  setAtType(chatType: ChatSDK.ChatType, cvsId: string, atType: AT_TYPE) {
+  setAtType(chatType: Chat.ChatType, cvsId: string, atType: AT_TYPE) {
     const idx = this.conversationList.findIndex((item) => {
       return (
         item.conversationType === chatType && item.conversationId === cvsId

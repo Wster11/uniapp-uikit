@@ -25,35 +25,35 @@
 <script setup lang="ts">
 import ConversationItem from "../conversationItem/index.vue";
 import { ref, onUnmounted } from "vue";
-import type { ChatSDK } from "../../../../types/index";
+import type { Chat } from "../../../../types/index";
 import { ChatUIKIT } from "../../../../index";
 import { deepClone } from "../../../../utils/index";
 import { autorun } from "mobx";
 
-const selectedConvId = ref<ChatSDK.ConversationItem | null>(null);
-const conversationList = ref<ChatSDK.ConversationItem[]>([]);
+const selectedConvId = ref<Chat.ConversationItem | null>(null);
+const conversationList = ref<Chat.ConversationItem[]>([]);
 
 const uninstallConvListWatch = autorun(() => {
   conversationList.value = deepClone(ChatUIKIT.convStore.conversationList);
 });
 
-const deleteConversation = (conv: ChatSDK.ConversationItem) => {
+const deleteConversation = (conv: Chat.ConversationItem) => {
   ChatUIKIT.convStore.deleteConversation(conv);
 };
 
-const muteConversation = (conv: ChatSDK.ConversationItem) => {
+const muteConversation = (conv: Chat.ConversationItem) => {
   ChatUIKIT.convStore.setSilentModeForConversation(conv);
 };
 
-const unMuteConversation = (conv: ChatSDK.ConversationItem) => {
+const unMuteConversation = (conv: Chat.ConversationItem) => {
   ChatUIKIT.convStore.clearRemindTypeForConversation(conv);
 };
 
-const pinConversation = (conv: ChatSDK.ConversationItem) => {
+const pinConversation = (conv: Chat.ConversationItem) => {
   ChatUIKIT.convStore.pinConversation(conv, !conv.isPinned);
 };
 
-const onMuteButtonClick = (conv: ChatSDK.ConversationItem) => {
+const onMuteButtonClick = (conv: Chat.ConversationItem) => {
   const isMute = ChatUIKIT.convStore.getConversationMuteStatus(
     conv.conversationId
   );

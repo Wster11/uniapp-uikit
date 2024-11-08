@@ -47,7 +47,7 @@ import MessageQuotePanel from "./components/message/messageQuotePanel.vue";
 import MessageEdit from "./components/message/messageEdit.vue";
 import { ref, onMounted, computed, onUnmounted, provide } from "vue";
 import { onLoad } from "@dcloudio/uni-app";
-import type { InputToolbarEvent, ChatSDK } from "../../types/index";
+import type { InputToolbarEvent, Chat } from "../../types/index";
 import { autorun } from "mobx";
 import { ChatUIKIT } from "../../index";
 
@@ -56,8 +56,8 @@ const msgInputRef = ref(null);
 const conversationId = ref("");
 const isShowToolbar = ref(false);
 const isShowEmojiPicker = ref(false);
-const conversationType = ref<ChatSDK.ConversationItem["conversationType"]>(
-  "" as ChatSDK.ConversationItem["conversationType"]
+const conversationType = ref<Chat.ConversationItem["conversationType"]>(
+  "" as Chat.ConversationItem["conversationType"]
 );
 const appUserStore = ChatUIKIT.appUserStore;
 const groupStore = ChatUIKIT.groupStore;

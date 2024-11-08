@@ -12,6 +12,7 @@ import type { InputToolbarEvent } from "@/types/index";
 import { inject } from "vue";
 import { t } from "../../../../locales/index";
 import { ChatUIKIT } from "../../../../index";
+import { chatSDK } from "../../../../sdk";
 interface Props {
   title?: string;
 }
@@ -22,8 +23,6 @@ const title = t("videoUpload");
 const toolbarInject = inject<InputToolbarEvent>("InputToolbarEvent");
 
 const conn = ChatUIKIT.connStore.getChatConn();
-
-const SDK = ChatUIKIT.connStore.getChatSDK();
 
 const convStore = ChatUIKIT.convStore;
 
@@ -56,7 +55,7 @@ const sendVideoMessage = (res: any) => {
     },
     success: async (res: any) => {
       const data = JSON.parse(res.data);
-      const videoMsg = SDK.message.create({
+      const videoMsg = chatSDK.message.create({
         type: "video",
         to: convStore.currConversation!.conversationId,
         chatType: convStore.currConversation!.conversationType,

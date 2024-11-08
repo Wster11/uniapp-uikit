@@ -52,6 +52,7 @@ import SendIcon from "../../../../assets/icon/send.png";
 import { ChatUIKIT } from "../../../../index";
 import { t } from "../../../../locales/index";
 import { MessageQuoteExt } from "../../../../types/index";
+import { chatSDK } from "../../../../sdk";
 
 interface Props {
   preventEvent: boolean; // 输入框是否禁止事件
@@ -77,8 +78,6 @@ const convStore = ChatUIKIT.convStore;
 const isFocus = ref(false);
 
 const audioPopupRef = ref(null);
-
-const SDK = ChatUIKIT.connStore.getChatSDK();
 
 const text = ref("");
 
@@ -111,7 +110,7 @@ const handleSendMessage = async () => {
     };
     ChatUIKIT.messageStore.setQuoteMessage(null);
   }
-  const msg = SDK.message.create({
+  const msg = chatSDK.message.create({
     to: convStore.currConversation!.conversationId,
     chatType: convStore.currConversation!.conversationType,
     type: "txt",

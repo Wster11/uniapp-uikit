@@ -1,37 +1,21 @@
-import type { ChatSDK, ChatSDKStatic } from "../types/index";
+import type { Chat } from "../types/index";
 
 class ConnStore {
   /** IM连接实例 */
-  conn: ChatSDK.Connection | null = null;
-  sdk: ChatSDKStatic | null = null;
+  conn: Chat.Connection | null = null;
   constructor() {}
 
-  /** 初始化webIM */
-  initChatSDK(sdk: ChatSDKStatic, config: ChatSDK.ConnectionParameters) {
-    this.sdk = sdk;
-    this.setChatConn(new sdk.connection(config));
-    return this.conn;
-  }
-
   /** 设置conn实例 */
-  setChatConn(connection: ChatSDK.Connection) {
+  setChatConn(connection: Chat.Connection) {
     this.conn = connection;
   }
 
   /** 获取conn实例 */
-  getChatConn(): ChatSDK.Connection {
+  getChatConn(): Chat.Connection {
     if (this.conn) {
       return this.conn;
     }
     throw new Error("conn is not initialized");
-  }
-
-  /** 获取 websdk */
-  getChatSDK(): ChatSDKStatic {
-    if (this.sdk) {
-      return this.sdk;
-    }
-    throw new Error("SDK is not found");
   }
 }
 

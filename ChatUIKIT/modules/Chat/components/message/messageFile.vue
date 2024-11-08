@@ -9,10 +9,10 @@
 </template>
 
 <script lang="ts" setup>
-import type { ChatSDK } from "../../../../types/index";
+import type { Chat } from "../../../../types/index";
 import { ChatUIKIT } from "../../../../index";
 interface Props {
-  msg: ChatSDK.FileMsgBody;
+  msg: Chat.FileMsgBody;
 }
 
 const props = defineProps<Props>();

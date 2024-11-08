@@ -97,7 +97,7 @@ import { USER_AVATAR_URL, GROUP_AVATAR_URL } from "../../../../const/index";
 import { autorun } from "mobx";
 import {
   MixedMessageBody,
-  ChatSDK,
+  Chat,
   UIKITConversationItem
 } from "../../../../types";
 
@@ -184,7 +184,7 @@ const toChatPage = () => {
   });
 };
 
-const formatLastMessage = (conversation: ChatSDK.ConversationItem) => {
+const formatLastMessage = (conversation: Chat.ConversationItem) => {
   return formatMessage(conversation.lastMessage as MixedMessageBody);
 };
 

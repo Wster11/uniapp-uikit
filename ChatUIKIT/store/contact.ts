@@ -1,18 +1,14 @@
 import { makeAutoObservable } from "mobx";
-import type {
-  ContactNotice,
-  ContactNoticeInfo,
-  ChatSDK
-} from "../types/index";
+import type { ContactNotice, ContactNoticeInfo, Chat } from "../types/index";
 import { ChatUIKIT } from "../index";
 
 class ContactStore {
-  contacts: ChatSDK.ContactItem[] = [];
+  contacts: Chat.ContactItem[] = [];
   contactsNoticeInfo: ContactNoticeInfo = {
     list: [],
     unReadCount: 0
   };
-  viewedUserInfo: ChatSDK.ContactItem = {} as ChatSDK.ContactItem;
+  viewedUserInfo: Chat.ContactItem = {} as Chat.ContactItem;
 
   constructor() {
     makeAutoObservable(this);
@@ -99,13 +95,13 @@ class ContactStore {
   }
 
   /** 添加 store 的联系人 */
-  addStoreContact(user: ChatSDK.ContactItem) {
+  addStoreContact(user: Chat.ContactItem) {
     if (!this.contacts.find((item) => item.userId === user.userId)) {
       this.contacts.unshift(user);
     }
   }
 
-  setViewedUserInfo(user: ChatSDK.ContactItem) {
+  setViewedUserInfo(user: Chat.ContactItem) {
     this.viewedUserInfo = user;
   }
 
@@ -131,7 +127,7 @@ class ContactStore {
   clear() {
     this.contacts = [];
     this.contactsNoticeInfo = { list: [], unReadCount: 0 };
-    this.viewedUserInfo = {} as ChatSDK.ContactItem;
+    this.viewedUserInfo = {} as Chat.ContactItem;
   }
 }
 

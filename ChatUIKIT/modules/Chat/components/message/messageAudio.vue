@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { ChatSDK } from "../../../../types/index";
+import type { Chat } from "../../../../types/index";
 import { ChatUIKIT } from "../../../../index";
 import ReceiveAudioIcon from "../../../../assets/icon/receiveAudio.png";
 import SendAudioIcon from "../../../../assets/icon/sendAudio.png";
@@ -39,7 +39,7 @@ import ReceiveAudioPlayingIcon from "../../../../assets/icon/receiveAudioPlaying
 import { ref, onUnmounted, watch } from "vue";
 
 interface Props {
-  msg: ChatSDK.AudioMsgBody;
+  msg: Chat.AudioMsgBody;
 }
 const connStore = ChatUIKIT.connStore;
 const conn = connStore.getChatConn();

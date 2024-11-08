@@ -11,6 +11,7 @@ import type { InputToolbarEvent } from "../../../../types/index";
 import { inject } from "vue";
 import { t } from "../../../../locales/index";
 import { ChatUIKIT } from "../../../../index";
+import { chatSDK } from "../../../../sdk";
 interface Props {
   title?: string;
 }
@@ -23,8 +24,6 @@ const toolbarInject = inject<InputToolbarEvent>("InputToolbarEvent");
 const convStore = ChatUIKIT.convStore;
 
 const conn = ChatUIKIT.connStore.getChatConn();
-
-const SDK = ChatUIKIT.connStore.getChatSDK();
 
 const chooseImage = () => {
   uni.chooseImage({
@@ -57,7 +56,7 @@ const sendImageMessage = (res: any) => {
     success: async (res: any) => {
       console.log("图片上传成功", res);
       const data = JSON.parse(res.data);
-      const imgMsg = SDK.message.create({
+      const imgMsg = chatSDK.message.create({
         type: "img",
         to: convStore.currConversation!.conversationId,
         chatType: convStore.currConversation!.conversationType,

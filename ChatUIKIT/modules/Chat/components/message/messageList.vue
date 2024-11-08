@@ -44,7 +44,7 @@ import MessageItem from "./messageItem.vue";
 import MessageTime from "./messageTime.vue";
 import NoticeMessageItem from "./noticeMessageItem.vue";
 import { ref, onMounted, onUnmounted, nextTick } from "vue";
-import type { MixedMessageBody, ChatSDK } from "../../../../types/index";
+import type { MixedMessageBody, Chat } from "../../../../types/index";
 import { ChatUIKIT } from "../../../../index";
 import { autorun } from "mobx";
 import { deepClone } from "../../../../utils/index";
@@ -52,7 +52,7 @@ import { t } from "../../../../locales";
 
 interface Props {
   conversationId: string;
-  conversationType: ChatSDK.ConversationItem["conversationType"];
+  conversationType: Chat.ConversationItem["conversationType"];
 }
 const props = defineProps<Props>();
 
@@ -117,7 +117,7 @@ onMounted(() => {
     messageStore.getHistoryMessages({
       conversationId: props.conversationId,
       conversationType: props.conversationType
-    } as ChatSDK.ConversationItem);
+    } as Chat.ConversationItem);
   }
 });
 
@@ -131,7 +131,7 @@ const getHistoryMessage = async () => {
       {
         conversationId: props.conversationId,
         conversationType: props.conversationType
-      } as ChatSDK.ConversationItem,
+      } as Chat.ConversationItem,
       cursor.value,
       () => {
         // 获取历史消息接口成功，获取当前可视区域的第一条消息id

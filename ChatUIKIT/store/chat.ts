@@ -2,11 +2,11 @@ import { makeAutoObservable, runInAction } from "mobx";
 import { GroupEventFromIds } from "../const/index";
 import { throttle } from "../utils/index";
 import { ChatUIKIT } from "../index";
-import { ConnState, ChatSDK } from "../types";
+import { ConnState, Chat } from "../types";
+import { chatSDK } from "../sdk";
 
 class ChatStore {
   isInitEvent = false;
-  SDK = ChatUIKIT.connStore.getChatSDK();
   connState: ConnState;
   constructor() {
     this.connState = "none";
@@ -99,12 +99,10 @@ class ChatStore {
           case "setSilentModeForConversation":
             ChatUIKIT.convStore.setSilentModeForConversationSync(
               {
-                conversationType: (
-                  e as ChatSDK.NotificationConMultiDeviceInfo
-                ).type,
-                conversationId: (
-                  e as ChatSDK.NotificationConMultiDeviceInfo
-                ).conversationId
+                conversationType: (e as Chat.NotificationConMultiDeviceInfo)
+                  .type,
+                conversationId: (e as Chat.NotificationConMultiDeviceInfo)
+                  .conversationId
               },
               true
             );
@@ -112,12 +110,10 @@ class ChatStore {
           case "removeSilentModeForConversation":
             ChatUIKIT.convStore.setSilentModeForConversationSync(
               {
-                conversationType: (
-                  e as ChatSDK.NotificationConMultiDeviceInfo
-                ).type,
-                conversationId: (
-                  e as ChatSDK.NotificationConMultiDeviceInfo
-                ).conversationId
+                conversationType: (e as Chat.NotificationConMultiDeviceInfo)
+                  .type,
+                conversationId: (e as Chat.NotificationConMultiDeviceInfo)
+                  .conversationId
               },
               false
             );
@@ -127,7 +123,7 @@ class ChatStore {
               {
                 conversationId: e.conversationId,
                 conversationType: e.conversationType
-              } as ChatSDK.ConversationItem,
+              } as Chat.ConversationItem,
               true,
               e.timestamp
             );
@@ -137,7 +133,7 @@ class ChatStore {
               {
                 conversationId: e.conversationId,
                 conversationType: e.conversationType
-              } as ChatSDK.ConversationItem,
+              } as Chat.ConversationItem,
               false,
               e.timestamp
             );
@@ -272,7 +268,7 @@ class ChatStore {
       });
     }
 
-    const msg = ChatUIKIT.connStore.getChatSDK().message.create({
+    const msg = chatSDK.message.create({
       type: "txt",
       to: event.id,
       chatType: "groupChat",

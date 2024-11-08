@@ -9,7 +9,7 @@ class ConfigStore {
     makeAutoObservable(this);
   }
   /** 初始化全局配置 */
-  initConfig(config: ChatUIKITConfig) {
+  setConfig(config: ChatUIKITConfig) {
     this.config = config;
   }
   /** 获取全局配置 */
@@ -20,14 +20,14 @@ class ConfigStore {
   getThemeConfig() {
     return {
       ...DEFAULT_THEME_CONFIG,
-      ...(this.config.uikit.theme || {})
+      ...(this.config.theme || {})
     };
   }
   /** 获取功能配置 */
   getFeatureConfig() {
     return {
       ...DEFAULT_FEATURES_CONFIG,
-      ...(this.config.uikit.features || {})
+      ...(this.config.features || {})
     };
   }
 }

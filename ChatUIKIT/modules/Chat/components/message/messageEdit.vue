@@ -26,7 +26,8 @@ import { ref, computed, onUnmounted } from "vue";
 import { ChatUIKIT } from "../../../../index";
 import { autorun } from "mobx";
 import { t } from "../../../../locales/index";
-import { ChatSDK } from "../../../../types/index";
+import { Chat } from "../../../../types/index";
+import { chatSDK } from "../../../../sdk";
 
 const editingMsg = ref(null);
 const txt = ref("");
@@ -47,12 +48,12 @@ const cancelEdit = () => {
 
 const editMessage = () => {
   if (editAble.value) {
-    const modifiedMsg = ChatUIKIT.connStore.getChatSDK().message.create({
+    const modifiedMsg = chatSDK.message.create({
       to: editingMsg.value.to,
       type: editingMsg.value.type,
       chatType: editingMsg.value.chatType,
       msg: txt.value
-    }) as ChatSDK.ModifiedMsg;
+    }) as Chat.ModifiedMsg;
     ChatUIKIT.messageStore.modifyServerMessage(
       editingMsg.value.id,
       modifiedMsg

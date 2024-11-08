@@ -1,6 +1,6 @@
-import type { ChatSDK } from "../../types/index";
+import type { Chat } from "../../types/index";
 
 export type ConversationBaseInfo = Pick<
-  ChatSDK.ConversationItem,
+  Chat.ConversationItem,
   "conversationId" | "conversationType"
 >;

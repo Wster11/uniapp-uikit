@@ -1,4 +1,4 @@
-import { ChatSDK, ChatSDKStatic } from "./types";
+import { Chat } from "./types";
 
 interface FeatureConfig {
   /** 是否使用SDK的用户属性 */
@@ -38,13 +38,19 @@ interface ThemeConfig {
   avatarShape?: "circle" | "square";
 }
 
+/** UIKIT Config */
 interface ChatUIKITConfig {
-  sdk: ChatSDKStatic;
-  sdkConfig: ChatSDK.ConnectionParameters;
-  uikit: {
-    features?: FeatureConfig;
-    theme?: ThemeConfig;
-  };
+  /** UIKIT功能配置 */
+  features?: FeatureConfig;
+  /** UIKIT 主题配置 */
+  theme?: ThemeConfig;
 }
 
-export { ChatUIKITConfig, FeatureConfig, ThemeConfig };
+interface ChatUIKITInitParams {
+  /** IM SDK实例 */
+  chat: Chat.Connection;
+  /** UIKIT Config */
+  config: ChatUIKITConfig;
+}
+
+export { ChatUIKITInitParams, ChatUIKITConfig, FeatureConfig, ThemeConfig };

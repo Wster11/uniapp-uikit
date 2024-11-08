@@ -13,11 +13,11 @@
 </template>
 
 <script lang="ts" setup>
-import type { ChatSDK } from "../../../../types/index";
+import type { Chat } from "../../../../types/index";
 import ImageNotFound from "../../../../assets/img404.jpg";
 import { ref } from "vue";
 interface Props {
-  msg: ChatSDK.ImgMsgBody;
+  msg: Chat.ImgMsgBody;
   mode?: string; // uni image mode
   width?: number;
   height?: number;

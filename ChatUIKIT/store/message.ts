@@ -1,9 +1,10 @@
 import { makeAutoObservable, runInAction, set } from "mobx";
-import type { MixedMessageBody, ChatSDK } from "../types/index";
+import type { MixedMessageBody, Chat } from "../types/index";
 import { ChatUIKIT } from "../index";
 import { t } from "../locales/index";
 import { ConversationBaseInfo } from "./types";
 import { MessageStatus } from "../types/index";
+import { chatSDK } from "../sdk";
 
 interface ConversationMessagesInfo {
   messageIds: string[];
@@ -16,7 +17,7 @@ class MessageStore {
   conversationMessagesMap: Map<string, ConversationMessagesInfo> = new Map();
   playingAudioMsgId: string = "";
   quoteMessage: MixedMessageBody | null = null; // 当前引用的消息
-  editingMessage: ChatSDK.ModifiedMsg | null = null; // 当前编辑的消息
+  editingMessage: Chat.ModifiedMsg | null = null; // 当前编辑的消息
 
   constructor() {
     makeAutoObservable(this);
@@ -35,7 +36,7 @@ class MessageStore {
   }
 
   async getHistoryMessages(
-    conversation: ChatSDK.ConversationItem,
+    conversation: Chat.ConversationItem,
     cursor?: string,
     onSuccess?: () => void // 调用接口获取成功的回调， msgIds为获取到的消息id列表
   ) {
@@ -152,7 +153,7 @@ class MessageStore {
     }
   }
 
-  sendMessage(msg: ChatSDK.MessageBody) {
+  sendMessage(msg: Chat.MessageBody) {
     runInAction(async () => {
       if (
         msg.type !== "delivery" &&
@@ -287,7 +288,7 @@ class MessageStore {
           const unreadCount = conv.unReadCount - 1;
           // 表示撤回的为最后一条消息
           if (lastMessage?.id === mid) {
-            lastMessage = ChatUIKIT.connStore.getChatSDK().message.create({
+            lastMessage = chatSDK.message.create({
               type: "txt",
               msg: isSelf ? t("selfRecallTip") : t("otherRecallTip"),
               from: from,
@@ -300,7 +301,7 @@ class MessageStore {
               conversationId: cvsId,
               conversationType: recalledMessage.chatType
             },
-            lastMessage as ChatSDK.MessageBody,
+            lastMessage as Chat.MessageBody,
             unreadCount < 0 ? 0 : unreadCount
           );
         }
@@ -347,7 +348,7 @@ class MessageStore {
                 conversationId: conv?.conversationId || "",
                 conversationType: conv?.conversationType as any
               },
-              {} as ChatSDK.MessageBody,
+              {} as Chat.MessageBody,
               conv?.unReadCount || 0
             );
           }
@@ -359,11 +360,11 @@ class MessageStore {
     this.quoteMessage = msg;
   }
 
-  setEditingMessage(msg: ChatSDK.ModifiedMsg | null) {
+  setEditingMessage(msg: Chat.ModifiedMsg | null) {
     this.editingMessage = msg;
   }
 
-  modifyServerMessage(messageId: string, msg: ChatSDK.ModifiedMsg) {
+  modifyServerMessage(messageId: string, msg: Chat.ModifiedMsg) {
     if (!messageId || !msg) {
       throw new Error("modifyServerMessage params error");
     }
@@ -377,7 +378,7 @@ class MessageStore {
       });
   }
 
-  modifyLocalMessage(messageId: string, msg: ChatSDK.ModifiedMsg) {
+  modifyLocalMessage(messageId: string, msg: Chat.ModifiedMsg) {
     if (this.messageMap.has(messageId)) {
       const oldMsg = this.messageMap.get(messageId);
       //@ts-ignore

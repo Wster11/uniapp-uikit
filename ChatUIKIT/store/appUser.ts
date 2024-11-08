@@ -1,9 +1,9 @@
 import { makeAutoObservable } from "mobx";
-import type { ChatSDK } from "../types/index";
+import type { Chat } from "../types/index";
 import { ChatUIKIT } from "../index";
 
 class AppUserStore {
-  appUserInfo: Map<string, ChatSDK.UpdateOwnUserInfoParams> = new Map();
+  appUserInfo: Map<string, Chat.UpdateOwnUserInfoParams> = new Map();
 
   constructor() {
     makeAutoObservable(this);
@@ -26,7 +26,7 @@ class AppUserStore {
         "sign",
         "birth",
         "ext"
-      ] as ChatSDK.ConfigurableKey[];
+      ] as Chat.ConfigurableKey[];
 
       if (userIdList.length === 0) {
         resolve({});
@@ -59,12 +59,12 @@ class AppUserStore {
   }
 
   /** 添加用户属性 */
-  addUserInfo(userId: string, userInfo: ChatSDK.UpdateOwnUserInfoParams) {
+  addUserInfo(userId: string, userInfo: Chat.UpdateOwnUserInfoParams) {
     this.appUserInfo.set(userId, userInfo);
   }
 
   /** 更新用户属性 */
-  updateUserInfo(params: ChatSDK.UpdateOwnUserInfoParams) {
+  updateUserInfo(params: Chat.UpdateOwnUserInfoParams) {
     return ChatUIKIT.getChatConn()
       .updateUserInfo(params)
       .then((res) => {

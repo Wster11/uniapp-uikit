@@ -1,4 +1,4 @@
-import type { ChatSDK, ChatSDKStatic } from "./sdk";
+import type { Chat, ChatSDKStatic } from "../sdk";
 
 type InputToolbarEvent = {
   onMessageSend: () => void;
@@ -7,13 +7,13 @@ type InputToolbarEvent = {
 
 type ConnState = "none" | "reconnecting" | "connected" | "disconnected";
 
-type ContactNotice = ChatSDK.ContactMsgBody & {
+type ContactNotice = Chat.ContactMsgBody & {
   ext: "invited" | "agreed" | "refused" | "deleted" | "added";
   time: number;
   showOperation?: boolean;
 };
 
-type GroupNotice = ChatSDK.GroupEvent & {
+type GroupNotice = Chat.GroupEvent & {
   time: number;
   showOperation?: boolean;
 };
@@ -51,12 +51,12 @@ type MessageStatus =
 
 type AT_TYPE = "NONE" | "ALL" | "ME";
 
-type MixedMessageBody = ChatSDK.ExcludeAckMessageBody & {
+type MixedMessageBody = Chat.ExcludeAckMessageBody & {
   noticeInfo?: MessageNoticeInfo;
   status?: MessageStatus;
 };
 
-type UIKITConversationItem = ChatSDK.ConversationItem & {
+type UIKITConversationItem = Chat.ConversationItem & {
   atType?: AT_TYPE;
 };
 
@@ -72,6 +72,6 @@ export type {
   UIKITConversationItem,
   ConnState,
   AT_TYPE,
-  ChatSDK,
+  Chat,
   ChatSDKStatic
 };

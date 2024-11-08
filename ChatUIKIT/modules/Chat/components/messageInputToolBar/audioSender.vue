@@ -42,13 +42,13 @@ import { ref, onMounted, onUnmounted, computed } from "vue";
 import Popup from "../../../common/popup/index.vue";
 import { t } from "../../../../locales/index";
 import { ChatUIKIT } from "../../../../index";
+import { chatSDK } from "../../../../sdk";
 
 type RecordStatus = "record" | "recording" | "recordEnd";
 
 const audioPopupRef = ref(null);
 const connStore = ChatUIKIT.connStore;
 const conn = connStore.getChatConn();
-const SDK = connStore.getChatSDK();
 const convStore = ChatUIKIT.convStore;
 const recordStatus = ref<RecordStatus>("record");
 const recorder = ref<UniApp.RecorderManager>();
@@ -175,7 +175,7 @@ const uploadAndSendAudio = () => {
     header: { Authorization: "Bearer " + token },
     success: async (res: any) => {
       const data = JSON.parse(res.data);
-      const audioMsg = SDK.message.create({
+      const audioMsg = chatSDK.message.create({
         type: "audio",
         to: convStore.currConversation!.conversationId,
         chatType: convStore.currConversation!.conversationType,

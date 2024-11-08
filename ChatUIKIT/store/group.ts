@@ -1,5 +1,5 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import type { GroupNotice, GroupNoticeInfo,ChatSDK } from "../types/index";
+import type { GroupNotice, GroupNoticeInfo, Chat } from "../types/index";
 import {
   DEFAULT_GROUP_MEMBER_COUNT,
   GET_GROUP_MEMBERS_PAGESIZE
@@ -7,13 +7,13 @@ import {
 import { ChatUIKIT } from "../index";
 
 class GroupStore {
-  joinedGroupList: ChatSDK.GroupInfo[] = [];
-  groupDetailMap: Map<string, ChatSDK.GroupDetailInfo> = new Map();
+  joinedGroupList: Chat.GroupInfo[] = [];
+  groupDetailMap: Map<string, Chat.GroupDetailInfo> = new Map();
   groupNoticeInfo: GroupNoticeInfo = {
     list: [],
     unReadCount: 0
   };
-  viewedGroupInfo: ChatSDK.GroupInfo = {} as ChatSDK.GroupInfo;
+  viewedGroupInfo: Chat.GroupInfo = {} as Chat.GroupInfo;
   isJoinedGroupListLast: boolean = true;
   getJoinedGroupListParams = {
     pageSize: 20, // 最大支持20
@@ -31,7 +31,7 @@ class GroupStore {
       .getJoinedGroups(this.getJoinedGroupListParams)
       .then((res) => {
         if (res.entities) {
-          this.setJoinedGroupList(res.entities as ChatSDK.GroupInfo[]);
+          this.setJoinedGroupList(res.entities as Chat.GroupInfo[]);
           if (res.entities.length < this.getJoinedGroupListParams.pageSize) {
             this.isJoinedGroupListLast = true;
           } else {
@@ -42,7 +42,7 @@ class GroupStore {
       });
   };
 
-  setJoinedGroupList = (groups: ChatSDK.GroupInfo[]) => {
+  setJoinedGroupList = (groups: Chat.GroupInfo[]) => {
     const currentGroupIds = this.joinedGroupList.map((item) => item.groupId);
     const filterJoinedGroups = groups.filter(
       ({ groupId }) => !currentGroupIds.includes(groupId)
@@ -68,7 +68,7 @@ class GroupStore {
           role: "owner",
           disabled: false,
           public: params.data.public
-        } as ChatSDK.GroupInfo);
+        } as Chat.GroupInfo);
         return res;
       });
   };
@@ -119,7 +119,7 @@ class GroupStore {
     this.groupNoticeInfo.unReadCount++;
   };
 
-  setViewedGroupInfo = (group: ChatSDK.GroupInfo) => {
+  setViewedGroupInfo = (group: Chat.GroupInfo) => {
     this.viewedGroupInfo = group;
   };
 
@@ -212,7 +212,7 @@ class GroupStore {
         unReadCount: 0
       };
       this.groupDetailMap.clear();
-      this.viewedGroupInfo = {} as ChatSDK.GroupInfo;
+      this.viewedGroupInfo = {} as Chat.GroupInfo;
     });
   };
 }
