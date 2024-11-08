@@ -55,7 +55,7 @@
             <view>[Custom]</view>
           </view>
           <view v-else-if="msg.type === 'file'">
-            <view>[File]</view>
+            <FileMessage :msg="msg" />
           </view>
         </view>
       </view>
@@ -78,6 +78,7 @@ import TextMessage from "./messageTxt.vue";
 import ImageMessage from "./messageImage.vue";
 import VideoMessage from "./messageVideo.vue";
 import AudioMessage from "./messageAudio.vue";
+import FileMessage from "./messageFile.vue";
 import MessageQuote from "./messageQuote.vue";
 import MessageActions from "./messageActions.vue";
 import MessageStatus from "./messageStatus.vue";
@@ -170,7 +171,7 @@ const onMessageBubblePress = (e) => {
     display: inline-block;
     word-break: break-all;
     border-radius: 4px;
-    padding: 7px;
+    padding: 8px;
     max-width: calc(100vw - 100px);
     min-width: 15px;
   }

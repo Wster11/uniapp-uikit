@@ -158,5 +158,6 @@ export default {
   tapRecord: "Tap to record",
   recording: "Recording",
   playing: "Playing",
-  tapPlay: "Tap to play"
+  tapPlay: "Tap to play",
+  noMoreMessage: "No more messages",
 };

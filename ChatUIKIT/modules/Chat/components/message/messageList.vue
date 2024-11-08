@@ -11,6 +11,7 @@
       :scroll-into-view="`msg-${currentViewMsgId}`"
       :scroll-anchoring="true"
     >
+      <view class="isLast" v-if="isLast">{{ t("noMoreMessage") }}</view>
       <view v-if="isLoading" class="loading"></view>
       <view
         :class="['scroll-msg-item', { blink: blinkMsgId === msg.id }]"
@@ -47,6 +48,7 @@ import type { MixedMessageBody, ChatSDK } from "../../../../types/index";
 import { ChatUIKIT } from "../../../../index";
 import { autorun } from "mobx";
 import { deepClone } from "../../../../utils/index";
+import { t } from "../../../../locales";
 
 interface Props {
   conversationId: string;
@@ -227,5 +229,14 @@ defineExpose({
   background-size: 100%;
   animation: spin 1s linear infinite;
   background-repeat: no-repeat;
+}
+
+.isLast {
+  text-align: center;
+  padding: 10px 0;
+  color: #999;
+  font-size: 12px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 </style>

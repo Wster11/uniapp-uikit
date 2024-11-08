@@ -39,8 +39,8 @@ ChatUIKIT.init({
 
 // 手动设置用户属性
 // ChatUIKIT.appUserStore.addUserInfo("0c1bdd28c7", {
-//   nickname: "小明",
-//   avatarurl: "https://img.yzcdn.cn/vant/cat.jpeg"
+//   nickname: "张三",
+//   avatarurl: "https://p9-passport.byteacctimg.com/img/user-avatar/6d239ae53c4aded5fadd95cda5fc6759~40x40.awebp"
 // });
 
 uni.$UIKIT = ChatUIKIT;

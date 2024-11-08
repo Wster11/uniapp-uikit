@@ -158,5 +158,6 @@ export default {
   tapRecord: "点击录音",
   recording: "录音中",
   playing: "播放中",
-  tapPlay: "点击播放"
+  tapPlay: "点击播放",
+  noMoreMessage: "没有更多消息"
 };
