@@ -9,6 +9,7 @@ interface ConversationMessagesInfo {
   messageIds: string[];
   cursor: string;
   isLast: boolean;
+  isGetHistoryMessage?: boolean; // 是否获取过历史消息
 }
 class MessageStore {
   messageMap: Map<string, MixedMessageBody> = new Map();
@@ -52,30 +53,35 @@ class MessageStore {
         });
         const messageIds = dt.messages.map((msg) => msg.id);
         onSuccess?.();
-        if (this.conversationMessagesMap.has(conversation.conversationId)) {
-          const info = this.conversationMessagesMap.get(
-            conversation.conversationId
-          );
+        const info = this.conversationMessagesMap.get(
+          conversation.conversationId
+        );
+        if (info && info.isGetHistoryMessage === true) {
           if (info) {
             const list = [...info.messageIds];
             list.unshift(...messageIds);
             info.messageIds = list;
             info.cursor = dt.cursor || "";
             info.isLast = dt.isLast;
+            info.isGetHistoryMessage = true;
           }
         } else {
           this.conversationMessagesMap.set(conversation.conversationId, {
             messageIds: messageIds.reverse(),
             cursor: dt.cursor || "",
-            isLast: dt.isLast
+            isLast: dt.isLast,
+            isGetHistoryMessage: true
           });
         }
       });
     } catch (error) {
       console.warn("获取漫游消息失败，请检查是否开通漫游消息", error);
+      const info = this.conversationMessagesMap.get(
+        conversation.conversationId
+      );
       runInAction(() => {
         this.conversationMessagesMap.set(conversation.conversationId, {
-          messageIds: [],
+          messageIds: info?.messageIds || [],
           cursor: "",
           isLast: true
         });
@@ -91,6 +97,12 @@ class MessageStore {
         if (info) {
           info.messageIds.push(msg.id);
         }
+      } else {
+        this.conversationMessagesMap.set(convId, {
+          messageIds: [msg.id],
+          cursor: "",
+          isLast: false
+        });
       }
     });
   }

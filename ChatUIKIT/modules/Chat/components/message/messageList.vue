@@ -108,7 +108,12 @@ onMounted(() => {
       });
     }
   });
-  if (!messageStore.conversationMessagesMap.has(props.conversationId)) {
+  // 如果没拉取过历史消息，拉取历史消息
+  if (
+    !messageStore.conversationMessagesMap.has(props.conversationId) ||
+    messageStore.conversationMessagesMap.get(props.conversationId)
+      ?.isGetHistoryMessage !== true
+  ) {
     messageStore.getHistoryMessages({
       conversationId: props.conversationId,
       conversationType: props.conversationType
