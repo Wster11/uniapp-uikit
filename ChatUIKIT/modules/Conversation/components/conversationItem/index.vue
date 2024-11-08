@@ -161,7 +161,7 @@ const uninstallConvInfoWatch = autorun(() => {
   if (props.conversation.conversationType === "groupChat") {
     const groupInfo = groupStore.getGroupInfoFromStore(convId);
     conversationInfo.value = {
-      name: groupInfo?.groupName,
+      name: groupInfo?.groupName || convId,
       avatar: ""
     };
   } else {
