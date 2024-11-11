@@ -1,0 +1,31 @@
+.contact-list-wrap {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 65px;
+  max-height: calc(100vh - 120px);
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+}
+
+.contact-search {
+  flex-shrink: 0;
+}
+
+.contact-menu {
+  flex-shrink: 0;
+}
+
+.items-wrap {
+  flex: 1;
+  overflow-y: scroll;
+}
+
+.item-wrap {
+  display: flex;
+  height: 60px;
+  align-items: center;
+  padding-left: 16px;
+}

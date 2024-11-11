@@ -32,6 +32,15 @@
 					"bounce": "none"
 				}
 			}
+		},
+		{
+			"path": "ChatUIKIT/modules/ContactList/index",
+			"style": {
+				"navigationBarTitleText": "ChatUIKIT Uniapp",
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
 		}
 	],
 	"tabBar": {
@@ -49,7 +58,7 @@
 				"text": "联系人",
 				"iconPath": "static/icon/contacts.png",
 				"selectedIconPath": "static/icon/contacts_active.png",
-				"pagePath": "pages/Login/index"
+				"pagePath": "ChatUIKIT/modules/ContactList/index"
 			}
 		]
 	},
