@@ -19,10 +19,11 @@
         :id="`msg-${msg.id}`"
         :key="msg.id"
       >
-        <MessageTime
+        <!-- 微信风格时间间隔 -->
+        <!-- <MessageTime
           :curr-time="msg.time"
           :prev-time="idx > 0 ? msgs[idx - 1].time : 0"
-        />
+        /> -->
         <NoticeMessageItem
           v-if="msg?.noticeInfo?.type === 'notice'"
           :msg="msg"

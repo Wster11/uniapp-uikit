@@ -1,6 +1,7 @@
 <template>
   <view class="conversation-list-wrap">
     <view v-if="conversationList.length">
+      <SearchButton />
       <view
         v-for="conv in conversationList"
         :key="conv.conversationId"
@@ -24,6 +25,7 @@
 
 <script setup lang="ts">
 import ConversationItem from "../conversationItem/index.vue";
+import SearchButton from "../../../common/searchButton/index.vue";
 import { ref, onUnmounted } from "vue";
 import type { Chat } from "../../../../types/index";
 import { ChatUIKIT } from "../../../../index";

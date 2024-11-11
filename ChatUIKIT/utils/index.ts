@@ -1,6 +1,8 @@
 import { t } from "../locales/index";
 import { emojiAltMap, emoji } from "../const/emoji";
 import { MixedMessageBody } from "../types";
+import { pinyin } from "pinyin-pro";
+
 export const formatDate = function (date: Date, fmt: string = "") {
   const o = {
     "M+": date.getMonth() + 1, //月份
@@ -256,7 +258,6 @@ export function splitArrayIntoChunks(arr: Array<any>, chunkSize: number) {
   return result;
 }
 
-
 export const formatMessage = (message: MixedMessageBody) => {
   let lastMsg = "";
   switch (message?.type) {
@@ -295,3 +296,31 @@ export const formatMessage = (message: MixedMessageBody) => {
   }
   return lastMsg;
 };
+
+export function checkCharacter(character: string) {
+  const pattern = /[\u4E00-\u9FA5]/; // 中文字符的unicode范围
+  const isChinese = pattern.test(character);
+  const isLetter = /^[a-zA-Z]$/.test(character);
+
+  if (isChinese) {
+    return "zh";
+  } else if (isLetter) {
+    return "en";
+  } else {
+    return "unknown";
+  }
+}
+
+export function groupByName(name: string) {
+  let initial = "#";
+  if (checkCharacter(name.substring(0, 1)) == "en") {
+    initial = name.substring(0, 1).toUpperCase();
+  } else if (checkCharacter(name.substring(0, 1)) == "zh") {
+    initial = pinyin(name.substring(0, 1), {
+      toneType: "none"
+    })[0][0].toUpperCase();
+  } else {
+    initial = "#";
+  }
+  return initial;
+}
