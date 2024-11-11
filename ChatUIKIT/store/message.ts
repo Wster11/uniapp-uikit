@@ -60,7 +60,7 @@ class MessageStore {
         if (info && info.isGetHistoryMessage === true) {
           if (info) {
             const list = [...info.messageIds];
-            list.unshift(...messageIds);
+            list.unshift(...messageIds.reverse());
             info.messageIds = list;
             info.cursor = dt.cursor || "";
             info.isLast = dt.isLast;
