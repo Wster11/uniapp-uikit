@@ -4,7 +4,15 @@
     <IndexedList class="contact-index-list" :options="contactList">
       <template v-slot:header>
         <MenuItem class="contact-menu" :title="t('newRequest')" />
-        <MenuItem class="contact-menu" :title="t('groupList')" />
+        <MenuItem
+          @tap="toGroupPage"
+          class="contact-menu"
+          :title="t('groupList')"
+        >
+          <view class="count" v-if="joinedGroupCount">
+            {{ joinedGroupCount }}
+          </view>
+        </MenuItem>
       </template>
       <template v-slot:indexedItem="slotProps">
         <ContactItem
@@ -28,6 +36,7 @@ import { ref, onUnmounted } from "vue";
 import { autorun } from "mobx";
 
 const contactList = ref<Chat.ContactItem[]>([]);
+const joinedGroupCount = ref(0);
 
 const unwatchContactList = autorun(() => {
   contactList.value = ChatUIKIT.contactStore.contacts.map((contact) => ({
@@ -37,14 +46,25 @@ const unwatchContactList = autorun(() => {
   }));
 });
 
-const toChatPage = (contactId: string) => {
+const unwatchJoinedGroupCount = autorun(() => {
+  joinedGroupCount.value = ChatUIKIT.groupStore.joinedGroupList.length;
+});
+
+const toChatPage = (id: string) => {
   uni.navigateTo({
-    url: `../../modules/Chat/index?type=singleChat&id=${contactId}`
+    url: `../../modules/Chat/index?type=singleChat&id=${id}`
+  });
+};
+
+const toGroupPage = () => {
+  uni.navigateTo({
+    url: `../../modules/GroupList/index`
   });
 };
 
 onUnmounted(() => {
   unwatchContactList();
+  unwatchJoinedGroupCount();
 });
 </script>
 

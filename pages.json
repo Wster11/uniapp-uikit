@@ -25,6 +25,15 @@
 			}
 		},
 		{
+			"path": "ChatUIKIT/modules/GroupList/index",
+			"style": {
+				"navigationBarTitleText": "ChatUIKIT Uniapp",
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+		},
+		{
 			"path": "ChatUIKIT/modules/VideoPreview/index",
 			"style": {
 				"navigationBarTitleText": "Video Preview",

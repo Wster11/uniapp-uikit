@@ -1,13 +1,13 @@
 <template>
   <view class="item-wrap">
     <Avatar
-      class="user-avatar"
+      class="avatar"
       :size="40"
-      :src="userInfo.avatar"
-      :placeholder="USER_AVATAR_URL"
+      :src="''"
+      :placeholder="GROUP_AVATAR_URL"
     />
     <view class="right">
-      <view class="user-name ellipsis">{{ userInfo.name }}</view>
+      <view class="name ellipsis">{{ props.group.groupName }}</view>
     </view>
   </view>
 </template>
@@ -15,28 +15,13 @@
 <script setup lang="ts">
 import Avatar from "../../../common/avatar/index.vue";
 import type { Chat } from "../../../../sdk";
-import { USER_AVATAR_URL } from "../../../../const/index";
-import { ChatUIKIT } from "../../../../index";
-import { ref, onUnmounted } from "vue";
-import { autorun } from "mobx";
+import { GROUP_AVATAR_URL } from "../../../../const/index";
 
 interface Props {
-  contact: Chat.ContactItem;
+  group: Chat.GroupInfo;
 }
 
 const props = defineProps<Props>();
-
-const userInfo = ref({});
-
-const unwatchUserInfo = autorun(() => {
-  userInfo.value = ChatUIKIT.appUserStore.getUserInfoFromStore(
-    props.contact.userId
-  );
-});
-
-onUnmounted(() => {
-  unwatchUserInfo();
-});
 </script>
 <style lang="scss" scoped>
 @import url("../../../../styles/common.scss");
@@ -48,12 +33,12 @@ onUnmounted(() => {
   padding-left: 16px;
 }
 
-.user-avatar {
+.avatar {
   margin-right: 12px;
   flex-shrink: 0;
 }
 
-.user-name {
+.name {
   font-size: 16px;
   color: #171a1c;
   line-height: 22px;

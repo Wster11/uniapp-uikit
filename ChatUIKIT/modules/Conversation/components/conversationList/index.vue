@@ -23,13 +23,14 @@
         </view>
       </view>
     </view>
-    <view v-else class="conversation-empty"></view>
+    <Empty v-else />
   </view>
 </template>
 
 <script setup lang="ts">
 import ConversationItem from "../conversationItem/index.vue";
 import SearchButton from "../../../common/searchButton/index.vue";
+import Empty from "../../../common/empty/index.vue";
 import { ref, onUnmounted } from "vue";
 import type { Chat } from "../../../../types/index";
 import { ChatUIKIT } from "../../../../index";
