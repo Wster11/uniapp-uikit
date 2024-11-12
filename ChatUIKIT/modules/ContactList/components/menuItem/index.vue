@@ -39,7 +39,6 @@ const props = defineProps<Props>();
   .right {
     display: flex;
     align-items: center;
-    margin-right: 20px;
   }
 
   .count {

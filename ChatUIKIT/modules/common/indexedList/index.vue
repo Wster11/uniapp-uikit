@@ -155,4 +155,11 @@ const scrollInToView = (id: string) => {
     border-radius: 50%;
   }
 }
+
+scroll-view ::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  background: transparent;
+}
+
 </style>

@@ -181,6 +181,13 @@ defineExpose({
 </script>
 
 <style lang="scss" scoped>
+
+scroll-view ::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  background: transparent;
+}
+
 .msg-list-wrap {
   height: 100%;
   overflow: hidden;

@@ -48,7 +48,8 @@
 		"color": "#999999",
 		"selectedColor": "#00a4fd",
 		"height": "60px",
-		"list": [{
+		"list": [
+			{
 				"text": "消息",
 				"iconPath": "static/icon/conversation.png",
 				"selectedIconPath": "static/icon/conversation_active.png",
@@ -59,6 +60,12 @@
 				"iconPath": "static/icon/contacts.png",
 				"selectedIconPath": "static/icon/contacts_active.png",
 				"pagePath": "ChatUIKIT/modules/ContactList/index"
+			},
+			{
+				"text": "个人中心",
+				"iconPath": "static/icon/mine.png",
+				"selectedIconPath": "static/icon/mine_active.png",
+				"pagePath": "pages/Login/index"
 			}
 		]
 	},
