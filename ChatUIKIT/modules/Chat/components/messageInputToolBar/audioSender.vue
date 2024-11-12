@@ -105,7 +105,7 @@ const resetRecording = () => {
   recordStatus.value = "record";
   duration.value = 0;
   audioFilePath.value = "";
-  toggleAudioPlayback(false);
+  toggleAudioPlayback(true);
 };
 
 // 切换录音或音频播放
