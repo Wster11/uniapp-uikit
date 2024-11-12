@@ -4,7 +4,6 @@
   /*  #ifdef WEB  */
   padding-bottom: 65px;
   /*  #endif  */
-  max-height: calc(100vh - 120px);
 }
 
 .contact-item {
@@ -14,18 +13,23 @@
 
 .contact-search {
   flex-shrink: 0;
+  margin: 8px;
 }
 
 .contact-menu {
   flex-shrink: 0;
 }
 
+uni-page-body {
+  overflow: hidden;
+}
+
 .contact-index-list {
   /*  #ifdef WEB  */
-  height: calc(100vh - 280px);
+  height: calc(100vh - 156px);
   /*  #endif  */
 
   /*  #ifndef WEB  */
-  height: calc(100vh - 190px);
+  height: calc(100vh - 52px);
   /*  #endif  */
 }

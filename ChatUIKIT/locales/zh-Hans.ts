@@ -46,7 +46,6 @@ export default {
   addedFriend: "已添加您为好友",
   deletedFriend: "已解除好友关系",
   emptyNoticeTip: "暂时没有新的通知",
-  contactNotice: "好友通知",
   createGroup: "创建群聊",
   selectContactTip: "请选择联系人",
   createGroupSuccess: "创建群聊成功",
@@ -159,5 +158,6 @@ export default {
   recording: "录音中",
   playing: "播放中",
   tapPlay: "点击播放",
-  noMoreMessage: "没有更多消息"
+  noMoreMessage: "没有更多消息",
+  newRequest: "新请求",
 };

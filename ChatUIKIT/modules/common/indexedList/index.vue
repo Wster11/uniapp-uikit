@@ -6,6 +6,7 @@
       scroll-y
       :scroll-into-view="scrollIndexItem"
     >
+      <slot name="header"></slot>
       <view
         :id="formatInitial(item)"
         class="initial"
@@ -18,7 +19,7 @@
           v-for="indexedItem in indexedData[item]"
           :key="indexedItem.id"
         >
-          <slot :item="indexedItem"></slot>
+          <slot name="indexedItem" :item="indexedItem"></slot>
         </view>
       </view>
     </scroll-view>
@@ -100,6 +101,7 @@ const scrollInToView = (id: string) => {
   position: relative;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .index-scroll-list {

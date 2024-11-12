@@ -1,22 +1,26 @@
 <template>
   <view class="conversation-list-wrap">
     <view v-if="conversationList.length">
-      <SearchButton />
-      <view
-        v-for="conv in conversationList"
-        :key="conv.conversationId"
-        :data-id="conv.conversationId"
-      >
-        <ConversationItem
-          :conversation="conv"
-          :showMenu="
-            selectedConvId ? selectedConvId === conv.conversationId : false
-          "
-          @mute="onMuteButtonClick"
-          @pin="pinConversation"
-          @delete="deleteConversation"
-          @leftSwipe="handleLeftSwipe"
-        />
+      <view class="search-btn-wrap">
+        <SearchButton />
+      </view>
+      <view class="convs-wrap">
+        <view
+          v-for="conv in conversationList"
+          :key="conv.conversationId"
+          :data-id="conv.conversationId"
+        >
+          <ConversationItem
+            :conversation="conv"
+            :showMenu="
+              selectedConvId ? selectedConvId === conv.conversationId : false
+            "
+            @mute="onMuteButtonClick"
+            @pin="pinConversation"
+            @delete="deleteConversation"
+            @leftSwipe="handleLeftSwipe"
+          />
+        </view>
       </view>
     </view>
     <view v-else class="conversation-empty"></view>
@@ -75,6 +79,19 @@ onUnmounted(() => {
 });
 </script>
 <style lang="scss" scoped>
+.search-btn-wrap {
+  position: fixed;
+  z-index: 999;
+  padding: 8px;
+  width: 100%;
+  background: #f9fafa;
+  box-sizing: border-box;
+}
+
+.convs-wrap {
+  padding-top: 52px;
+}
+
 @import url("../../../../styles//common.scss");
 @import url("./style.scss");
 .dangerous-btn {

@@ -1,10 +1,12 @@
 <template>
   <view class="contact-list-wrap">
     <SearchButton class="contact-search" />
-    <MenuItem class="contact-menu" :title="t('groupList')" />
-    <MenuItem class="contact-menu" :title="t('contact')" />
     <IndexedList class="contact-index-list" :options="contactList">
-      <template v-slot:default="slotProps">
+      <template v-slot:header>
+        <MenuItem class="contact-menu" :title="t('newRequest')" />
+        <MenuItem class="contact-menu" :title="t('groupList')" />
+      </template>
+      <template v-slot:indexedItem="slotProps">
         <ContactItem
           :contact="slotProps.item"
           @tap="toChatPage(slotProps.item.userId)"
@@ -25,10 +27,8 @@ import { ChatUIKIT } from "../../index";
 import { ref, onUnmounted } from "vue";
 import { autorun } from "mobx";
 
-// 使用合适的类型注解来初始化 contactList
 const contactList = ref<Chat.ContactItem[]>([]);
 
-// 优化 MobX 自动运行逻辑
 const unwatchContactList = autorun(() => {
   contactList.value = ChatUIKIT.contactStore.contacts.map((contact) => ({
     ...contact,

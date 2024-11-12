@@ -46,7 +46,6 @@ export default {
   addedFriend: "Added you as a friend",
   deletedFriend: "Unfriended",
   emptyNoticeTip: "No new notifications",
-  contactNotice: "Friend Notifications",
   createGroup: "Create Group Chat",
   selectContactTip: "Select a contact",
   createGroupSuccess: "Group chat created successfully",
@@ -160,4 +159,5 @@ export default {
   playing: "Playing",
   tapPlay: "Tap to play",
   noMoreMessage: "No more messages",
+  newRequest: 'New Request',  
 };

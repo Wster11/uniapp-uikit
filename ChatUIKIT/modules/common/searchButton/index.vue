@@ -25,6 +25,5 @@
   line-height: 22px;
   color: #919ba1;
   border-radius: 4px;
-  margin: 8px;
 }
 </style>
