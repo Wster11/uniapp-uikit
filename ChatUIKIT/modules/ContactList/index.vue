@@ -15,7 +15,7 @@
         </MenuItem>
       </template>
       <template v-slot:indexedItem="slotProps">
-        <ContactItem
+        <UserItem
           :contact="slotProps.item"
           @tap="toChatPage(slotProps.item.userId)"
         />
@@ -27,7 +27,7 @@
 <script setup lang="ts">
 import SearchButton from "../../modules/common/searchButton/index.vue";
 import MenuItem from "./components/menuItem/index.vue";
-import ContactItem from "./components/contactItem/index.vue";
+import UserItem from "./components/userItem/index.vue";
 import IndexedList from "../common/indexedList/index.vue";
 import type { Chat } from "../../sdk";
 import { t } from "../../locales/index";

@@ -19,6 +19,7 @@
         ref="msgInputRef"
         :preventEvent="isShowToolbar || isShowEmojiPicker"
         @onInputTap="onInputTap"
+        @onMention="onMention"
         @onShowToolbar="
           isShowToolbar = true;
           isShowEmojiPicker = false;
@@ -35,6 +36,8 @@
     </view>
     <!-- emoji picker -->
     <EmojiPicker v-if="isShowEmojiPicker" @onEmojiPick="onEmojiPick" />
+    <!-- mention list -->
+    <MessageMentionList ref="mentionListRef" @onSelect="onSelectMentionItem" />
   </view>
 </template>
 
@@ -45,6 +48,7 @@ import MessageInputToolbar from "./components/messageInputToolBar/index.vue";
 import EmojiPicker from "./components/messageInputToolBar/emojiPicker.vue";
 import MessageQuotePanel from "./components/message/messageQuotePanel.vue";
 import MessageEdit from "./components/message/messageEdit.vue";
+import MessageMentionList from "./components/MessageMentionList/index.vue";
 import { ref, onMounted, computed, onUnmounted, provide } from "vue";
 import { onLoad } from "@dcloudio/uni-app";
 import type { InputToolbarEvent, Chat } from "../../types/index";
@@ -53,6 +57,7 @@ import { ChatUIKIT } from "../../index";
 
 const msgListRef = ref(null);
 const msgInputRef = ref(null);
+const mentionListRef = ref(null);
 const conversationId = ref("");
 const isShowToolbar = ref(false);
 const isShowEmojiPicker = ref(false);
@@ -90,7 +95,23 @@ const closeToolbar = () => {
 
 const onEmojiPick = (alt: string) => {
   //@ts-ignore
-  msgInputRef?.value.insertEmoji(alt);
+  msgInputRef?.value.insertText(alt);
+};
+
+const onMention = () => {
+  mentionListRef?.value?.showPopup();
+};
+
+const onSelectMentionItem = (userIds) => {
+  const userNicks = userIds.map((userId) => {
+    return ChatUIKIT.appUserStore.getUserInfoFromStore(userId).name;
+  });
+  let str = userNicks.join("");
+  if (userNicks.length === 0) {
+    str = userNicks.join("@");
+    return;
+  }
+  msgInputRef?.value.insertText(str);
 };
 
 onMounted(() => {

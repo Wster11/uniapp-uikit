@@ -44,7 +44,6 @@ const sendVideoMessage = (res: any) => {
   }
   uni.showLoading();
   const token = conn.token;
-  console.log(token, "  token");
   const requestParams = {
     url: uploadUrl,
     filePath: tempFilePath,

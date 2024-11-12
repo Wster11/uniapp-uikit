@@ -9,8 +9,12 @@
     ></view>
     <view
       :class="['popup', { 'popup-show': show }]"
-      :style="popupStyle"
       :animation="popupAnimation"
+      :style="{
+        borderTopLeftRadius: props.borderRadius,
+        borderTopRightRadius: props.borderRadius,
+        height: `${popupHeight}px`
+      }"
     >
       <view class="popup-content">
         <slot></slot>
@@ -20,11 +24,12 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from "vue";
+import { ref } from "vue";
 
 interface Props {
   height?: number;
   maskClosable?: boolean;
+  borderRadius?: string;
 }
 
 const props = defineProps<Props>();
@@ -32,9 +37,6 @@ const props = defineProps<Props>();
 const show = ref(false); // 控制弹窗显示
 const popupHeight = ref(props.height || 300); // 弹窗的高度
 const animation = ref(null); // 动画实例
-
-// 计算弹窗的高度样式
-const popupStyle = computed(() => `height: ${popupHeight.value}px;`);
 
 // 打开弹窗
 const openPopup = () => {

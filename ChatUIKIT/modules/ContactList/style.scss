@@ -1,9 +1,6 @@
 .contact-list-wrap {
   display: flex;
   flex-direction: column;
-  /*  #ifdef WEB  */
-  padding-bottom: 65px;
-  /*  #endif  */
 }
 
 .contact-item {
@@ -33,7 +30,7 @@ uni-page-body {
 
 .contact-index-list {
   /*  #ifdef WEB  */
-  height: calc(100vh - 156px);
+  height: calc(100vh - 160px);
   /*  #endif  */
 
   /*  #ifndef WEB  */

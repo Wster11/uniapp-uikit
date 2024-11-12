@@ -22,6 +22,7 @@
         :adjust-position="true"
         :auto-blur="true"
         confirm-type="send"
+        @input="onInput"
         @confirm="handleSendMessage"
         @blur="onBlur"
         @focus="onFocus"
@@ -70,10 +71,13 @@ const emits = defineEmits([
   "onShowEmojiPicker",
   "onInputTap",
   "onBlur",
-  "onFocus"
+  "onFocus",
+  "onMention"
 ]);
 
 const convStore = ChatUIKIT.convStore;
+
+const convType = ChatUIKIT.convStore.currConversation?.conversationType;
 
 const isFocus = ref(false);
 
@@ -95,6 +99,16 @@ const showEmojiPicker = () => {
 
 const onInputTap = () => {
   emits("onInputTap");
+};
+
+const onInput = (e: any) => {
+  // uni-app recognizes mention messages
+  const text = e?.detail?.value;
+  if (convType === "groupChat") {
+    if (text.endsWith("@") || text.endsWith("@\n")) {
+      emits("onMention", true);
+    }
+  }
 };
 
 const handleSendMessage = async () => {
@@ -148,7 +162,7 @@ const onFocus = () => {
 };
 
 defineExpose({
-  insertEmoji(emoji: string) {
+  insertText(emoji: string) {
     text.value += emoji;
   },
   setIsFocus(focus: boolean) {
