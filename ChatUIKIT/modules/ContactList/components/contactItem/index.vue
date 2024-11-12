@@ -41,7 +41,10 @@ onUnmounted(() => {
 <style lang="scss" scoped>
 .item-wrap {
   display: flex;
+  width: 100vw;
+  height: 60px;
   align-items: center;
+  padding-left: 16px;
 }
 
 .user-avatar {
