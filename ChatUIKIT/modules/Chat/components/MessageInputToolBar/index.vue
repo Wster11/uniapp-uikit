@@ -3,13 +3,13 @@
     <swiper class="swiper">
       <swiper-item class="swiper-item">
         <view class="item-wrap">
-          <view v-if="featureConfig.InputImage" class="item">
+          <view v-if="featureConfig.inputImage" class="item">
             <ImageUpload />
           </view>
           <view v-if="featureConfig.inputVideo" class="item" style="width: 25%">
             <VideoUpload />
           </view>
-          <view v-if="featureConfig.inputVideo" class="item" style="width: 25%">
+          <view v-if="featureConfig.userCard" class="item" style="width: 25%">
             <UserCard @onUserCardButtonTap="selectUserCard" />
           </view>
         </view>

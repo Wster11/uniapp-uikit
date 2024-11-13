@@ -62,7 +62,7 @@ interface Props {
 
 const featureConfig = ChatUIKIT.getFeatureConfig();
 
-const isShowToolbar = featureConfig.inputVideo || featureConfig.InputImage;
+const isShowToolbar = featureConfig.inputVideo || featureConfig.inputImage;
 
 const props = defineProps<Props>();
 
@@ -107,7 +107,7 @@ const onInputTap = () => {
 const onInput = (e: any) => {
   // uni-app recognizes mention messages
   const text = e?.detail?.value;
-  if (convType === "groupChat") {
+  if (ChatUIKIT.getFeatureConfig().inputMention && convType === "groupChat") {
     if (text.endsWith("@") || text.endsWith("@\n")) {
       isFocus.value = false;
       emits("onMention", true);

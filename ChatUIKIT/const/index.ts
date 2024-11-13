@@ -23,10 +23,11 @@ const DEFAULT_FEATURES_CONFIG: FeatureConfig = {
   editMessage: true,
   replyMessage: true,
   inputEmoji: true,
-  InputImage: true,
+  inputImage: true,
   inputAudio: true,
   inputVideo: true,
-  InputMention: true
+  inputMention: true,
+  userCard: true
 };
 
 const USER_AVATAR_URL = "https://img.yzcdn.cn/vant/cat.jpeg";

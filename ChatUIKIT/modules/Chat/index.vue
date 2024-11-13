@@ -37,9 +37,17 @@
     <!-- emoji picker -->
     <EmojiPicker v-if="isShowEmojiPicker" @onEmojiPick="onEmojiPick" />
     <!-- mention list -->
-    <MessageMentionList ref="mentionListRef" @onSelect="onSelectMentionItem" />
+    <MessageMentionList
+      v-if="featureConfig.inputMention"
+      ref="mentionListRef"
+      @onSelect="onSelectMentionItem"
+    />
     <!-- contact list -->
-    <MessageContactList ref="contactListRef" @onSelect="onSelectUserCard" />
+    <MessageContactList
+      v-if="featureConfig.userCard"
+      ref="contactListRef"
+      @onSelect="onSelectUserCard"
+    />
   </view>
 </template>
 
@@ -73,7 +81,7 @@ const conversationType = ref<Chat.ConversationItem["conversationType"]>(
 );
 const appUserStore = ChatUIKIT.appUserStore;
 const groupStore = ChatUIKIT.groupStore;
-
+const featureConfig = ChatUIKIT.getFeatureConfig();
 const isShowMask = computed(() => {
   return isShowToolbar.value || isShowEmojiPicker.value;
 });

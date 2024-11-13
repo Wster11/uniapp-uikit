@@ -1,8 +1,8 @@
-import type { ChatUIKIT } from "../ChatUIKIT"
+import type { ChatKIT } from "../ChatUIKIT"
 
 
 declare global {
 	interface Uni {
-		$UIKIT : ChatUIKIT
+		$UIKIT : ChatKIT
 	}
 }

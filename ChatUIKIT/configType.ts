@@ -24,13 +24,15 @@ interface FeatureConfig {
   /** 是否支持表情消息 */
   inputEmoji?: boolean;
   /** 是否支持图片消息 */
-  InputImage?: boolean;
+  inputImage?: boolean;
   /** 是否支持语音消息 */
   inputAudio?: boolean;
   /** 是否支持视频消息 */
   inputVideo?: boolean;
   /** 是否支持Mention消息 */
-  InputMention?: boolean;
+  inputMention?: boolean;
+  /** 是否支持名片消息 */
+  userCard?: boolean;
 }
 
 interface ThemeConfig {

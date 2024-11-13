@@ -30,10 +30,10 @@ ChatUIKIT.init({
       // editMessage: false,
       // replyMessage: false,
       // inputEmoji: false,
-      // InputImage: false,
+      // inputImage: false,
       // inputAudio: false,
       // inputVideo: false,
-      // InputMention: false
+      // inputMention: false
     }
   }
 });
