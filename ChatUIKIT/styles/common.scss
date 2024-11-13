@@ -1,0 +1,17 @@
+.ellipsis {
+  white-space: nowrap;
+  /* 禁止换行 */
+  overflow: hidden;
+  /* 超出部分隐藏 */
+  text-overflow: ellipsis;
+  /* 使用省略号替代超出部分 */
+}
+
+.hidden {
+  opacity: 0;
+}
+
+.msg-emoji {
+  width: 20px;
+  height: 20px;
+}

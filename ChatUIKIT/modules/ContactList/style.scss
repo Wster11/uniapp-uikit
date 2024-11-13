@@ -1,0 +1,39 @@
+.contact-list-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+}
+
+.count {
+  color: #75828A;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.contact-search {
+  flex-shrink: 0;
+  margin: 8px;
+}
+
+.contact-menu {
+  flex-shrink: 0;
+}
+
+uni-page-body {
+  overflow: hidden;
+}
+
+.contact-index-list {
+  /*  #ifdef WEB  */
+  height: calc(100vh - 160px);
+  /*  #endif  */
+
+  /*  #ifndef WEB  */
+  height: calc(100vh - 52px);
+  /*  #endif  */
+}
