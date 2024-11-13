@@ -142,7 +142,7 @@ const handleSendMessage = async () => {
         avatarURL: ChatUIKIT.appUserStore.getSelfUserInfo().avatar,
         nickname: ChatUIKIT.appUserStore.getSelfUserInfo().name
       },
-      msgQuote: msgQuoteExt
+      msgQuote: msgQuoteExt?.msgID ? msgQuoteExt : null
     }
   });
   text.value = "";
