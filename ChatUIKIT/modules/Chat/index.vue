@@ -32,12 +32,14 @@
     </view>
     <!-- input toolbar -->
     <view v-if="isShowToolbar" class="chat-input-toolbar-wrap">
-      <MessageInputToolbar />
+      <MessageInputToolbar @onUserCardButtonTap="selectUserCard" />
     </view>
     <!-- emoji picker -->
     <EmojiPicker v-if="isShowEmojiPicker" @onEmojiPick="onEmojiPick" />
     <!-- mention list -->
     <MessageMentionList ref="mentionListRef" @onSelect="onSelectMentionItem" />
+    <!-- contact list -->
+    <MessageContactList ref="contactListRef" @onSelect="onSelectUserCard" />
   </view>
 </template>
 
@@ -49,6 +51,7 @@ import EmojiPicker from "./components/MessageInputToolBar/emojiPicker.vue";
 import MessageQuotePanel from "./components/Message/messageQuotePanel.vue";
 import MessageEdit from "./components/Message/messageEdit.vue";
 import MessageMentionList from "./components/MessageMentionList/index.vue";
+import MessageContactList from "./components/MessageContactList/index.vue";
 import { t } from "../../locales/index";
 import { ref, onMounted, computed, onUnmounted, provide } from "vue";
 import { onLoad } from "@dcloudio/uni-app";
@@ -56,10 +59,12 @@ import type { InputToolbarEvent, Chat } from "../../types/index";
 import { autorun } from "mobx";
 import { ChatUIKIT } from "../../index";
 import { AT_ALL } from "../../const/index";
+import { chatSDK } from "../../sdk";
 
 const msgListRef = ref(null);
 const msgInputRef = ref(null);
 const mentionListRef = ref(null);
+const contactListRef = ref(null);
 const conversationId = ref("");
 const isShowToolbar = ref(false);
 const isShowEmojiPicker = ref(false);
@@ -104,6 +109,10 @@ const onMention = () => {
   mentionListRef?.value?.showPopup();
 };
 
+const selectUserCard = () => {
+  contactListRef?.value?.showPopup();
+};
+
 const onSelectMentionItem = (userIds) => {
   const userNicks = userIds.map((userId) => {
     if (userId === AT_ALL) {
@@ -119,6 +128,30 @@ const onSelectMentionItem = (userIds) => {
   }
   msgInputRef?.value.addMentionUserIds(userIds);
   msgInputRef?.value.insertText(str);
+};
+
+const onSelectUserCard = (userIds) => {
+  const userId = userIds[0];
+  const userInfo = ChatUIKIT.appUserStore.getUserInfoFromStore(userId);
+  // 创建名片消息
+  const userCardMsg = chatSDK.message.create({
+    type: "custom",
+    to: ChatUIKIT.convStore.currConversation!.conversationId,
+    chatType: ChatUIKIT.convStore.currConversation!.conversationType,
+    ext: {
+      ease_chat_uikit_user_info: {
+        avatarURL: ChatUIKIT.appUserStore.getSelfUserInfo().avatar,
+        nickname: ChatUIKIT.appUserStore.getSelfUserInfo().name
+      }
+    },
+    customEvent: "userCard",
+    customExts: {
+      avatar: userInfo.avatar,
+      nickname: userInfo.name,
+      uid: userId
+    }
+  });
+  ChatUIKIT.messageStore.sendMessage(userCardMsg);
 };
 
 onMounted(() => {

@@ -9,6 +9,9 @@
           <view v-if="featureConfig.inputVideo" class="item" style="width: 25%">
             <VideoUpload />
           </view>
+          <view v-if="featureConfig.inputVideo" class="item" style="width: 25%">
+            <UserCard @onUserCardButtonTap="selectUserCard" />
+          </view>
         </view>
       </swiper-item>
     </swiper>
@@ -18,11 +21,16 @@
 <script setup lang="ts">
 import ImageUpload from "./imageUpload.vue";
 import VideoUpload from "./videoUpload.vue";
+import UserCard from "./userCard.vue";
 import { ChatUIKIT } from "../../../../index";
 
 const featureConfig = ChatUIKIT.getFeatureConfig();
 
-const emits = defineEmits(["onMessageSend"]);
+const emits = defineEmits(["onUserCardButtonTap"]);
+
+const selectUserCard = () => {
+  emits("onUserCardButtonTap");
+};
 </script>
 <style lang="scss" scoped>
 .message-input-toolbar {

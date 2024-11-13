@@ -150,6 +150,7 @@ class ChatStore {
       onVideoMessage: (msg) => ChatUIKIT.messageStore.onMessage(msg),
       onAudioMessage: (msg) => ChatUIKIT.messageStore.onMessage(msg),
       onFileMessage: (msg) => ChatUIKIT.messageStore.onMessage(msg),
+      onCustomMessage: (msg) => ChatUIKIT.messageStore.onMessage(msg),
       onRecallMessage: (msg) =>
         ChatUIKIT.messageStore.onRecallMessage(msg.mid, msg.from),
       onDeliveredMessage: (msg) => {

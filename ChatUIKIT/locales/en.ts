@@ -162,4 +162,5 @@ export default {
   newRequest: "New Request",
   mention: "@Mention",
   mentionAll: "All",
+  shareContact: "Share Contact",
 };

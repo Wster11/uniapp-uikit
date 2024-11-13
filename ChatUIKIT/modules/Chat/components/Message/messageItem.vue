@@ -52,7 +52,7 @@
             <AudioMessage :msg="msg" />
           </view>
           <view v-else-if="msg.type === 'custom'">
-            <view>[Custom]</view>
+            <UserCardMessage v-if="msg.customEvent === 'userCard'" :msg="msg" />
           </view>
           <view v-else-if="msg.type === 'file'">
             <FileMessage :msg="msg" />
@@ -79,6 +79,7 @@ import ImageMessage from "./messageImage.vue";
 import VideoMessage from "./messageVideo.vue";
 import AudioMessage from "./messageAudio.vue";
 import FileMessage from "./messageFile.vue";
+import UserCardMessage from "./messageUserCard.vue";
 import MessageQuote from "./messageQuote.vue";
 import MessageActions from "./messageActions.vue";
 import MessageStatus from "./messageStatus.vue";

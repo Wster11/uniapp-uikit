@@ -161,5 +161,6 @@ export default {
   noMoreMessage: "没有更多消息",
   newRequest: "新请求",
   mention: "@提及",
-  mentionAll: "所有人"
+  mentionAll: "所有人",
+  shareContact: "分享联系人",
 };

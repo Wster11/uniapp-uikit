@@ -1,12 +1,12 @@
 <template>
   <view class="tool-video-wrap tool-item" @tap="chooseVideo">
-    <ItemContainer :title="title" :iconUrl="ImageIcon"> </ItemContainer>
+    <ItemContainer :title="title" :iconUrl="videoButton"> </ItemContainer>
   </view>
 </template>
 
 <script lang="ts" setup>
 import ItemContainer from "./itemContainer.vue";
-import ImageIcon from "../../../../assets/icon/imgButton.png";
+import videoButton from "../../../../assets/icon/videoButton.png";
 import { API_URL } from "@/const/index";
 import type { InputToolbarEvent } from "@/types/index";
 import { inject } from "vue";
