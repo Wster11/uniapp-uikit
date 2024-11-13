@@ -160,5 +160,6 @@ export default {
   tapPlay: "Tap to play",
   noMoreMessage: "No more messages",
   newRequest: "New Request",
-  mention: "@Mention"
+  mention: "@Mention",
+  mentionAll: "All",
 };

@@ -16,8 +16,14 @@
         <view class="content">
           <scroll-view scroll-y style="height: 100%" @scrolltolower="loadMore">
             <UserItem
+              :key="t('mentionAll')"
+              :avatar="MentionAll"
+              :contact="{ userId: t('mentionAll') }"
+              @tap="onSelect(AT_ALL)"
+            />
+            <UserItem
               v-for="item in memberList"
-              :key="item.userId"
+              :key="item.member || item.owner"
               :contact="{ userId: item.member || item.owner }"
               @tap="onSelect(item.member || item.owner)"
             />
@@ -35,7 +41,8 @@ import UserItem from "../../../ContactList/components/userItem/index.vue";
 import { t } from "../../../../locales/index";
 import { ChatUIKIT } from "../../../../index";
 import { Chat } from "../../../../sdk";
-import { GET_GROUP_MEMBERS_PAGESIZE } from "../../../../const/index";
+import { GET_GROUP_MEMBERS_PAGESIZE, AT_ALL } from "../../../../const/index";
+import MentionAll from "../../../../assets/icon/alAll.png";
 
 const emits = defineEmits(["onSelect"]);
 const memberList = ref<Chat.GroupMember[]>([]);

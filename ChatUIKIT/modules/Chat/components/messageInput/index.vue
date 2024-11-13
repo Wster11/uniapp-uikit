@@ -52,6 +52,7 @@ import EmojiIcon from "../../../../assets/icon/emoji.png";
 import SendIcon from "../../../../assets/icon/send.png";
 import { ChatUIKIT } from "../../../../index";
 import { t } from "../../../../locales/index";
+import { AT_ALL } from "../../../../const/index";
 import { MessageQuoteExt } from "../../../../types/index";
 import { chatSDK } from "../../../../sdk";
 
@@ -85,6 +86,8 @@ const audioPopupRef = ref(null);
 
 const text = ref("");
 
+const mentionUserIds = ref<string>([]);
+
 const showAudioPopup = () => {
   audioPopupRef.value.showAudioPopup();
 };
@@ -114,6 +117,9 @@ const onInput = (e: any) => {
 const handleSendMessage = async () => {
   let textMessage = formatTextMessage(text.value);
   let msgQuoteExt: MessageQuoteExt = {} as MessageQuoteExt;
+  let isAtAll = false;
+  mentionUserIds.value;
+  if (mentionUserIds.value.includes(AT_ALL)) isAtAll = true;
   const quoteMessage = ChatUIKIT.messageStore.quoteMessage;
   if (quoteMessage) {
     msgQuoteExt = {
@@ -130,6 +136,7 @@ const handleSendMessage = async () => {
     type: "txt",
     msg: textMessage,
     ext: {
+      em_at_list: isAtAll ? AT_ALL : mentionUserIds.value,
       ease_chat_uikit_user_info: {
         avatarURL: ChatUIKIT.appUserStore.getSelfUserInfo().avatar,
         nickname: ChatUIKIT.appUserStore.getSelfUserInfo().name
@@ -138,6 +145,7 @@ const handleSendMessage = async () => {
     }
   });
   text.value = "";
+  mentionUserIds.value = [];
   try {
     await ChatUIKIT.messageStore.sendMessage(msg);
     nextTick(() => {
@@ -167,6 +175,9 @@ defineExpose({
   },
   setIsFocus(focus: boolean) {
     isFocus.value = focus;
+  },
+  addMentionUserIds(userIds: string[]) {
+    mentionUserIds.value = [...new Set([...mentionUserIds.value, ...userIds])];
   }
 });
 </script>

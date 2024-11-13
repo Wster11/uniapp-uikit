@@ -3,7 +3,7 @@
     <Avatar
       class="user-avatar"
       :size="40"
-      :src="userInfo.avatar"
+      :src="avatar || userInfo.avatar"
       :placeholder="USER_AVATAR_URL"
     />
     <view class="right">
@@ -22,6 +22,7 @@ import { autorun } from "mobx";
 
 interface Props {
   contact: Chat.ContactItem;
+  avatar?: string;
 }
 
 const props = defineProps<Props>();

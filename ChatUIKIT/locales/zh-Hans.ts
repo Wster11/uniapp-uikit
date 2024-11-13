@@ -160,5 +160,6 @@ export default {
   tapPlay: "点击播放",
   noMoreMessage: "没有更多消息",
   newRequest: "新请求",
-  mention: "@提及"
+  mention: "@提及",
+  mentionAll: "所有人"
 };

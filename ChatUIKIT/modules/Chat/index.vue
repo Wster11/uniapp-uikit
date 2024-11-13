@@ -49,11 +49,13 @@ import EmojiPicker from "./components/messageInputToolBar/emojiPicker.vue";
 import MessageQuotePanel from "./components/message/messageQuotePanel.vue";
 import MessageEdit from "./components/message/messageEdit.vue";
 import MessageMentionList from "./components/MessageMentionList/index.vue";
+import { t } from "../../locales/index";
 import { ref, onMounted, computed, onUnmounted, provide } from "vue";
 import { onLoad } from "@dcloudio/uni-app";
 import type { InputToolbarEvent, Chat } from "../../types/index";
 import { autorun } from "mobx";
 import { ChatUIKIT } from "../../index";
+import { AT_ALL } from "../../const/index";
 
 const msgListRef = ref(null);
 const msgInputRef = ref(null);
@@ -104,13 +106,18 @@ const onMention = () => {
 
 const onSelectMentionItem = (userIds) => {
   const userNicks = userIds.map((userId) => {
+    if (userId === AT_ALL) {
+      return t("mentionAll");
+    }
     return ChatUIKIT.appUserStore.getUserInfoFromStore(userId).name;
   });
+
   let str = userNicks.join("");
   if (userNicks.length === 0) {
     str = userNicks.join("@");
     return;
   }
+  msgInputRef?.value.addMentionUserIds(userIds);
   msgInputRef?.value.insertText(str);
 };
 

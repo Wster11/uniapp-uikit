@@ -323,6 +323,10 @@ class ConversationStore {
 
   setAtTypeByMessage(message: MixedMessageBody) {
     const conversationId = this.getCvsIdFromMessage(message);
+    // 在当前会话中不设置@状态
+    if (this.currConversation?.conversationId === conversationId) {
+      return;
+    }
     const isCurrentCvs =
       // @ts-ignore
       this.currConversation?.conversationType == message.chatType &&
