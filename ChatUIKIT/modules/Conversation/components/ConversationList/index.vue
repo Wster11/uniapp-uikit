@@ -1,7 +1,7 @@
 <template>
   <view class="conversation-list-wrap">
     <view v-if="conversationList.length">
-      <view class="search-btn-wrap">
+      <view @tap="onSearch" class="search-btn-wrap">
         <SearchButton />
       </view>
       <view class="convs-wrap">
@@ -73,6 +73,12 @@ const onMuteButtonClick = (conv: Chat.ConversationItem) => {
 
 const handleLeftSwipe = (convId: string | null) => {
   selectedConvId.value = convId;
+};
+
+const onSearch = () => {
+  uni.navigateTo({
+    url: "/ChatUIKIT/modules/ConversationSearchList/index"
+  });
 };
 
 onUnmounted(() => {

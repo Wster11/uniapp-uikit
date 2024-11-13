@@ -30,7 +30,7 @@ const unwatchGroupList = autorun(() => {
 
 const toChatPage = (id: string) => {
   uni.navigateTo({
-    url: `../../modules/Chat/index?type=groupChat&id=${id}`
+    url: `/ChatUIKIT/modules/Chat/index?type=groupChat&id=${id}`
   });
 };
 

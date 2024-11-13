@@ -34,6 +34,16 @@
 			}
 		},
 		{
+			"path": "ChatUIKIT/modules/ConversationSearchList/index",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "Video Preview",
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+		},
+		{
 			"path": "ChatUIKIT/modules/VideoPreview/index",
 			"style": {
 				"navigationBarTitleText": "Video Preview",

@@ -180,7 +180,7 @@ const getAvatarPlaceholder = () => {
 const toChatPage = () => {
   emits("leftSwipe", null);
   uni.navigateTo({
-    url: `../Chat/index?type=${props.conversation.conversationType}&id=${props.conversation.conversationId}`
+    url: `/ChatUIKIT/modules/Chat/index?type=${props.conversation.conversationType}&id=${props.conversation.conversationId}`
   });
 };
 

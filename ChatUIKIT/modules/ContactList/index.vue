@@ -52,13 +52,13 @@ const unwatchJoinedGroupCount = autorun(() => {
 
 const toChatPage = (id: string) => {
   uni.navigateTo({
-    url: `../../modules/Chat/index?type=singleChat&id=${id}`
+    url: `/ChatUIKIT/modules/Chat/index?type=singleChat&id=${id}`
   });
 };
 
 const toGroupPage = () => {
   uni.navigateTo({
-    url: `../../modules/GroupList/index`
+    url: `/ChatUIKIT/modules/GroupList/index`
   });
 };
 

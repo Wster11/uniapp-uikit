@@ -89,7 +89,7 @@ const toVideoPreview = () => {
     return;
   }
   uni.navigateTo({
-    url: `../VideoPreview/index?url=${props.msg.url}`
+    url: `/ChatUIKIT/modules/VideoPreview/index?url=${props.msg.url}`
   });
 };
 </script>
