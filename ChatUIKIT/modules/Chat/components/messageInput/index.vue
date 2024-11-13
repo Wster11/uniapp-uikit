@@ -109,6 +109,7 @@ const onInput = (e: any) => {
   const text = e?.detail?.value;
   if (convType === "groupChat") {
     if (text.endsWith("@") || text.endsWith("@\n")) {
+      isFocus.value = false;
       emits("onMention", true);
     }
   }
