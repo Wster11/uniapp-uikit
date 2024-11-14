@@ -156,6 +156,7 @@ const scrollInToView = (id: string) => {
 }
 
 scroll-view ::-webkit-scrollbar {
+  display: none;
   width: 0;
   height: 0;
   background: transparent;
