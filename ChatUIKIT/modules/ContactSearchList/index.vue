@@ -3,26 +3,19 @@
     <view class="search-wrap">
       <SearchInput
         :focus="true"
-        :placeholder="t('conversationSearchPlaceholder')"
+        :placeholder="t('searchContact')"
         @input="onInput"
         @cancel="cancelSearch"
       />
     </view>
     <view class="search-content" v-if="searchList.length">
-      <view
-        class="search-item"
+      <UserItem
         v-for="item in searchList"
         :key="item.conversationId"
-        @click="toChatPage(item)"
-      >
-        <GroupItem
-          v-if="item.conversationType === 'groupChat'"
-          :group="
-            ChatUIKIT.groupStore.getGroupInfoFromStore(item.conversationId)
-          "
-        />
-        <UserItem v-else :user="{ userId: item.conversationId }" />
-      </view>
+        @tap="toChatPage(item)"
+        class="search-item"
+        :user="{ userId: item.userId }"
+      />
     </view>
     <Empty v-else />
   </view>
@@ -30,7 +23,6 @@
 
 <script setup lang="ts">
 import SearchInput from "../common/SearchInput/index.vue";
-import GroupItem from "../GroupList/components/GroupItem/index.vue";
 import UserItem from "../ContactList/components/UserItem/index.vue";
 import Empty from "../common/Empty/index.vue";
 import { ChatUIKIT } from "../../index";
@@ -47,28 +39,22 @@ const searchList = computed(() => {
   if (!searchValue.value) {
     return [];
   }
-  return ChatUIKIT.convStore.conversationList.filter((item) => {
-    if (item.conversationType === "singleChat") {
-      return ChatUIKIT.appUserStore
-        .getUserInfoFromStore(item.conversationId)
-        .name.includes(searchValue.value);
-    } else {
-      return ChatUIKIT.groupStore
-        .getGroupInfoFromStore(item.conversationId)
-        ?.groupName.includes(searchValue.value);
-    }
+  return ChatUIKIT.contactStore.contacts.filter((item) => {
+    return ChatUIKIT.appUserStore
+      .getUserInfoFromStore(item.userId)
+      .name.includes(searchValue.value);
   });
 });
 
 const cancelSearch = () => {
   uni.switchTab({
-    url: "/ChatUIKIT/modules/Conversation/index"
+    url: "/ChatUIKIT/modules/ContactList/index"
   });
 };
 
 const toChatPage = (item) => {
   uni.redirectTo({
-    url: `/ChatUIKIT/modules/Chat/index?id=${item.conversationId}&type=${item.conversationType}`
+    url: `/ChatUIKIT/modules/Chat/index?id=${item.userId}&type=singleChat`
   });
 };
 </script>

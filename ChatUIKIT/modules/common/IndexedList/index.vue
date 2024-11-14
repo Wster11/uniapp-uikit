@@ -121,7 +121,6 @@ const scrollInToView = (id: string) => {
       display: flex;
       justify-content: flex-start;
       align-items: center;
-      padding-left: 16px;
     }
     .index-item-name {
       width: 100%;
@@ -161,5 +160,4 @@ scroll-view ::-webkit-scrollbar {
   height: 0;
   background: transparent;
 }
-
 </style>

@@ -60,6 +60,16 @@
 					"bounce": "none"
 				}
 			}
+		},
+		{
+			"path": "ChatUIKIT/modules/ContactSearchList/index",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "ChatUIKIT Uniapp",
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
 		}
 	],
 	"tabBar": {

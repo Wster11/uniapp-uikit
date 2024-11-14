@@ -1,9 +1,20 @@
 <template>
   <view class="search-btn">
     <view class="search-icon"></view>
-    <view>搜索联系人</view>
+    <view>{{ placeholder }}</view>
   </view>
 </template>
+
+<script setup lang="ts">
+import { t } from "../../../locales";
+interface Props {
+  placeholder?: string;
+}
+
+const props = defineProps<Props>();
+
+const placeholder = props.placeholder || t("searchPlaceholder");
+</script>
 
 <style lang="scss" scoped>
 .search-icon {

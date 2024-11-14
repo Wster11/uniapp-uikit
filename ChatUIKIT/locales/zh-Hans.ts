@@ -37,7 +37,7 @@ export default {
   contact: "联系人",
   addContact: "添加好友",
   addGroup: "申请入群",
-  searchPlaceholder: "请输入...",
+  searchPlaceholder: "搜索",
   searchNoContact: "无搜索结果",
   add: "申请",
   applyAddFriend: "请求添加您为好友",
@@ -163,4 +163,5 @@ export default {
   mention: "@提及",
   mentionAll: "所有人",
   shareContact: "分享联系人",
+  searchContact: "搜索联系人"
 };

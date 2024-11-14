@@ -43,7 +43,7 @@ onUnmounted(() => {
 @import url("../../../../styles/common.scss");
 .item-wrap {
   display: flex;
-  width: 100vw;
+  width:100%;
   height: 60px;
   align-items: center;
 }

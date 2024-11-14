@@ -14,7 +14,7 @@
           </view>
         </view>
         <view class="content">
-          <IndexedList :options="contactList">
+          <IndexedList class="contact-indexed-list" :options="contactList">
             <template v-slot:indexedItem="slotProps">
               <UserItem
                 class="contact-item"
@@ -96,6 +96,12 @@ onUnmounted(() => {
   align-items: center;
 }
 
+.contact-indexed-list {
+  display: flex;
+  padding-left: 16px;
+  box-sizing: border-box;
+}
+
 .share {
   color: #171a1c;
   font-size: 16px;
@@ -105,7 +111,8 @@ onUnmounted(() => {
 }
 
 .contact-item {
-  margin: 0 16px;
+  display: flex;
+  width: 100vw;
 }
 
 .arrow-left {

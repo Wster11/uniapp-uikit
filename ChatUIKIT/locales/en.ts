@@ -37,7 +37,7 @@ export default {
   contact: "Contacts",
   addContact: "Add Friend",
   addGroup: "Join Group",
-  searchPlaceholder: "Enter...",
+  searchPlaceholder: "Search",
   searchNoContact: "No results found",
   add: "Request",
   applyAddFriend: "Request to add you as a friend",
@@ -163,4 +163,5 @@ export default {
   mention: "@Mention",
   mentionAll: "All",
   shareContact: "Share Contact",
+  searchContact: "Search Contact",
 };

@@ -48,7 +48,6 @@ import MentionAll from "../../../../assets/icon/alAll.png";
 
 const emits = defineEmits(["onSelect"]);
 const memberList = ref<Chat.GroupMember[]>([]);
-const groupId = ChatUIKIT.convStore.currConversation?.conversationId || "";
 const hasMore = ref(true);
 const popupRef = ref(null);
 
@@ -57,6 +56,7 @@ let pageNum = 1;
 
 const listGroupMembers = async () => {
   loading = true;
+  const groupId = ChatUIKIT.convStore.currConversation?.conversationId || "";
   try {
     const res = await ChatUIKIT.groupStore.getGroupMembers(groupId, pageNum);
     const dt = res.data || [];
@@ -117,6 +117,7 @@ defineExpose({
 }
 
 .member-item {
+  display: flex;
   margin: 0 16px;
 }
 

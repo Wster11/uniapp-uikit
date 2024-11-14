@@ -28,11 +28,13 @@ uni-page-body {
   overflow: hidden;
 }
 
-.contact-item{
-  margin-left: 16px;
+.contact-item {
+  width: 100vw;
 }
 
 .contact-index-list {
+  box-sizing: border-box;
+  padding-left: 16px;
   /*  #ifdef WEB  */
   height: calc(100vh - 160px);
   /*  #endif  */

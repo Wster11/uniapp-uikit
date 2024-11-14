@@ -1,6 +1,6 @@
 <template>
   <view class="contact-list-wrap">
-    <SearchButton class="contact-search" />
+    <SearchButton @tap="toSearchPage" class="contact-search" />
     <IndexedList class="contact-index-list" :options="contactList">
       <template v-slot:header>
         <MenuItem class="contact-menu" :title="t('newRequest')" />
@@ -60,6 +60,12 @@ const toChatPage = (id: string) => {
 const toGroupPage = () => {
   uni.navigateTo({
     url: `/ChatUIKIT/modules/GroupList/index`
+  });
+};
+
+const toSearchPage = () => {
+  uni.navigateTo({
+    url: `/ChatUIKIT/modules/ContactSearchList/index`
   });
 };
 

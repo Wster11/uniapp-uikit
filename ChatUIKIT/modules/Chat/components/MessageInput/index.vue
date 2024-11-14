@@ -107,7 +107,10 @@ const onInputTap = () => {
 const onInput = (e: any) => {
   // uni-app recognizes mention messages
   const text = e?.detail?.value;
-  if (ChatUIKIT.getFeatureConfig().inputMention && convType === "groupChat") {
+  if (
+    ChatUIKIT.getFeatureConfig().inputMention &&
+    ChatUIKIT.convStore.currConversation?.conversationType === "groupChat"
+  ) {
     if (text.endsWith("@") || text.endsWith("@\n")) {
       isFocus.value = false;
       emits("onMention", true);
