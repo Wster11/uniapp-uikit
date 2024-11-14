@@ -22,7 +22,7 @@ const placeholder = props.placeholder || t("searchPlaceholder");
   height: 22px;
   background: url("../../../assets/icon/search.png");
   background-size: 100% 100%;
-  margin-right: 4px;
+  margin-right: 5px;
 }
 
 .search-btn {
