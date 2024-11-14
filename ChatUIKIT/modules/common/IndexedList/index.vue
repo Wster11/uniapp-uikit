@@ -111,6 +111,7 @@ const scrollInToView = (id: string) => {
   .initial {
     width: 100%;
     .letter {
+      padding-left: 16px;
       width: 100%;
       height: 32px;
       color: #797d82;

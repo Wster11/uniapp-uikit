@@ -27,9 +27,14 @@ const props = defineProps<Props>();
 @import url("../../../../styles/common.scss");
 .item-wrap {
   display: flex;
+  box-sizing: border-box;
   width: 100%;
   height: 60px;
   align-items: center;
+  padding-left: 16px;
+  &:active {
+    background-color: #f5f5f5;
+  }
 }
 
 .avatar {

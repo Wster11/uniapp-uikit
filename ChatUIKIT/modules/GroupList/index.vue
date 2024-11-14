@@ -43,6 +43,5 @@ onUnmounted(() => {
 .group-list-wrap {
   display: flex;
   flex-direction: column;
-  margin: 0 16px;
 }
 </style>

@@ -226,6 +226,11 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss">
+.conversation-item-wrap{
+  &:active {
+    background-color: #f5f5f5;
+  }
+}
 @import url("../../../../styles/common.scss");
 @import url("./style.scss");
 </style>

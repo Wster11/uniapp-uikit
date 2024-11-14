@@ -30,10 +30,13 @@ const props = defineProps<Props>();
   line-height: 22px;
   font-weight: 500;
   color: #171a1c;
-  cursor: pointer;
   height: 54px;
   background: #f9fafa;
   border-bottom: 0.5px solid #e3e6e8;
+  padding-left: 16px;
+  &:active {
+    background-color: #f5f5f5;
+  }
 
   .right {
     display: flex;

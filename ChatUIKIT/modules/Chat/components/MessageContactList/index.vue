@@ -98,7 +98,6 @@ onUnmounted(() => {
 
 .contact-indexed-list {
   display: flex;
-  padding-left: 16px;
   box-sizing: border-box;
 }
 

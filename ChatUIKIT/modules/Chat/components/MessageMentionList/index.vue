@@ -118,7 +118,6 @@ defineExpose({
 
 .member-item {
   display: flex;
-  margin: 0 16px;
 }
 
 .content {

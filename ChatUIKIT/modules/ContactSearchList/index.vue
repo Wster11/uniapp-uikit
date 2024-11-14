@@ -73,7 +73,6 @@ const toChatPage = (item) => {
 }
 
 .search-item {
-  padding: 0 16px;
   box-sizing: border-box;
 }
 
