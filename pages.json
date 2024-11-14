@@ -37,7 +37,7 @@
 			"path": "ChatUIKIT/modules/ConversationSearchList/index",
 			"style": {
 				"navigationStyle": "custom",
-				"navigationBarTitleText": "Video Preview",
+				"navigationBarTitleText": "ChatUIKIT Uniapp",
 				"app-plus": {
 					"bounce": "none"
 				}

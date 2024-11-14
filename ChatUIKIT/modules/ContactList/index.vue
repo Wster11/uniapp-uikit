@@ -16,6 +16,7 @@
       </template>
       <template v-slot:indexedItem="slotProps">
         <UserItem
+          class="contact-item"
           :user="slotProps.item"
           @tap="toChatPage(slotProps.item.userId)"
         />

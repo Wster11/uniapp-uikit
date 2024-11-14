@@ -30,7 +30,6 @@ const props = defineProps<Props>();
   width: 100vw;
   height: 60px;
   align-items: center;
-  padding-left: 16px;
 }
 
 .avatar {

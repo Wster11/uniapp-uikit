@@ -3,27 +3,40 @@
     <view class="content">
       <view class="icon"></view>
       <input
+        v-model="text"
+        class="input"
         @input="handleInput"
         type="text"
         :focus="props.focus"
-        placeholder="搜索"
+        :placeholder="props.placeholder"
       />
+      <view v-if="text.length" class="clear-icon" @tap="handleClear"></view>
     </view>
-    <view @tap="handleCancel" class="cancel">取消</view>
+    <view @tap="handleCancel" class="cancel">{{ t("cancel") }}</view>
   </view>
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
+import { t } from "../../../locales";
 interface Props {
   focus?: boolean;
+  placeholder?: string;
 }
 
 const props = defineProps<Props>();
+
+const text = ref("");
 
 const emits = defineEmits(["input", "cancel"]);
 
 const handleInput = (e) => {
   emits("input", e.detail.value);
+};
+
+const handleClear = () => {
+  text.value = "";
+  emits("input", "");
 };
 
 const handleCancel = () => {
@@ -50,15 +63,28 @@ const handleCancel = () => {
     font-style: normal;
     font-weight: 400;
     line-height: 22px;
+    padding: 0 5px;
   }
+}
+.input {
+  flex: 1;
 }
 
 .icon {
+  flex-shrink: 0;
   width: 22px;
   height: 22px;
-  background-image: url("../../assets/icon/search.png");
+  background-image: url("../../../assets/icon/search.png");
   background-size: 100% 100%;
   margin-right: 5px;
+}
+
+.clear-icon {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  background-image: url("../../../assets/icon/cancel.png");
+  background-size: 100% 100%;
 }
 
 .cancel {

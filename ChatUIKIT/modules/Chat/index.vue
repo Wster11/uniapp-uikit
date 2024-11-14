@@ -192,9 +192,13 @@ onLoad((option) => {
       title =
         groupStore.getGroupInfoFromStore(conversationId.value)?.groupName || "";
     }
-    uni.setNavigationBarTitle({
-      title: title
-    });
+
+    setTimeout(() => {
+      // 偶现标题不更新的问题
+      uni.setNavigationBarTitle({
+        title: title
+      });
+    }, 0);
   }
 });
 

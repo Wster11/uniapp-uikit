@@ -1,22 +1,32 @@
 <template>
   <view class="search-list-wrap">
     <view class="search-wrap">
-      <SearchInput :focus="true" @input="onInput" @cancel="cancelSearch" />
+      <SearchInput
+        :focus="true"
+        :placeholder="t('conversationSearchPlaceholder')"
+        @input="onInput"
+        @cancel="cancelSearch"
+      />
     </view>
-    <view v-if="searchList.length">
+    <view class="search-content" v-if="searchList.length">
       <view
-        class="search-item"
         v-for="item in searchList"
         :key="item.conversationId"
         @click="toChatPage(item)"
       >
         <GroupItem
+          class="search-item"
           v-if="item.conversationType === 'groupChat'"
           :group="
             ChatUIKIT.groupStore.getGroupInfoFromStore(item.conversationId)
           "
         />
-        <UserItem v-else :user="{ userId: item.conversationId }" />
+
+        <UserItem
+          class="search-item"
+          v-else
+          :user="{ userId: item.conversationId }"
+        />
       </view>
     </view>
     <Empty v-else />
@@ -29,6 +39,7 @@ import GroupItem from "../GroupList/components/GroupItem/index.vue";
 import UserItem from "../ContactList/components/UserItem/index.vue";
 import Empty from "../common/Empty/index.vue";
 import { ChatUIKIT } from "../../index";
+import { t } from "../../locales";
 import { ref, computed } from "vue";
 
 const searchValue = ref("");
@@ -69,14 +80,28 @@ const toChatPage = (item) => {
 
 <style lang="scss" scoped>
 .search-wrap {
+  flex-shrink: 0;
   padding: 7px 20px 7px 7px;
 }
 
+.search-content {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.search-item {
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
 .search-list-wrap {
+  height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   /*  #ifndef WEB  */
-  margin-top: 44px;
+  padding-top: 44px;
+  height: calc(100vh - 44px);
   /*  #endif  */
 }
 </style>
