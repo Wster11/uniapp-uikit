@@ -16,12 +16,14 @@
         <view class="content">
           <scroll-view scroll-y style="height: 100%" @scrolltolower="loadMore">
             <UserItem
+              class="member-item"
               :key="t('mentionAll')"
               :avatar="MentionAll"
               :user="{ userId: t('mentionAll') }"
               @tap="onSelect(AT_ALL)"
             />
             <UserItem
+              class="member-item"
               v-for="item in memberList"
               :key="item.member || item.owner"
               :user="{ userId: item.member || item.owner }"
@@ -112,6 +114,10 @@ defineExpose({
   display: flex;
   flex-direction: column;
   height: 500px;
+}
+
+.member-item {
+  margin: 0 16px;
 }
 
 .content {

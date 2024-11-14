@@ -17,6 +17,7 @@
           <IndexedList :options="contactList">
             <template v-slot:indexedItem="slotProps">
               <UserItem
+                class="contact-item"
                 :user="slotProps.item"
                 @tap="onSelect(slotProps.item.userId)"
               />
@@ -101,6 +102,10 @@ onUnmounted(() => {
   font-style: normal;
   font-weight: 500;
   line-height: 22px;
+}
+
+.contact-item {
+  margin: 0 16px;
 }
 
 .arrow-left {
