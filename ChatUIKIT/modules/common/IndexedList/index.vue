@@ -21,7 +21,11 @@
             :key="indexedItem.id"
           >
             <label class="label">
-              <checkbox class="checkbox" :value="indexedItem.id" />
+              <checkbox
+                class="checkbox"
+                :value="indexedItem.id"
+                :checked="props.checkedList.includes(indexedItem.id)"
+              />
               <slot name="indexedItem" :item="indexedItem"></slot>
             </label>
           </view>
@@ -79,6 +83,7 @@ interface IndexedItem {
 interface Props {
   options: IndexedItem[];
   withCheckbox?: boolean;
+  checkedList?: string[];
 }
 
 const emits = defineEmits(["checkboxChange"]);

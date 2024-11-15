@@ -1,35 +1,46 @@
 <template>
   <view class="group-create-wrap">
-    <NavBar @onBack="onBack">
-      <template v-slot:left>
-        <view class="title" v-text="t('createGroup')"></view>
-      </template>
-      <template v-slot:right>
-        <view
-          :class="[
-            'create-btn',
-            { 'create-btn-disabled': !selectedUserIds.length }
-          ]"
-          @tap="createGroup"
-          >{{ t("createGroupBtn") + "(" + selectedUserIds.length + ")" }}</view
-        >
-      </template>
-    </NavBar>
-    <view class="search-wrap">
-      <SearchButton :placeholder="t('searchContact')" />
+    <view v-if="!isSearch">
+      <NavBar @onBack="onBack">
+        <template v-slot:left>
+          <view class="title" v-text="t('createGroup')"></view>
+        </template>
+        <template v-slot:right>
+          <view
+            :class="[
+              'create-btn',
+              { 'create-btn-disabled': !selectedUserIds.length }
+            ]"
+            @tap="createGroup"
+            >{{
+              t("createGroupBtn") + "(" + selectedUserIds.length + ")"
+            }}</view
+          >
+        </template>
+      </NavBar>
+      <view class="search-wrap" @tap="isSearch = true">
+        <SearchButton :placeholder="t('searchContact')" />
+      </view>
+      <IndexedList
+        v-if="contactList.length"
+        class="contact-indexed-list"
+        :checkedList="selectedUserIds"
+        :options="contactList"
+        :withCheckbox="true"
+        @checkboxChange="onCheckboxChange"
+      >
+        <template v-slot:indexedItem="slotProps">
+          <UserItem class="contact-item" :user="slotProps.item" />
+        </template>
+      </IndexedList>
+      <Empty v-else />
     </view>
-    <IndexedList
-      v-if="contactList.length"
-      class="contact-indexed-list"
-      :options="contactList"
-      :withCheckbox="true"
+    <SearchList
+      v-else
+      :checkedList="selectedUserIds"
       @checkboxChange="onCheckboxChange"
-    >
-      <template v-slot:indexedItem="slotProps">
-        <UserItem class="contact-item" :user="slotProps.item" />
-      </template>
-    </IndexedList>
-    <Empty v-else />
+      @cancel="isSearch = false"
+    />
   </view>
 </template>
 
@@ -39,6 +50,7 @@ import NavBar from "../common/NavBar/index.vue";
 import UserItem from "../ContactList/components/UserItem/index.vue";
 import Empty from "../common/Empty/index.vue";
 import IndexedList from "../common/IndexedList/index.vue";
+import SearchList from "./searchList.vue";
 import { ChatUIKIT } from "../../index";
 import { t } from "../../locales";
 import { Chat } from "../../sdk";
@@ -46,6 +58,7 @@ import { autorun } from "mobx";
 import { ref, onUnmounted } from "vue";
 
 const contactList = ref<Chat.ContactItem[]>([]);
+const isSearch = ref(false);
 
 const selectedUserIds = ref([]);
 
@@ -58,7 +71,6 @@ const unwatchContactList = autorun(() => {
 });
 
 const onCheckboxChange = (values) => {
-  console.log(values, "values");
   selectedUserIds.value = values;
 };
 
