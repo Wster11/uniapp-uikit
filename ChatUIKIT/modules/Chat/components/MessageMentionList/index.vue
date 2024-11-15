@@ -27,6 +27,9 @@
               v-for="item in memberList"
               :key="item.member || item.owner"
               :user="{ userId: item.member || item.owner }"
+              v-show="
+                (item.member || item.owner) !== ChatUIKIT.getChatConn().user
+              "
               @tap="onSelect(item.member || item.owner)"
             />
           </scroll-view>
