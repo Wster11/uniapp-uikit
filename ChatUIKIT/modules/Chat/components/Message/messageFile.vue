@@ -1,5 +1,5 @@
 <template>
-  <view :class="['msg-file', { isSelf: isSelf }]">
+  <view :class="['msg-file', { isSelf: isSelf }]" @tap="previewFile">
     <view class="left"> </view>
     <view class="right">
       <view class="file-name ellipsis">{{ props.msg.filename }}</view>
@@ -18,6 +18,40 @@ interface Props {
 const props = defineProps<Props>();
 const isSelf = ChatUIKIT.messageStore.checkMessageFromIsSelf(props.msg);
 const fileSize = (props.msg.file_length / 1024).toFixed(2) + "kb";
+
+const previewFile = () => {
+  /*  #ifndef WEB  */
+  uni.showLoading({
+    title: "loading",
+    mask: true
+  });
+  uni.downloadFile({
+    url: props.msg.url,
+    success: function (res) {
+      let filePath = res.tempFilePath;
+      uni.openDocument({
+        filePath: filePath,
+        showMenu: false,
+        success: function (res) {
+          console.log("open ducoment success");
+        },
+        fail: function (err) {
+          console.log("open ducoment fail", err);
+        }
+      });
+    },
+    fail: (err) => {
+      uni.showToast({
+        title: "文件下载失败",
+        icon: "none"
+      });
+    },
+    complete: () => {
+      uni.hideLoading();
+    }
+  });
+  /*  #endif  */
+};
 </script>
 
 <style lang="scss" scoped>
