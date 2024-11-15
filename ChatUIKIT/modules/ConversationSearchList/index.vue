@@ -91,7 +91,7 @@ const toChatPage = (item) => {
 }
 
 .search-list-wrap {
-  height: 100vh;
+  height: calc(100vh - var(--status-bar-height));
   display: flex;
   flex-direction: column;
   overflow: hidden;
