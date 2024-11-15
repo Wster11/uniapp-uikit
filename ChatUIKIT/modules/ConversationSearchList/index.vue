@@ -95,9 +95,6 @@ const toChatPage = (item) => {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  /*  #ifndef WEB  */
-  padding-top: 44px;
-  height: calc(100vh - 44px);
-  /*  #endif  */
+  padding-top: var(--status-bar-height);
 }
 </style>

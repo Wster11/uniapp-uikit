@@ -46,7 +46,7 @@ export default {
   addedFriend: "已添加您为好友",
   deletedFriend: "已解除好友关系",
   emptyNoticeTip: "暂时没有新的通知",
-  createGroup: "创建群聊",
+  createGroup: "新群组",
   selectContactTip: "请选择联系人",
   createGroupSuccess: "创建群聊成功",
   contactDetail: "好友详情",
@@ -163,5 +163,6 @@ export default {
   mention: "@提及",
   mentionAll: "所有人",
   shareContact: "分享联系人",
-  searchContact: "搜索联系人"
+  searchContact: "搜索联系人",
+  createGroupBtn: '创建',
 };

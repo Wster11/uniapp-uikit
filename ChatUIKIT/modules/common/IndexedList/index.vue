@@ -7,22 +7,47 @@
       :scroll-into-view="scrollIndexItem"
     >
       <slot name="header"></slot>
-      <view
-        :id="formatInitial(item)"
-        class="initial"
-        v-for="item in initialData"
-        :key="item"
-      >
-        <view class="letter">{{ item }}</view>
+      <checkbox-group v-if="props.withCheckbox" @change="checkboxChange">
         <view
-          class="index-item-name"
-          v-for="indexedItem in indexedData[item]"
-          :key="indexedItem.id"
+          :id="formatInitial(item)"
+          class="initial"
+          v-for="item in initialData"
+          :key="item"
         >
-          <slot name="indexedItem" :item="indexedItem"></slot>
+          <view class="letter">{{ item }}</view>
+          <view
+            class="index-item-wrap"
+            v-for="indexedItem in indexedData[item]"
+            :key="indexedItem.id"
+          >
+            <label class="label">
+              <checkbox class="checkbox" :value="indexedItem.id" />
+              <slot name="indexedItem" :item="indexedItem"></slot>
+            </label>
+          </view>
+        </view>
+      </checkbox-group>
+      <view v-else>
+        <view
+          :id="formatInitial(item)"
+          class="initial"
+          v-for="item in initialData"
+          :key="item"
+        >
+          <view class="letter">{{ item }}</view>
+          <view>
+            <view
+              class="index-item-wrap"
+              v-for="indexedItem in indexedData[item]"
+              :key="indexedItem.id"
+            >
+              <slot name="indexedItem" :item="indexedItem"></slot>
+            </view>
+          </view>
         </view>
       </view>
     </scroll-view>
+
     <view class="letter-box">
       <view
         @tap="scrollInToView(item)"
@@ -53,8 +78,10 @@ interface IndexedItem {
 
 interface Props {
   options: IndexedItem[];
+  withCheckbox?: boolean;
 }
 
+const emits = defineEmits(["checkboxChange"]);
 const props = defineProps<Props>();
 const scrollIndexItem = ref("");
 
@@ -81,6 +108,11 @@ const indexedData = computed(() => {
 });
 
 const initialData = computed(() => Object.keys(indexedData.value));
+
+const checkboxChange = (e) => {
+  const values = e.detail.value;
+  emits("checkboxChange", values);
+};
 
 // 格式化 id
 const formatInitial = (id: string) => (id === "#" ? "hash" : id);
@@ -123,13 +155,16 @@ const scrollInToView = (id: string) => {
       justify-content: flex-start;
       align-items: center;
     }
-    .index-item-name {
+    .index-item-wrap {
       width: 100%;
       background: #f9fafa;
       display: flex;
       justify-content: flex-start;
       align-items: center;
       box-sizing: border-box;
+      &:active {
+        background: #f5f5f5;
+      }
     }
   }
 }
@@ -154,6 +189,17 @@ const scrollInToView = (id: string) => {
     color: #fff;
     border-radius: 50%;
   }
+}
+
+.label {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  margin-left: 16px;
+}
+
+.checkbox {
+  margin-right: -5px;
 }
 
 scroll-view ::-webkit-scrollbar {

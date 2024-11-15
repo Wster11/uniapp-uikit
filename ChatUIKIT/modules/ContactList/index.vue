@@ -3,6 +3,7 @@
     <SearchButton @tap="toSearchPage" class="contact-search" />
     <IndexedList class="contact-index-list" :options="contactList">
       <template v-slot:header>
+        <MenuItem @tap="toCreateGroup" class="contact-menu" :title="'创建群组'" />
         <MenuItem class="contact-menu" :title="t('newRequest')" />
         <MenuItem
           @tap="toGroupPage"
@@ -66,6 +67,12 @@ const toGroupPage = () => {
 const toSearchPage = () => {
   uni.navigateTo({
     url: `/ChatUIKIT/modules/ContactSearchList/index`
+  });
+};
+
+const toCreateGroup = () => {
+  uni.navigateTo({
+    url: `/ChatUIKIT/modules/GroupCreate/index`
   });
 };
 

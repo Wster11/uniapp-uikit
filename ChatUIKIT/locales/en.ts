@@ -46,7 +46,7 @@ export default {
   addedFriend: "Added you as a friend",
   deletedFriend: "Unfriended",
   emptyNoticeTip: "No new notifications",
-  createGroup: "Create Group Chat",
+  createGroup: "Create Group",
   selectContactTip: "Select a contact",
   createGroupSuccess: "Group chat created successfully",
   contactDetail: "Contact Details",
@@ -164,4 +164,5 @@ export default {
   mentionAll: "All",
   shareContact: "Share Contact",
   searchContact: "Search Contact",
+  createGroupBtn: 'Create',
 };

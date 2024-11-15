@@ -65,6 +65,7 @@ class GroupStore {
         this.joinedGroupList.unshift({
           groupId: res?.data?.groupid || "",
           groupName: params.data.groupname,
+          description: params.data.description,
           role: "owner",
           disabled: false,
           public: params.data.public

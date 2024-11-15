@@ -32,13 +32,15 @@ onUnmounted(() => {
 
 <style lang="scss" scoped>
 .conn-state {
+  position: fixed;
+  z-index: 1000;
   width: 100%;
-  height: 30px;
+  height: 44px;
   background-color: #faeeed;
   color: #a09894;
   font-size: 14px;
   text-align: center;
-  line-height: 30px;
+  line-height: 44px;
 }
 @import "../../styles/common.scss";
 </style>

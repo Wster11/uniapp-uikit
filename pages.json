@@ -70,6 +70,16 @@
 					"bounce": "none"
 				}
 			}
+		},
+		{
+			"path": "ChatUIKIT/modules/GroupCreate/index",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "ChatUIKIT Uniapp",
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
 		}
 	],
 	"tabBar": {
