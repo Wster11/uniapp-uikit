@@ -40,7 +40,7 @@ const userInfo = computed(() => {
 
 <style lang="scss" scoped>
 .msg-user-card-wrap {
-  width: 240px;
+  width: 220px;
 }
 
 .msg-user-card {

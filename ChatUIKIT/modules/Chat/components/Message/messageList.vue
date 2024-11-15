@@ -7,10 +7,16 @@
       scroll-y
       :scroll-top="scrollTop"
       class="message-scroll-list"
-      @scrolltoupper="getHistoryMessage"
       :scroll-into-view="`msg-${currentViewMsgId}`"
       :scroll-anchoring="true"
     >
+      <view
+        class="loadMore"
+        v-if="!isLast && !isLoading"
+        @tap="getHistoryMessage"
+      >
+        {{ t("loadMore") }}
+      </view>
       <view class="isLast" v-if="isLast">{{ t("noMoreMessage") }}</view>
       <view v-if="isLoading" class="loading"></view>
       <view
@@ -181,7 +187,6 @@ defineExpose({
 </script>
 
 <style lang="scss" scoped>
-
 scroll-view ::-webkit-scrollbar {
   display: none;
   width: 0;
@@ -250,7 +255,14 @@ scroll-view ::-webkit-scrollbar {
   padding: 10px 0;
   color: #999;
   font-size: 12px;
-  margin-top: 10px;
-  margin-bottom: 10px;
+}
+
+.loadMore {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
+  margin: 5px 0;
+  color: #999;
 }
 </style>
