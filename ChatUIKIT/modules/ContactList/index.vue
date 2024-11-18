@@ -3,16 +3,22 @@
     <SearchButton @tap="toSearchPage" class="contact-search" />
     <IndexedList class="contact-index-list" :options="contactList">
       <template v-slot:header>
-        <MenuItem @tap="toCreateGroup" class="contact-menu" :title="'创建群组'" />
+        <MenuItem
+          @tap="toCreateGroup"
+          class="contact-menu"
+          :title="'创建群组'"
+        />
         <MenuItem class="contact-menu" :title="t('newRequest')" />
         <MenuItem
           @tap="toGroupPage"
           class="contact-menu"
           :title="t('groupList')"
         >
-          <view class="count" v-if="joinedGroupCount">
-            {{ joinedGroupCount }}
-          </view>
+          <template v-slot:right>
+            <view class="count" v-if="joinedGroupCount">
+              {{ joinedGroupCount }}
+            </view>
+          </template>
         </MenuItem>
       </template>
       <template v-slot:indexedItem="slotProps">
@@ -28,7 +34,7 @@
 
 <script setup lang="ts">
 import SearchButton from "../../modules/common/SearchButton/index.vue";
-import MenuItem from "./components/MenuItem/index.vue";
+import MenuItem from "../common/MenuItem/index.vue";
 import UserItem from "./components/UserItem/index.vue";
 import IndexedList from "../common/IndexedList/index.vue";
 import type { Chat } from "../../sdk";

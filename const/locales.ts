@@ -30,7 +30,16 @@ const locales = {
     appkeyPlaceholder: "请输入Appkey",
     isUseCustomServer: "是否使用自定义服务器",
     setting: "设置",
-    serverConfig: "服务器自定义配置"
+    serverConfig: "服务器自定义配置",
+    profileLoginGroupName: "登录",
+    profileSettingGroupName: "设置",
+    profileStatus: "在线状态",
+    profileInfo: "个人信息",
+    profileSetting: "通用",
+    profileNotice: "消息通知",
+    profilePrivacy: "隐私",
+    profileAbout: "关于",
+    profileLogout: "退出登录"
   },
   en: {
     loginTitle: "EaseMob IM",
@@ -63,7 +72,16 @@ const locales = {
     appkeyPlaceholder: "Enter App Key",
     isUseCustomServer: "Use custom server",
     setting: "Settings",
-    serverConfig: "Server Configuration"
+    serverConfig: "Server Configuration",
+    profileLoginGroupName: "Login",
+    profileSettingGroupName: "Settings",
+    profileStatus: "Online Status",
+    profileInfo: "Profile",
+    profileSetting: "General",
+    profileNotice: "Notification",
+    profilePrivacy: "Privacy",
+    profileAbout: "About",
+    profileLogout: "Logout"
   }
 };
 

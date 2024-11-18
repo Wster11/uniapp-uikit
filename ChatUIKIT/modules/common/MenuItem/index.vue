@@ -1,8 +1,14 @@
 <template>
   <view class="menu-item" @tap="onTap">
-    <view>{{ props.title }}</view>
+    <view class="left">
+      <slot name="left"></slot>
+      <view>
+        {{ props.title }}
+      </view>
+    </view>
+
     <view class="right">
-      <slot></slot>
+      <slot name="right"></slot>
       <view class="arrow"></view>
     </view>
   </view>
@@ -33,9 +39,13 @@ const props = defineProps<Props>();
   height: 54px;
   background: #f9fafa;
   border-bottom: 0.5px solid #e3e6e8;
-  padding-left: 16px;
   &:active {
     background-color: #f5f5f5;
+  }
+
+  .left {
+    display: flex;
+    align-items: center;
   }
 
   .right {
@@ -50,7 +60,7 @@ const props = defineProps<Props>();
   .arrow {
     width: 20px;
     height: 20px;
-    background-image: url("../../../../assets//icon/arrow-right.png");
+    background-image: url("../../../assets//icon/arrow-right.png");
     background-size: 100% 100%;
   }
 }

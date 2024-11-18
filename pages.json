@@ -16,6 +16,15 @@
 			}
 		},
 		{
+			"path": "pages/Profile/index",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+		},
+		{
 			"path": "ChatUIKIT/modules/Conversation/index",
 			"style": {
 				"navigationBarTitleText": "ChatUIKIT Uniapp",
@@ -46,7 +55,6 @@
 			"path": "ChatUIKIT/modules/ConversationSearchList/index",
 			"style": {
 				"navigationStyle": "custom",
-				"navigationBarTitleText": "ChatUIKIT Uniapp",
 				"app-plus": {
 					"bounce": "none"
 				}
@@ -74,7 +82,6 @@
 			"path": "ChatUIKIT/modules/ContactSearchList/index",
 			"style": {
 				"navigationStyle": "custom",
-				"navigationBarTitleText": "ChatUIKIT Uniapp",
 				"app-plus": {
 					"bounce": "none"
 				}
@@ -84,7 +91,6 @@
 			"path": "ChatUIKIT/modules/GroupCreate/index",
 			"style": {
 				"navigationStyle": "custom",
-				"navigationBarTitleText": "ChatUIKIT Uniapp",
 				"app-plus": {
 					"bounce": "none"
 				}
@@ -113,7 +119,7 @@
 				"text": "个人中心",
 				"iconPath": "static/icon/mine.png",
 				"selectedIconPath": "static/icon/mine_active.png",
-				"pagePath": "pages/Login/index"
+				"pagePath": "pages/Profile/index"
 			}
 		]
 	},
