@@ -29,6 +29,8 @@ interface FeatureConfig {
   inputAudio?: boolean;
   /** 是否支持视频消息 */
   inputVideo?: boolean;
+  /** 是否支持文件消息, 目前支有h5和小程序支持发送文件消息 */
+  inputFile?: boolean;
   /** 是否支持Mention消息 */
   inputMention?: boolean;
   /** 是否支持名片消息 */

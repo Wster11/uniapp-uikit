@@ -1,12 +1,12 @@
 <template>
-  <view class="tool-video-wrap tool-item" @tap="chooseVideo">
-    <ItemContainer :title="title" :iconUrl="videoButton"> </ItemContainer>
+  <view class="tool-video-wrap tool-item" @tap="chooseFile">
+    <ItemContainer :title="title" :iconUrl="fileButton"> </ItemContainer>
   </view>
 </template>
 
 <script lang="ts" setup>
 import ItemContainer from "./itemContainer.vue";
-import videoButton from "../../../../assets/icon/videoButton.png";
+import fileButton from "../../../../assets/icon/folder.png";
 import type { InputToolbarEvent } from "@/types/index";
 import { inject } from "vue";
 import { t } from "../../../../locales/index";
@@ -17,7 +17,7 @@ interface Props {
 }
 defineProps<Props>();
 
-const title = t("videoUpload");
+const title = t("file");
 
 const toolbarInject = inject<InputToolbarEvent>("InputToolbarEvent");
 
@@ -25,27 +25,40 @@ const conn = ChatUIKIT.connStore.getChatConn();
 
 const convStore = ChatUIKIT.convStore;
 
-const chooseVideo = () => {
-  uni.chooseVideo({
-    sourceType: ["camera", "album"],
-    success: function (res) {
-      sendVideoMessage(res);
+const chooseFile = () => {
+  // wx.chooseMessageFile({
+  //   count: 1,
+  //   type: "all",
+  //   success(res) {
+  //     // tempFilePath可以作为img标签的src属性显示图片
+  //     const tempFilePaths = res.tempFiles;
+  //   },
+  //   fail(e) {
+  //     console.log(e, "faileeeee");
+  //   }
+  // });
+  // h5 选择文件
+  uni.chooseFile({
+    count: 1,
+    success(res) {
+      sendFileMessage({ tempFile: res.tempFiles[0] });
     }
   });
 };
 
-const sendVideoMessage = (res: any) => {
-  const tempFilePath = res?.tempFilePath;
+const sendFileMessage = (res: any) => {
+  const tempFile = res?.tempFile;
   const uploadUrl = `${conn.apiUrl}/${conn.orgName}/${conn.appName}/chatfiles`;
-  if (!tempFilePath) {
+  if (!tempFile) {
     return;
   }
+
   uni.showLoading();
   const token = conn.token;
   const requestParams = {
     url: uploadUrl,
-    filePath: tempFilePath,
-    fileType: "video",
+    filePath: tempFile.path,
+    fileType: tempFile.type,
     name: "file",
     header: {
       Authorization: "Bearer " + token
@@ -53,13 +66,15 @@ const sendVideoMessage = (res: any) => {
     success: async (res: any) => {
       const data = JSON.parse(res.data);
       const videoMsg = chatSDK.message.create({
-        type: "video",
+        type: "file",
         to: convStore.currConversation!.conversationId,
         chatType: convStore.currConversation!.conversationType,
-        file_length: res.duration,
         //@ts-ignore
         body: {
-          url: data.uri + "/" + data.entities[0].uuid
+          url: data.uri + "/" + data.entities[0].uuid,
+          filename: tempFile.name,
+          //@ts-ignore
+          file_length: tempFile.size
         },
         ext: {
           ease_chat_uikit_user_info: {

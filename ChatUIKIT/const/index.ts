@@ -26,6 +26,7 @@ const DEFAULT_FEATURES_CONFIG: FeatureConfig = {
   inputImage: true,
   inputAudio: true,
   inputVideo: true,
+  inputFile: true,
   inputMention: true,
   userCard: true
 };

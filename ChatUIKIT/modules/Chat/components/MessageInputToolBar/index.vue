@@ -9,6 +9,9 @@
           <view v-if="featureConfig.inputVideo" class="item" style="width: 25%">
             <VideoUpload />
           </view>
+          <view v-if="featureConfig.inputFile" class="item" style="width: 25%">
+            <FileUpload />
+          </view>
           <view v-if="featureConfig.userCard" class="item" style="width: 25%">
             <UserCard @onUserCardButtonTap="selectUserCard" />
           </view>
@@ -21,6 +24,7 @@
 <script setup lang="ts">
 import ImageUpload from "./imageUpload.vue";
 import VideoUpload from "./videoUpload.vue";
+import FileUpload from "./fileUpload.vue";
 import UserCard from "./userCard.vue";
 import { ChatUIKIT } from "../../../../index";
 
