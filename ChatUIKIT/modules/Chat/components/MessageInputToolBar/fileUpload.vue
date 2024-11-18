@@ -7,7 +7,7 @@
 <script lang="ts" setup>
 import ItemContainer from "./itemContainer.vue";
 import fileButton from "../../../../assets/icon/folder.png";
-import type { InputToolbarEvent } from "@/types/index";
+import type { InputToolbarEvent } from "../../../../types/index";
 import { inject } from "vue";
 import { t } from "../../../../locales/index";
 import { ChatUIKIT } from "../../../../index";

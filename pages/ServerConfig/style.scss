@@ -1,0 +1,32 @@
+.content {
+  padding: 10px;
+}
+
+.label {
+  font-size: 15px;
+}
+
+.input-wrap {
+  width: 100%;
+  margin-bottom: 20rpx;
+}
+
+.input-wrap input {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  height: 40px;
+  padding: 0 0 0 14px;
+}
+
+
+.update-btn {
+  position: fixed;
+  bottom: 15px;
+  width: 90%;
+  left: 0;
+  margin-left: 5%;
+  background: #479ff8;
+  text-align: center;
+  color: #fff;
+}

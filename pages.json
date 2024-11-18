@@ -3,7 +3,16 @@
 		{
 			"path": "pages/Login/index",
 			"style": {
-				"navigationBarTitleText": "ChatUIKIT Uniapp"
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/ServerConfig/index",
+			"style": {
+				"navigationBarTitleText": "Easemob Uniapp",
+				"app-plus": {
+					"softinputMode": "adjustResize"
+				}
 			}
 		},
 		{
