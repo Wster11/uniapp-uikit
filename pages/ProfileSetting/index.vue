@@ -1,14 +1,14 @@
 <template>
-  <view class="profile-wrap">
+  <view class="profile-setting-wrap">
     <NavBar @onBack="onBack">
       <template v-slot:left>
-        <view class="title" v-text="t('editNickTitle')"></view>
+        <view class="title" v-text="t('profileSettingTitle')"></view>
       </template>
       <template v-slot:right>
         <view
           :class="['save', { 'save-disabled': disabled }]"
           @tap="updateNickName"
-          >{{ t("editNickSave") }}</view
+          >{{ t("profileSettingSave") }}</view
         >
       </template>
     </NavBar>
@@ -18,7 +18,7 @@
         :maxlength="128"
         auto-height="true"
         focus="true"
-        :placeholder="t('editNickPlaceholder')"
+        :placeholder="t('profileSettingPlaceholder')"
         v-model="inputValue"
       ></textarea>
       <view class="count"> {{ inputValue.length }} / 128 </view>

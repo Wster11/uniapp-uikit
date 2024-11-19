@@ -42,9 +42,16 @@ const locales = {
     meLogout: "退出登录",
     profileAvatar: "头像",
     profileNick: "昵称",
-    editNickTitle: "修改昵称",
-    editNickSave: "保存",
-    editNickPlaceholder: "请输入昵称"
+    profileSettingTitle: "修改昵称",
+    profileSettingSave: "保存",
+    profileSettingPlaceholder: "请输入昵称",
+    aboutTitle: "关于",
+    aboutOfficialWebsite: "访问官网",
+    aboutHotline: "服务热线",
+    aboutBusiness: "商务合作",
+    aboutQudao: "渠道合作",
+    aboutIssue: "投诉建议",
+    chatIM: "环信IM"
   },
   en: {
     loginTitle: "EaseMob IM",
@@ -89,9 +96,16 @@ const locales = {
     meLogout: "Logout",
     profileAvatar: "Avatar",
     profileNick: "Nickname",
-    editNickTitle: "Modify Nickname",
-    editNickSave: "Save",
-    editNickPlaceholder: "Enter nickname"
+    profileSettingTitle: "Modify Nickname",
+    profileSettingSave: "Save",
+    profileSettingPlaceholder: "Enter nickname",
+    aboutTitle: "About",
+    aboutOfficialWebsite: "Official Website",
+    aboutHotline: "Hotline",
+    aboutBusiness: "Business Cooperation",
+    aboutQudao: "Channel Cooperation",
+    aboutIssue: "Complaints and Suggestions",
+    chatIM: "Ease IM"
   }
 };
 

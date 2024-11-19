@@ -1,0 +1,58 @@
+.about-wrap {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.about-info-wrap {
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #F9FAFA;
+  margin-top: 20px;
+}
+
+.content {
+  margin-top: 54px;
+}
+
+.name {
+  color: #171A1C;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 590;
+  margin-top: 12px;
+  margin-bottom: 5px;
+}
+
+.version {
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  color: #ACB4B9;
+  text-align: center;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.left-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  color: #171A1C;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+}
+
+.link {
+  color: #009DFF;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 510;
+}

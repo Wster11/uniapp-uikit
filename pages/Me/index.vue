@@ -43,7 +43,7 @@
             <view class="icon privacy"> </view>
           </template>
         </MenuItem>
-        <MenuItem :className="'me-menu'" :title="t('meAbout')">
+        <MenuItem :className="'me-menu'" :title="t('meAbout')" @tap="toAbout">
           <template v-slot:left>
             <view class="icon about"> </view>
           </template>
@@ -63,7 +63,6 @@ import MenuItem from "../../ChatUIKIT/modules/common/MenuItem/index.vue";
 import { ref, onUnmounted } from "vue";
 import { t } from "../../const/locales";
 import { ChatUIKIT } from "../../ChatUIKIT/index";
-import { getInsideUploadUrl } from "@/const/index";
 import { CHAT_STORE } from "@/const/index";
 import { USER_AVATAR_URL } from "../../ChatUIKIT/const";
 import { autorun } from "mobx";
@@ -93,6 +92,12 @@ const logout = () => {
 const toProfile = () => {
   uni.navigateTo({
     url: "/pages/Profile/index"
+  });
+};
+
+const toAbout = () => {
+  uni.navigateTo({
+    url: "/pages/About/index"
   });
 };
 

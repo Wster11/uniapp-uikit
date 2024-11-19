@@ -42,6 +42,15 @@
 			}
 		},
 		{
+			"path": "pages/About/index",
+			"style": {
+				"app-plus": {
+					"navigationStyle": "custom",
+					"bounce": "none"
+				}
+			}
+		},
+		{
 			"path": "ChatUIKIT/modules/Conversation/index",
 			"style": {
 				"navigationBarTitleText": "ChatUIKIT Uniapp",
