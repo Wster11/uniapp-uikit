@@ -42,6 +42,9 @@ const locales = {
     meLogout: "退出登录",
     profileAvatar: "头像",
     profileNick: "昵称",
+    editNickTitle: "修改昵称",
+    editNickSave: "保存",
+    editNickPlaceholder: "请输入昵称"
   },
   en: {
     loginTitle: "EaseMob IM",
@@ -84,8 +87,11 @@ const locales = {
     mePrivacy: "Privacy",
     meAbout: "About",
     meLogout: "Logout",
-    profileAvatar: 'Avatar',
-    profileNick: 'Nickname',
+    profileAvatar: "Avatar",
+    profileNick: "Nickname",
+    editNickTitle: "Modify Nickname",
+    editNickSave: "Save",
+    editNickPlaceholder: "Enter nickname"
   }
 };
 

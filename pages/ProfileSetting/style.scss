@@ -1,0 +1,41 @@
+.profile-wrap {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  padding: 13px 16px;
+  border-radius: 4px;
+  background: #f1f2f3;
+  margin: 16px;
+  font-size: 16px;
+  line-height: 16px;
+  color: #171A1C;
+  min-height: 80px;
+}
+
+.save-disabled {
+  color: #ACB4B9 !important;
+}
+
+.save {
+  font-size: 14px;
+  color: #009DFF;
+  font-weight: 500;
+}
+
+.textarea {
+  width: 100%;
+  flex: 1;
+}
+
+.count {
+  text-align: right;
+  color: #ACB4B9;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+}

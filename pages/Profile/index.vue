@@ -1,31 +1,29 @@
 <template>
   <view class="profile-wrap">
-    <view class="content">
-      <view class="menu-wrap">
-        <MenuItem
-          :className="'profile-menu'"
-          :title="t('profileAvatar')"
-          @tap="changeAvatar"
-        >
-          <template v-slot:right>
-            <Avatar
-              class="profile-avatar"
-              :src="userInfo.avatar"
-              :size="40"
-              :placeholder="USER_AVATAR_URL"
-            />
-          </template>
-        </MenuItem>
-        <MenuItem
-          :className="'profile-menu'"
-          :title="t('profileNick')"
-          @tap="toProfile"
-        >
-          <template v-slot:right>
-            <view>{{ userInfo.name }}</view>
-          </template>
-        </MenuItem>
-      </view>
+    <view class="menu-wrap">
+      <MenuItem
+        :className="'profile-menu'"
+        :title="t('profileAvatar')"
+        @tap="changeAvatar"
+      >
+        <template v-slot:right>
+          <Avatar
+            class="profile-avatar"
+            :src="userInfo.avatar"
+            :size="40"
+            :placeholder="USER_AVATAR_URL"
+          />
+        </template>
+      </MenuItem>
+      <MenuItem
+        :className="'profile-menu'"
+        :title="t('profileNick')"
+        @tap="toProfileSetting"
+      >
+        <template v-slot:right>
+          <view>{{ userInfo.name }}</view>
+        </template>
+      </MenuItem>
     </view>
   </view>
 </template>
@@ -47,6 +45,12 @@ const userInfo = ref({});
 const unwatchUserInfo = autorun(() => {
   userInfo.value = ChatUIKIT.appUserStore.getSelfUserInfo();
 });
+
+const toProfileSetting = () => {
+  uni.navigateTo({
+    url: "/pages/ProfileSetting/index"
+  });
+};
 
 const changeAvatar = () => {
   uni.chooseImage({
