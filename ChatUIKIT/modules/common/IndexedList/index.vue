@@ -103,7 +103,12 @@ const indexedData = computed(() => {
   }
 
   const sortedData = Object.keys(dataObj)
-    .sort()
+    .sort(([key1], [key2]) => {
+      if (key1 === "#") {
+        return 1;
+      }
+      return key1.localeCompare(key2);
+    })
     .reduce((acc, key) => {
       acc[key] = dataObj[key];
       return acc;

@@ -16,9 +16,17 @@
 			}
 		},
 		{
-			"path": "pages/Profile/index",
+			"path": "pages/Me/index",
 			"style": {
 				"navigationStyle": "custom",
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+		},
+		{
+			"path": "pages/Profile/index",
+			"style": {
 				"app-plus": {
 					"bounce": "none"
 				}
@@ -119,7 +127,7 @@
 				"text": "个人中心",
 				"iconPath": "static/icon/mine.png",
 				"selectedIconPath": "static/icon/mine_active.png",
-				"pagePath": "pages/Profile/index"
+				"pagePath": "pages/Me/index"
 			}
 		]
 	},

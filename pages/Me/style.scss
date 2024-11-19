@@ -1,0 +1,126 @@
+.me-wrap {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.me-info-wrap {
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #F9FAFA;
+  padding-top: calc(60px + var(--status-bar-height));
+}
+
+.name {
+  color: #171A1C;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 590;
+  margin-top: 12px;
+  margin-bottom: 5px;
+}
+
+.userId {
+  display: flex;
+  align-items: center;
+  color: #ACB4B9;
+  text-align: center;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.copy {
+  width: 16px;
+  height: 16px;
+  background-image: url('../../static/icon/me-copy.png');
+  background-size: 100% 100%;
+}
+
+.icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 10px;
+  margin-right: 8px;
+}
+
+
+.status {
+  background-color: #00CC52;
+  background-image: url('../../static/icon/status.png');
+  background-size: 18px 18px;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.person {
+  background-color: #FF337C;
+  background-image: url('../../static/icon/personal.png');
+  background-size: 18px 18px;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.general {
+  background-color: #EB00FF;
+  background-image: url('../../static/icon/gear.png');
+  background-size: 18px 18px;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.notice {
+  background-color: #0057FF;
+  background-image: url('../../static/icon/bell.png');
+  background-size: 18px 18px;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.privacy {
+  background-color: #FF9900;
+  background-image: url('../../static/icon/lock.png');
+  background-size: 18px 18px;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.about {
+  background-color: #009DFF;
+  background-image: url('../../static/icon/about.png');
+  background-size: 18px 18px;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+
+.menu-group-name {
+  color: #75828A;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+  margin-top: 10px;
+  padding: 0 16px;
+}
+
+.content {
+  flex: 1;
+  height: 100%;
+  overflow-y: scroll;
+  /*  #ifdef WEB  */
+  padding-bottom: 65px;
+  /*  #endif  */
+}
+
+.logout {
+  display: flex;
+  color: #009DFF;
+  font-size: 16px;
+  font-weight: 500;
+  border-bottom: 0.5px solid #E3E6E8;
+  padding: 16px;
+}
