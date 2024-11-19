@@ -9,9 +9,11 @@
           <view v-if="featureConfig.inputVideo" class="item" style="width: 25%">
             <VideoUpload />
           </view>
+          <!-- #ifdef H5 || MP-WEIXIN -->
           <view v-if="featureConfig.inputFile" class="item" style="width: 25%">
             <FileUpload />
           </view>
+          <!-- #endif -->
           <view v-if="featureConfig.userCard" class="item" style="width: 25%">
             <UserCard @onUserCardButtonTap="selectUserCard" />
           </view>

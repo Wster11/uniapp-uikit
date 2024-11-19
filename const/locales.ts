@@ -49,7 +49,7 @@ const locales = {
     loginPhoneIdPlaceholder: "Enter phone number",
     loginCodePlaceholder: "Enter verification code",
     getCodeSuccess: "Verification code sent successfully",
-    getCode: "Send Code",
+    getCode: "Get Code",
     telNumberError: "Enter a valid phone number!",
     getCodeFrequent: "Too many requests, try again later",
     getCodeReachLimit: "Verification code request limit reached",

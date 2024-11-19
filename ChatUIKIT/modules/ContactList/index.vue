@@ -5,13 +5,13 @@
       <template v-slot:header>
         <MenuItem
           @tap="toCreateGroup"
-          class="contact-menu"
+          :className="'contact-menu'"
           :title="'创建群组'"
         />
-        <MenuItem class="contact-menu" :title="t('newRequest')" />
+        <MenuItem :className="'contact-menu'" :title="t('newRequest')" />
         <MenuItem
           @tap="toGroupPage"
-          class="contact-menu"
+          :className="'contact-menu'"
           :title="t('groupList')"
         >
           <template v-slot:right>
@@ -87,6 +87,12 @@ onUnmounted(() => {
   unwatchJoinedGroupCount();
 });
 </script>
+
+<style lang="scss">
+.contact-menu {
+  padding-left: 16px;
+}
+</style>
 
 <style lang="scss" scoped>
 @import "./style.scss";

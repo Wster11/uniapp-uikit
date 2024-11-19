@@ -1,5 +1,5 @@
 <template>
-  <view class="menu-item" @tap="onTap">
+  <view :class="['menu-item', props.className]" @tap="onTap">
     <view class="left">
       <slot name="left"></slot>
       <view>
@@ -17,6 +17,7 @@
 <script setup lang="ts">
 interface Props {
   title: string;
+  className?: string;
 }
 
 const emits = defineEmits(["onMenuClick"]);

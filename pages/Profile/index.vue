@@ -18,32 +18,32 @@
         {{ t("profileSettingGroupName") }}
       </view>
       <view class="menu-wrap">
-        <MenuItem :title="t('profileStatus')">
+        <MenuItem :className="'profile-menu'" :title="t('profileStatus')">
           <template v-slot:left>
             <view class="icon status"> </view>
           </template>
         </MenuItem>
-        <MenuItem :title="t('profileInfo')">
+        <MenuItem :className="'profile-menu'" :title="t('profileInfo')">
           <template v-slot:left>
             <view class="icon person"> </view>
           </template>
         </MenuItem>
-        <MenuItem :title="t('profileSetting')">
+        <MenuItem :className="'profile-menu'" :title="t('profileSetting')">
           <template v-slot:left>
             <view class="icon general"> </view>
           </template>
         </MenuItem>
-        <MenuItem :title="t('profileNotice')">
+        <MenuItem :className="'profile-menu'" :title="t('profileNotice')">
           <template v-slot:left>
             <view class="icon notice"> </view>
           </template>
         </MenuItem>
-        <MenuItem :title="t('profilePrivacy')">
+        <MenuItem :className="'profile-menu'" :title="t('profilePrivacy')">
           <template v-slot:left>
             <view class="icon privacy"> </view>
           </template>
         </MenuItem>
-        <MenuItem :title="t('profileAbout')">
+        <MenuItem :className="'profile-menu'" :title="t('profileAbout')">
           <template v-slot:left>
             <view class="icon about"> </view>
           </template>
@@ -123,6 +123,12 @@ onUnmounted(() => {
   unwatchUserInfo();
 });
 </script>
+
+<style lang="scss">
+.profile-menu {
+  padding: 0 16px;
+}
+</style>
 <style lang="scss" scoped>
 @import url("./style.scss");
 </style>

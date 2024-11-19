@@ -54,8 +54,13 @@ const autoLogin = async () => {
     // 如果存在缓存，直接登录
     if (res.data) {
       // 跳转会话列表页面
-      uni.switchTab({
-        url: "/ChatUIKIT/modules/Conversation/index"
+      uni.reLaunch({
+        url: "/ChatUIKIT/modules/Conversation/index",
+        success: () => {
+          // #ifdef APP-PLUS
+          plus.navigator.closeSplashscreen();
+          // #endif
+        }
       });
       const { userId, token } = res.data;
       await uni.$UIKIT.chatStore.login({
@@ -64,9 +69,9 @@ const autoLogin = async () => {
       });
     }
   } catch (error) {
-    uni.redirectTo({
-      url: "/pages/Login/index"
-    });
+    // #ifdef APP-PLUS
+    plus.navigator.closeSplashscreen();
+    // #endif
     console.log(error, "error");
   }
 };

@@ -26,24 +26,28 @@ const conn = ChatUIKIT.connStore.getChatConn();
 const convStore = ChatUIKIT.convStore;
 
 const chooseFile = () => {
-  // wx.chooseMessageFile({
-  //   count: 1,
-  //   type: "all",
-  //   success(res) {
-  //     // tempFilePath可以作为img标签的src属性显示图片
-  //     const tempFilePaths = res.tempFiles;
-  //   },
-  //   fail(e) {
-  //     console.log(e, "faileeeee");
-  //   }
-  // });
+  // #ifdef H5
+  wx.chooseMessageFile({
+    count: 1,
+    type: "all",
+    success(res) {
+      sendFileMessage({ tempFile: res.tempFiles[0] });
+    },
+    fail(e) {
+      console.error("chooseMessageFile failed", e);
+    }
+  });
+  // #endif
+
   // h5 选择文件
+  // #ifdef WEB
   uni.chooseFile({
     count: 1,
     success(res) {
       sendFileMessage({ tempFile: res.tempFiles[0] });
     }
   });
+  // #endif;
 };
 
 const sendFileMessage = (res: any) => {

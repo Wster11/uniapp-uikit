@@ -85,9 +85,16 @@ export const isiOS = () => {
   return /iPad|iPhone|iPod/.test(navigator?.userAgent);
 };
 
+// 是否微信浏览器
 export const isWechat = () => {
   return navigator?.userAgent?.toLowerCase().indexOf("micromessenger") !== -1;
 };
+
+// 是否微信小程序
+export const isWXProgram = uni.getSystemInfoSync().uniPlatform == "mp-weixin";
+
+// 是否web环境
+export const isWeb = uni.getSystemInfoSync().uniPlatform === "web";
 
 type CallbackFunction = (...args: any[]) => void;
 
