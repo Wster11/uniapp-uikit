@@ -27,9 +27,14 @@ import UserItem from "../ContactList/components/UserItem/index.vue";
 import Empty from "../common/Empty/index.vue";
 import { ChatUIKIT } from "../../index";
 import { t } from "../../locales";
+import { onLoad } from "@dcloudio/uni-app";
 import { ref, computed } from "vue";
 
 const searchValue = ref("");
+
+let sourceUrl = "";
+
+const emits = defineEmits(["on"]);
 
 const onInput = (value: string) => {
   searchValue.value = value;
@@ -47,9 +52,14 @@ const searchList = computed(() => {
 });
 
 const cancelSearch = () => {
-  uni.switchTab({
-    url: "/ChatUIKIT/modules/ContactList/index"
-  });
+  // 如果有来源页面，则返回来源页面，否则返回上一页
+  if (sourceUrl) {
+    uni.redirectTo({
+      url: sourceUrl
+    });
+  } else {
+    uni.navigateBack();
+  }
 };
 
 const toChatPage = (item) => {
@@ -57,6 +67,10 @@ const toChatPage = (item) => {
     url: `/ChatUIKIT/modules/Chat/index?id=${item.userId}&type=singleChat`
   });
 };
+
+onLoad((option) => {
+  sourceUrl = option.url;
+});
 </script>
 
 <style lang="scss" scoped>

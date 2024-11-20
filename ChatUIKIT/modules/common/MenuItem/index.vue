@@ -1,5 +1,5 @@
 <template>
-  <view :class="['menu-item', props.className]" @tap="onTap">
+  <view :class="[props.className, 'menu-item' ]" @tap="onTap">
     <view class="left">
       <slot name="left"></slot>
       <view>
@@ -9,24 +9,33 @@
 
     <view class="right">
       <slot name="right"></slot>
-      <view class="arrow"></view>
+      <view v-if="props.showArrow" class="arrow"></view>
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
-interface Props {
-  title?: string;
-  className?: string;
-}
-
 const emits = defineEmits(["onMenuClick"]);
 
 const onTap = () => {
   emits("onMenuClick");
 };
 
-const props = defineProps<Props>();
+const props = defineProps({
+  title: {
+    type: String,
+    default: ""
+  },
+  className: {
+    type: String,
+    default: ""
+  },
+  showArrow: {
+    type: Boolean,
+    default: true
+  }
+});
+
 </script>
 <style lang="scss" scoped>
 .menu-item {

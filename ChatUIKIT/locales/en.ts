@@ -135,4 +135,5 @@ export default {
   shareContact: "Share Contact",
   searchContact: "Search Contact",
   createGroupBtn: 'Create',
+  newChatTitle: 'New Chat',
 };

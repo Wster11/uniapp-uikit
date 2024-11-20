@@ -1,8 +1,11 @@
 <template>
   <view class="nav-tar-wrap">
-    <view class="left" @tap="onBack">
-      <view class="arrow-left"></view>
+    <view class="left" @tap="onLeftTap">
+      <view v-if="props.showBackArrow" class="arrow-left"></view>
       <slot name="left"></slot>
+    </view>
+    <view class="center">
+      <slot name="center"></slot>
     </view>
     <view class="right">
       <slot name="right"></slot>
@@ -11,10 +14,18 @@
 </template>
 
 <script setup lang="ts">
-const emits = defineEmits(["onBack"]);
+const props = defineProps({
+  showBackArrow: {
+    type: Boolean,
+    required: false,
+    default: true
+  }
+});
 
-const onBack = () => {
-  emits("onBack");
+const emits = defineEmits(["onLeftTap"]);
+
+const onLeftTap = () => {
+  emits("onLeftTap");
 };
 </script>
 

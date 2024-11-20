@@ -1,7 +1,7 @@
 <template>
   <view class="group-create-wrap">
     <view v-if="!isSearch">
-      <NavBar @onBack="onBack">
+      <NavBar @onLeftTap="onBack">
         <template v-slot:left>
           <view class="title" v-text="t('createGroup')"></view>
         </template>

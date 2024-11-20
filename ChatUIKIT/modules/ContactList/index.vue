@@ -3,11 +3,6 @@
     <SearchButton @tap="toSearchPage" class="contact-search" />
     <IndexedList class="contact-index-list" :options="contactList">
       <template v-slot:header>
-        <MenuItem
-          @tap="toCreateGroup"
-          :className="'contact-menu'"
-          :title="'创建群组'"
-        />
         <MenuItem :className="'contact-menu'" :title="t('newRequest')" />
         <MenuItem
           @tap="toGroupPage"

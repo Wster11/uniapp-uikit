@@ -55,6 +55,7 @@
 			"style": {
 				"navigationBarTitleText": "ChatUIKIT Uniapp",
 				"app-plus": {
+					"navigationStyle": "custom",
 					"bounce": "none"
 				}
 			}
@@ -63,6 +64,15 @@
 			"path": "ChatUIKIT/modules/Chat/index",
 			"style": {
 				"navigationBarTitleText": "ChatUIKIT Uniapp",
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+		},
+		{
+			"path": "ChatUIKIT/modules/ChatNew/index",
+			"style": {
+				"navigationStyle": "custom",
 				"app-plus": {
 					"bounce": "none"
 				}

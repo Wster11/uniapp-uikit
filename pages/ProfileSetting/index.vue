@@ -1,6 +1,6 @@
 <template>
   <view class="profile-setting-wrap">
-    <NavBar @onBack="onBack">
+    <NavBar @onLeftTap="onBack">
       <template v-slot:left>
         <view class="title" v-text="t('profileSettingTitle')"></view>
       </template>

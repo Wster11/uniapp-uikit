@@ -135,4 +135,5 @@ export default {
   shareContact: "分享联系人",
   searchContact: "搜索联系人",
   createGroupBtn: '创建',
+  newChatTitle: '新聊天', 
 };

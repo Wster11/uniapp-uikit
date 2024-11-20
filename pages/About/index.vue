@@ -1,6 +1,6 @@
 <template>
   <view class="about-wrap">
-    <Navbar @onBack="onBack">
+    <Navbar @onLeftTap="onBack">
       <template v-slot:left>
         <view class="title" v-text="t('aboutTitle')"></view>
       </template>
