@@ -32,7 +32,7 @@ export default {
   logout: "Log Out",
   groupList: "Group Chats",
   contact: "Contacts",
-  addContact: "Add Friend",
+  addContact: "Add Contacts",
   addGroup: "Join Group",
   searchPlaceholder: "Search",
   searchNoContact: "No results found",
@@ -136,4 +136,5 @@ export default {
   searchContact: "Search Contact",
   createGroupBtn: 'Create',
   newChatTitle: 'New Chat',
+  newChatButton: 'New Chat',
 };

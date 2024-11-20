@@ -1,5 +1,10 @@
 <template>
   <view class="group-list-wrap">
+    <NavBar @onLeftTap="onBack">
+      <template v-slot:left>
+        <view v-text="t('groupList')"></view>
+      </template>
+    </NavBar>
     <view v-if="groupList.length">
       <view
         class="group-item"
@@ -17,12 +22,18 @@
 <script setup lang="ts">
 import GroupItem from "./components/GroupItem/index.vue";
 import Empty from "../common/Empty/index.vue";
+import NavBar from "../common/NavBar/index.vue";
 import type { Chat } from "../../sdk";
 import { ChatUIKIT } from "../../index";
 import { ref, onUnmounted } from "vue";
+import { t } from "../../locales/index";
 import { autorun } from "mobx";
 
 const groupList = ref<Chat.ContactItem[]>([]);
+
+const onBack = () => {
+  uni.navigateBack();
+};
 
 const unwatchGroupList = autorun(() => {
   groupList.value = ChatUIKIT.groupStore.joinedGroupList;

@@ -1,7 +1,11 @@
 <template>
   <view class="nav-tar-wrap">
-    <view class="left" @tap="onLeftTap">
-      <view v-if="props.showBackArrow" class="arrow-left"></view>
+    <view class="left">
+      <view
+        v-if="props.showBackArrow"
+        class="arrow-left"
+        @tap="onLeftTap"
+      ></view>
       <slot name="left"></slot>
     </view>
     <view class="center">

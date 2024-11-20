@@ -27,7 +27,7 @@ interface MenuItem {
 }
 
 interface Props {
-  popStyle: string;
+  popStyle: Record<string, string>;
   options: Array<MenuItem>;
 }
 const emits = defineEmits(["onMenuTap", "onMenuClose"]);

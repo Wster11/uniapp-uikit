@@ -27,6 +27,7 @@
 		{
 			"path": "pages/Profile/index",
 			"style": {
+				"navigationStyle": "custom",
 				"app-plus": {
 					"bounce": "none"
 				}
@@ -35,8 +36,8 @@
 		{
 			"path": "pages/ProfileSetting/index",
 			"style": {
+				"navigationStyle": "custom",
 				"app-plus": {
-					"navigationStyle": "custom",
 					"bounce": "none"
 				}
 			}
@@ -44,8 +45,8 @@
 		{
 			"path": "pages/About/index",
 			"style": {
+				"navigationStyle": "custom",
 				"app-plus": {
-					"navigationStyle": "custom",
 					"bounce": "none"
 				}
 			}
@@ -53,9 +54,8 @@
 		{
 			"path": "ChatUIKIT/modules/Conversation/index",
 			"style": {
-				"navigationBarTitleText": "ChatUIKIT Uniapp",
+				"navigationStyle": "custom",
 				"app-plus": {
-					"navigationStyle": "custom",
 					"bounce": "none"
 				}
 			}
@@ -63,7 +63,7 @@
 		{
 			"path": "ChatUIKIT/modules/Chat/index",
 			"style": {
-				"navigationBarTitleText": "ChatUIKIT Uniapp",
+				"navigationStyle": "custom",
 				"app-plus": {
 					"bounce": "none"
 				}
@@ -81,7 +81,7 @@
 		{
 			"path": "ChatUIKIT/modules/GroupList/index",
 			"style": {
-				"navigationBarTitleText": "ChatUIKIT Uniapp",
+				"navigationStyle": "custom",
 				"app-plus": {
 					"bounce": "none"
 				}
@@ -108,7 +108,7 @@
 		{
 			"path": "ChatUIKIT/modules/ContactList/index",
 			"style": {
-				"navigationBarTitleText": "ChatUIKIT Uniapp",
+				"navigationStyle": "custom",
 				"app-plus": {
 					"bounce": "none"
 				}
@@ -161,7 +161,7 @@
 	},
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
+		"navigationBarTitleText": "Easemob Uniapp",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
 	},

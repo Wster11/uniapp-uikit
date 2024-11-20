@@ -8,6 +8,10 @@
   align-items: center;
 }
 
+.header-wrap {
+  padding: 8px;
+}
+
 .count {
   color: #75828A;
   font-size: 14px;
@@ -31,11 +35,5 @@ uni-page-body {
 
 .contact-index-list {
   box-sizing: border-box;
-  /*  #ifdef WEB  */
   height: calc(100vh - 160px);
-  /*  #endif  */
-
-  /*  #ifndef WEB  */
-  height: calc(100vh - 52px);
-  /*  #endif  */
 }

@@ -1,5 +1,6 @@
 <template>
   <view class="chat-wrap">
+    <ChatNav />
     <!-- 消息列表 -->
     <view class="msgs-wrap">
       <!-- 遮照层,点击关闭Toolbar -->
@@ -52,6 +53,7 @@
 </template>
 
 <script setup lang="ts">
+import ChatNav from "./components/ChatNav/index.vue";
 import MessageList from "./components/Message/messageList.vue";
 import MessageInput from "./components/MessageInput/index.vue";
 import MessageInputToolbar from "./components/MessageInputToolBar/index.vue";
@@ -185,20 +187,6 @@ onLoad((option) => {
       conversationId: conversationId.value,
       conversationType: conversationType.value
     });
-    let title = "";
-    if (conversationType.value === "singleChat") {
-      title = appUserStore.getUserInfoFromStore(conversationId.value).name;
-    } else {
-      title =
-        groupStore.getGroupInfoFromStore(conversationId.value)?.groupName || "";
-    }
-
-    setTimeout(() => {
-      // 偶现标题不更新的问题
-      uni.setNavigationBarTitle({
-        title: title
-      });
-    }, 0);
   }
 });
 

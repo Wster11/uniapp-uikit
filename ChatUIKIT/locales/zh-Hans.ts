@@ -32,7 +32,7 @@ export default {
   logout: "退出登录",
   groupList: "群聊",
   contact: "联系人",
-  addContact: "添加好友",
+  addContact: "添加联系人",
   addGroup: "申请入群",
   searchPlaceholder: "搜索",
   searchNoContact: "无搜索结果",
@@ -134,6 +134,7 @@ export default {
   mentionAll: "所有人",
   shareContact: "分享联系人",
   searchContact: "搜索联系人",
-  createGroupBtn: '创建',
-  newChatTitle: '新聊天', 
+  createGroupBtn: "创建",
+  newChatTitle: "新聊天",
+  newChatButton: "发起新会话"
 };

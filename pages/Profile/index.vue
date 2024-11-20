@@ -1,5 +1,10 @@
 <template>
   <view class="profile-wrap">
+    <Navbar @onLeftTap="onBack">
+      <template v-slot:left>
+        <view class="title" v-text="t('profileTitle')"></view>
+      </template>
+    </Navbar>
     <view class="menu-wrap">
       <MenuItem
         :className="'profile-menu'"
@@ -29,6 +34,7 @@
 </template>
 
 <script setup lang="ts">
+import Navbar from "../../ChatUIKIT/modules/common/NavBar/index.vue";
 import Avatar from "../../ChatUIKIT/modules/common/Avatar/index.vue";
 import MenuItem from "../../ChatUIKIT/modules/common/MenuItem/index.vue";
 import { ref, onUnmounted } from "vue";
@@ -45,6 +51,10 @@ const userInfo = ref({});
 const unwatchUserInfo = autorun(() => {
   userInfo.value = ChatUIKIT.appUserStore.getSelfUserInfo();
 });
+
+const onBack = () => {
+  uni.navigateBack();
+};
 
 const toProfileSetting = () => {
   uni.navigateTo({

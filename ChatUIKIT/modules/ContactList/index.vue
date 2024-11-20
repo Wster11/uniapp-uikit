@@ -1,6 +1,9 @@
 <template>
   <view class="contact-list-wrap">
+    <view class="header-wrap">
+      <ContactNav />
     <SearchButton @tap="toSearchPage" class="contact-search" />
+    </view>
     <IndexedList class="contact-index-list" :options="contactList">
       <template v-slot:header>
         <MenuItem :className="'contact-menu'" :title="t('newRequest')" />
@@ -32,6 +35,7 @@ import SearchButton from "../../modules/common/SearchButton/index.vue";
 import MenuItem from "../common/MenuItem/index.vue";
 import UserItem from "./components/UserItem/index.vue";
 import IndexedList from "../common/IndexedList/index.vue";
+import ContactNav from "./components/ContactNav/index.vue";
 import type { Chat } from "../../sdk";
 import { t } from "../../locales/index";
 import { ChatUIKIT } from "../../index";
