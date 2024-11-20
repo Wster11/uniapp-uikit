@@ -15,6 +15,7 @@
   line-height: 16px;
   color: #171A1C;
   min-height: 80px;
+  max-height: 180px;
 }
 
 .save-disabled {
@@ -30,6 +31,8 @@
 .textarea {
   width: 100%;
   flex: 1;
+  max-height: 150px;
+  overflow-y: scroll;
 }
 
 .count {

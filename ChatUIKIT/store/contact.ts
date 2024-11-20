@@ -76,6 +76,7 @@ class ContactStore {
     return ChatUIKIT.getChatConn()
       .acceptContactInvite(userId)
       .then((res) => {
+        this.deleteContactNotice(userId);
         return res;
       });
   }
@@ -84,6 +85,17 @@ class ContactStore {
   addContactNotice(msg: ContactNotice) {
     this.contactsNoticeInfo.list.unshift(msg);
     this.contactsNoticeInfo.unReadCount++;
+  }
+
+  /** 删除好友通知 */
+  deleteContactNotice(userId: string) {
+    const index = this.contactsNoticeInfo.list.findIndex(
+      (item) => item.from === userId
+    );
+    if (index !== -1) {
+      this.contactsNoticeInfo.list.splice(index, 1);
+      this.contactsNoticeInfo.unReadCount--;
+    }
   }
 
   /** 删除 store 中的联系人 */

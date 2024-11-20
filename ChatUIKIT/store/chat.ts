@@ -188,45 +188,33 @@ class ChatStore {
     const notice = {
       ...msg,
       ext: "invited",
-      time: Date.now(),
-      showOperation: true
+      time: Date.now()
     };
     ChatUIKIT.appUserStore.getUsersInfo({ userIdList: [msg.from] });
 
     const isDuplicate = ChatUIKIT.contactStore.contactsNoticeInfo.list.some(
-      (item) =>
-        item.type === "subscribe" &&
-        item.from === msg.from &&
-        item.showOperation === true
+      (item) => item.type === "subscribe" && item.from === msg.from
     );
     if (!isDuplicate) ChatUIKIT.contactStore.addContactNotice(notice);
   }
 
   handleContactAgreed(msg) {
-    const notice = { ...msg, ext: "agreed", time: Date.now() };
     ChatUIKIT.appUserStore.getUsersInfo({ userIdList: [msg.from] });
     ChatUIKIT.contactStore.addStoreContact({ userId: msg.from, remark: "" });
-    ChatUIKIT.contactStore.addContactNotice(notice);
   }
 
   handleContactRefuse(msg) {
-    const notice = { ...msg, ext: "refused", time: Date.now() };
     ChatUIKIT.appUserStore.getUsersInfo({ userIdList: [msg.from] });
-    ChatUIKIT.contactStore.addContactNotice(notice);
   }
 
   handleContactDeleted(msg) {
-    const notice = { ...msg, ext: "deleted", time: Date.now() };
     ChatUIKIT.appUserStore.getUsersInfo({ userIdList: [msg.from] });
     ChatUIKIT.contactStore.deleteStoreContact(msg.from);
-    ChatUIKIT.contactStore.addContactNotice(notice);
   }
 
   handleContactAdded(msg) {
-    const notice = { ...msg, ext: "added", time: Date.now() };
     ChatUIKIT.appUserStore.getUsersInfo({ userIdList: [msg.from] });
     ChatUIKIT.contactStore.addStoreContact({ userId: msg.from, remark: "" });
-    ChatUIKIT.contactStore.addContactNotice(notice);
   }
 
   async handleGroupEvent(event) {
@@ -256,10 +244,7 @@ class ChatStore {
     this._throttle();
 
     const isDuplicate = ChatUIKIT.groupStore.groupNoticeInfo.list.some(
-      (item) =>
-        item.operation === "inviteToJoin" &&
-        item.id === event.id &&
-        item.showOperation === true
+      (item) => item.operation === "inviteToJoin" && item.id === event.id
     );
     if (!isDuplicate) {
       ChatUIKIT.groupStore.addGroupNotice({

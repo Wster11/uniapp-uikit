@@ -83,6 +83,11 @@ const handleMenuTap = (params) => {
         url: "/ChatUIKIT/modules/GroupCreate/index"
       });
       break;
+    case "addContact":
+      uni.navigateTo({
+        url: "/ChatUIKIT/modules/ContactAdd/index"
+      });
+      break;
     default:
       break;
   }

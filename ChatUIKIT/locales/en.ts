@@ -137,4 +137,11 @@ export default {
   createGroupBtn: 'Create',
   newChatTitle: 'New Chat',
   newChatButton: 'New Chat',
+  contactAddSuccess: "Request sent successfully",
+  contactAddFailed: "Request failed",
+  contactAddTitle: "Add Contact",
+  contactAddBtn: "Add",
+  contactAddInputPlaceholder: "Enter the user's ID",
+  contactRequestListTitle: "New Requests",
+  contactRequestListTip: "Request to add you as a friend"
 };

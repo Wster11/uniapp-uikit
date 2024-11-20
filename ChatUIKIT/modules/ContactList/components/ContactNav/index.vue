@@ -34,7 +34,11 @@ const unwatchUserInfo = autorun(() => {
   userInfo.value = ChatUIKIT.appUserStore.getSelfUserInfo();
 });
 
-const toAddContact = () => {};
+const toAddContact = () => {
+  uni.navigateTo({
+    url: "/ChatUIKIT/modules/ContactAdd/index"
+  });
+};
 
 onUnmounted(() => {
   unwatchUserInfo();

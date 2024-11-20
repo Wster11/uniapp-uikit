@@ -2,11 +2,18 @@
   <view class="contact-list-wrap">
     <view class="header-wrap">
       <ContactNav />
-    <SearchButton @tap="toSearchPage" class="contact-search" />
+      <SearchButton @tap="toSearchPage" class="contact-search" />
     </view>
     <IndexedList class="contact-index-list" :options="contactList">
       <template v-slot:header>
-        <MenuItem :className="'contact-menu'" :title="t('newRequest')" />
+        <MenuItem @tap="toRequestListPage" :className="'contact-menu'" :title="t('newRequest')">
+          <template v-slot:right>
+            <view class="request-count" v-if="contactRequestCount">
+              {{ contactRequestCount > 99 ? "99+" : contactRequestCount }}
+            </view>
+          </template>
+        </MenuItem>
+
         <MenuItem
           @tap="toGroupPage"
           :className="'contact-menu'"
@@ -44,6 +51,12 @@ import { autorun } from "mobx";
 
 const contactList = ref<Chat.ContactItem[]>([]);
 const joinedGroupCount = ref(0);
+const contactRequestCount = ref(0);
+
+const unwatchContactRequestCount = autorun(() => {
+  contactRequestCount.value =
+    ChatUIKIT.contactStore.contactsNoticeInfo.unReadCount;
+});
 
 const unwatchContactList = autorun(() => {
   contactList.value = ChatUIKIT.contactStore.contacts.map((contact) => ({
@@ -75,6 +88,13 @@ const toSearchPage = () => {
   });
 };
 
+
+const toRequestListPage = () => {
+  uni.navigateTo({
+    url: `/ChatUIKIT/modules/ContactRequestList/index`
+  });
+};
+
 const toCreateGroup = () => {
   uni.navigateTo({
     url: `/ChatUIKIT/modules/GroupCreate/index`
@@ -83,6 +103,7 @@ const toCreateGroup = () => {
 
 onUnmounted(() => {
   unwatchContactList();
+  unwatchContactRequestCount();
   unwatchJoinedGroupCount();
 });
 </script>

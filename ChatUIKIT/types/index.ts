@@ -10,12 +10,10 @@ type ConnState = "none" | "reconnecting" | "connected" | "disconnected";
 type ContactNotice = Chat.ContactMsgBody & {
   ext: "invited" | "agreed" | "refused" | "deleted" | "added";
   time: number;
-  showOperation?: boolean;
 };
 
 type GroupNotice = Chat.GroupEvent & {
   time: number;
-  showOperation?: boolean;
 };
 
 interface ContactNoticeInfo {

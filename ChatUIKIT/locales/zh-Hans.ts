@@ -136,5 +136,12 @@ export default {
   searchContact: "搜索联系人",
   createGroupBtn: "创建",
   newChatTitle: "新聊天",
-  newChatButton: "发起新会话"
+  newChatButton: "发起新会话",
+  contactAddSuccess: "好友请求发送成功",
+  contactAddFailed: "好友请求发送失败",
+  contactAddTitle: "添加联系人",
+  contactAddBtn: "添加",
+  contactAddInputPlaceholder: "请输入联系人ID",
+  contactRequestListTitle: "新请求",
+  contactRequestListTip: "请求添加您为好友"
 };

@@ -16,7 +16,7 @@ ChatUIKIT.init({
   chat,
   config: {
     theme: {
-      avatarShape: "square"
+      avatarShape: "circle"
     },
     features: {
       // useUserInfo: false,
