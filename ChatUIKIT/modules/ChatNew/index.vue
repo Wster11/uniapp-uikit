@@ -1,12 +1,14 @@
 <template>
   <view class="new-chat-wrap">
-    <NavBar @onLeftTap="onBack">
-      <template v-slot:left>
-        <view class="title" v-text="t('newChatTitle')"></view>
-      </template>
-    </NavBar>
-    <view class="search-wrap" @tap="toContactSearch">
-      <SearchButton :placeholder="t('searchContact')" />
+    <view>
+      <NavBar @onLeftTap="onBack">
+        <template v-slot:left>
+          <view class="title" v-text="t('newChatTitle')"></view>
+        </template>
+      </NavBar>
+      <view class="search-wrap" @tap="toContactSearch">
+        <SearchButton :placeholder="t('searchContact')" />
+      </view>
     </view>
     <IndexedList
       v-if="contactList.length"
@@ -97,7 +99,13 @@ onUnmounted(() => {
   overflow: hidden;
 }
 
+.contact-item {
+  display: flex;
+  width: 100vw;
+}
+
 .contact-indexed-list {
-  height: calc(100vh - 100px);
+  flex: 1;
+  overflow-y: scroll;
 }
 </style>

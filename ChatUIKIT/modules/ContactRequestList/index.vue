@@ -1,11 +1,11 @@
 <template>
-  <view>
+  <view class="request-list-wrap">
     <Navbar @onLeftTap="onBack">
       <template v-slot:left>
         <view class="title" v-text="t('contactRequestListTitle')"></view>
       </template>
     </Navbar>
-    <view class="content">
+    <view class="list">
       <view v-if="contactApplyRequestList.length">
         <RequestItem
           v-for="request in contactApplyRequestList"
@@ -74,5 +74,17 @@ onUnmounted(() => {
 .btn-disabled {
   background: #f1f2f3;
   color: #acb4b9;
+}
+
+.request-list-wrap {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.list {
+  flex: 1;
+  overflow-y: scroll;
 }
 </style>

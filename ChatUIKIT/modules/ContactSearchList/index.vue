@@ -16,8 +16,8 @@
       <UserItem
         v-for="item in searchList"
         :key="item.conversationId"
-        @tap="toChatPage(item)"
         class="search-item"
+        @tap="toChatPage(item)"
         :user="{ userId: item.userId }"
       />
     </view>
@@ -87,11 +87,11 @@ onLoad((option) => {
   display: flex;
   flex-direction: column;
   flex: 1;
-  overflow-y: auto;
+  overflow-y: scroll;
 }
 
 .search-item {
-  box-sizing: border-box;
+  padding-right: 16px;
 }
 
 .input-wrap {
@@ -104,7 +104,6 @@ onLoad((option) => {
 }
 
 .search-list-wrap {
-  height: calc(100vh - var(--status-bar-height));
   display: flex;
   flex-direction: column;
   overflow: hidden;
