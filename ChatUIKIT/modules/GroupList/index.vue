@@ -5,7 +5,7 @@
         <view v-text="t('groupList')"></view>
       </template>
     </NavBar>
-    <view v-if="groupList.length">
+    <view class="list" v-if="groupList.length">
       <view
         class="group-item"
         v-for="group in groupList"
@@ -54,5 +54,12 @@ onUnmounted(() => {
 .group-list-wrap {
   display: flex;
   flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.list {
+  flex: 1;
+  overflow-y: scroll;
 }
 </style>

@@ -8,7 +8,7 @@
         @cancel="cancelSearch"
       />
     </view>
-    <view class="search-content" v-if="contacts.length">
+    <view class="search-content" v-if="searchList.length">
       <checkbox-group @change="checkboxChange">
         <label
           class="label"

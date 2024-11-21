@@ -12,11 +12,19 @@
         <view class="title"></view>
       </template>
       <template v-slot:right>
-        <view class="btn-wrap" @tap="isShowPopMenu = true">
-          <view class="action-btn"></view>
+        <view class="btn-wrap">
+          <!-- #ifndef MP-WEIXIN-->
+          <view class="action-btn" @tap="isShowPopMenu = true"></view>
+          <!-- #endif -->
         </view>
       </template>
     </NavBar>
+    <!-- #ifdef MP-WEIXIN-->
+    <view class="wx-btn-wrap">
+      <view class="wx-btn" @tap="isShowPopMenu = true"></view>
+    </view>
+    <!-- #endif -->
+
     <PopMenu
       v-if="isShowPopMenu"
       :options="options"
@@ -38,14 +46,20 @@ import { ref, onUnmounted } from "vue";
 import { ChatUIKIT } from "../../../../index";
 import { t } from "../../../../locales/index";
 import { USER_AVATAR_URL } from "../../../../const";
+import { isWXProgram } from "../../../../utils/index";
 import { autorun } from "mobx";
 
 const isShowPopMenu = ref(false);
 
-const PopMenuStyle = {
-  right: "25px",
-  top: "calc(var(--status-bar-height) + 50px"
-};
+const PopMenuStyle = isWXProgram
+  ? {
+      right: "40px",
+      bottom: "calc(120px - var(--safe-area-inset-bottom))"
+    }
+  : {
+      right: "25px",
+      top: "calc(var(--status-bar-height) + 50px"
+    };
 
 const userInfo = ref({});
 
@@ -115,6 +129,28 @@ onUnmounted(() => {
   width: 24px;
   height: 24px;
   background: url("../../../../assets/icon/plus.png") no-repeat;
+  background-size: 100% 100%;
+}
+
+.wx-btn-wrap {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  bottom: 65px;
+  right: 20px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #009eff 0%, #334bff 100%);
+  box-shadow: 8px 0px 24px 0px rgba(26, 26, 26, 0.1),
+    0px 24px 36px 0px rgba(77, 77, 77, 0.15);
+}
+
+.wx-btn {
+  width: 24px;
+  height: 24px;
+  background: url("../../../../assets/icon/wx_plus.png") no-repeat;
   background-size: 100% 100%;
 }
 </style>

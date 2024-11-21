@@ -5,18 +5,6 @@
         <template v-slot:left>
           <view class="title" v-text="t('createGroup')"></view>
         </template>
-        <template v-slot:right>
-          <view
-            :class="[
-              'create-btn',
-              { 'create-btn-disabled': !selectedUserIds.length }
-            ]"
-            @tap="createGroup"
-            >{{
-              t("createGroupBtn") + "(" + selectedUserIds.length + ")"
-            }}</view
-          >
-        </template>
       </NavBar>
       <view class="search-wrap" @tap="isSearch = true">
         <SearchButton :placeholder="t('searchContact')" />
@@ -34,6 +22,18 @@
         </template>
       </IndexedList>
       <Empty v-else />
+      <view class="create-btn-wrap">
+        <view
+          v-if="contactList.length"
+          :class="[
+            'create-btn',
+            { 'create-btn-disabled': !selectedUserIds.length }
+          ]"
+          @tap="createGroup"
+        >
+          {{ t("createGroupBtn") + "(" + selectedUserIds.length + ")" }}
+        </view>
+      </view>
     </view>
     <SearchList
       v-else
@@ -146,19 +146,6 @@ onUnmounted(() => {
   background-size: 100% 100%;
 }
 
-.create-btn {
-  color: #009dff;
-  text-align: right;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 18px;
-}
-
-.create-btn-disabled {
-  color: #acb4b9;
-}
-
 .search-wrap {
   flex-shrink: 0;
   padding: 7px 8px;
@@ -183,6 +170,36 @@ onUnmounted(() => {
 }
 
 .contact-indexed-list {
-  height: calc(100vh - 100px);
+  display: flex;
+  height: calc(100vh - 200px);
+}
+
+.create-btn-wrap {
+  display: flex;
+  padding: 14px;
+  align-items: center;
+  border-top: 0.5px solid #e3e6e8;
+  background: #f9fafa;
+  backdrop-filter: blur(10px);
+}
+
+.create-btn {
+  display: flex;
+  width: 100%;
+  padding: 11px 24px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  background: linear-gradient(180deg, #009eff 0%, #334bff 100%);
+  color: #f9fafa;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+.create-btn-disabled {
+  color: #acb4b9;
+  background: #f1f2f3;
 }
 </style>

@@ -1,26 +1,25 @@
 <template>
   <view class="mask" @tap="emits('onMenuClose')">
     <view class="pop show" :style="popStyle">
-      <MenuItem
+      <view
         v-for="(item, index) in popButton"
+        class="pop-menu-item"
         :key="item.type"
         :title="item.name"
-        :className="'pop-menu-item'"
-        :showArrow="false"
         @tap="handleClick({ type: item.type })"
       >
-        <template v-slot:left>
-          <view class="icon">
-            <image class="icon-img" :src="item.icon" />
-          </view>
-        </template>
-      </MenuItem>
+        <view class="icon">
+          <image class="icon-img" :src="item.icon" />
+        </view>
+        <view>
+          {{ item.name }}
+        </view>
+      </view>
     </view>
   </view>
 </template>
 <script setup lang="ts">
-import MenuItem from "../MenuItem/index.vue";
-interface MenuItem {
+interface MenuOption {
   name: string;
   type: string;
   icon: string;
@@ -28,7 +27,7 @@ interface MenuItem {
 
 interface Props {
   popStyle: Record<string, string>;
-  options: Array<MenuItem>;
+  options: Array<MenuOption>;
 }
 const emits = defineEmits(["onMenuTap", "onMenuClose"]);
 const props = defineProps<Props>();
@@ -40,8 +39,10 @@ const handleClick = (params) => {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .pop-menu-item {
+  display: flex;
+  align-items: center;
   color: #171a1c;
   font-size: 16px;
   font-style: normal;
@@ -49,10 +50,13 @@ const handleClick = (params) => {
   line-height: 22px;
   height: 40px;
   padding: 0 12px;
+  box-sizing: border-box;
+  width: 100%;
+  &:active {
+    background-color: #f5f5f5;
+  }
 }
-</style>
 
-<style lang="scss" scoped>
 /* 遮罩 */
 .mask {
   position: fixed;
