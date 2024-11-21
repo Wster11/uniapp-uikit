@@ -12,19 +12,30 @@
       />
       <view v-if="text.length" class="clear-icon" @tap="handleClear"></view>
     </view>
-    <view @tap="handleCancel" class="cancel">{{ t("cancel") }}</view>
+    <view v-if="props.showCancel" @tap="handleCancel" class="cancel">{{
+      t("cancel")
+    }}</view>
   </view>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
 import { t } from "../../../locales";
-interface Props {
-  focus?: boolean;
-  placeholder?: string;
-}
 
-const props = defineProps<Props>();
+const props = defineProps({
+  focus: {
+    type: Boolean,
+    default: false
+  },
+  placeholder: {
+    type: String,
+    default: ""
+  },
+  showCancel: {
+    type: Boolean,
+    default: false
+  }
+});
 
 const text = ref("");
 

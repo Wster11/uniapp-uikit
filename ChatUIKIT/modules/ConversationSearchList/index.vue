@@ -1,13 +1,17 @@
 <template>
   <view class="search-list-wrap">
-    <view class="search-wrap">
-      <SearchInput
-        :focus="true"
-        :placeholder="t('conversationSearchPlaceholder')"
-        @input="onInput"
-        @cancel="cancelSearch"
-      />
-    </view>
+    <NavBar @onLeftTap="onBack">
+      <template v-slot:left>
+        <view class="input-wrap">
+          <SearchInput
+            :focus="true"
+            :placeholder="t('conversationSearchPlaceholder')"
+            @input="onInput"
+            @cancel="cancelSearch"
+          />
+        </view>
+      </template>
+    </NavBar>
     <view class="search-content" v-if="searchList.length">
       <view
         class="search-item"
@@ -29,6 +33,7 @@
 </template>
 
 <script setup lang="ts">
+import NavBar from "../common/NavBar/index.vue";
 import SearchInput from "../common/SearchInput/index.vue";
 import GroupItem from "../GroupList/components/GroupItem/index.vue";
 import UserItem from "../ContactList/components/UserItem/index.vue";
@@ -66,6 +71,10 @@ const cancelSearch = () => {
   });
 };
 
+const onBack = () => {
+  uni.navigateBack();
+};
+
 const toChatPage = (item) => {
   uni.redirectTo({
     url: `/ChatUIKIT/modules/Chat/index?id=${item.conversationId}&type=${item.conversationType}`
@@ -74,11 +83,6 @@ const toChatPage = (item) => {
 </script>
 
 <style lang="scss" scoped>
-.search-wrap {
-  flex-shrink: 0;
-  padding: 7px 20px 7px 7px;
-}
-
 .search-content {
   display: flex;
   flex-direction: column;
@@ -90,11 +94,20 @@ const toChatPage = (item) => {
   box-sizing: border-box;
 }
 
+.input-wrap {
+  /*  #ifndef MP-WEIXIN  */
+  width: calc(100vw - 50px);
+  /*  #endif  */
+  /*  #ifdef MP-WEIXIN  */
+  width: calc(100vw - 150px);
+  /*  #endif  */
+}
+
 .search-list-wrap {
   height: calc(100vh - var(--status-bar-height));
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  padding-top: var(--status-bar-height);
+  padding-top: 5px;
 }
 </style>

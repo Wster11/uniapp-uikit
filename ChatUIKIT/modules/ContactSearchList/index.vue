@@ -1,13 +1,17 @@
 <template>
   <view class="search-list-wrap">
-    <view class="search-wrap">
-      <SearchInput
-        :focus="true"
-        :placeholder="t('searchContact')"
-        @input="onInput"
-        @cancel="cancelSearch"
-      />
-    </view>
+    <NavBar @onLeftTap="onBack">
+      <template v-slot:left>
+        <view class="input-wrap">
+          <SearchInput
+            :focus="true"
+            :placeholder="t('searchContact')"
+            @input="onInput"
+            @cancel="cancelSearch"
+          />
+        </view>
+      </template>
+    </NavBar>
     <view class="search-content" v-if="searchList.length">
       <UserItem
         v-for="item in searchList"
@@ -22,6 +26,7 @@
 </template>
 
 <script setup lang="ts">
+import NavBar from "../common/NavBar/index.vue";
 import SearchInput from "../common/SearchInput/index.vue";
 import UserItem from "../ContactList/components/UserItem/index.vue";
 import Empty from "../common/Empty/index.vue";
@@ -68,17 +73,16 @@ const toChatPage = (item) => {
   });
 };
 
+const onBack = () => {
+  uni.navigateBack();
+};
+
 onLoad((option) => {
   sourceUrl = option.url;
 });
 </script>
 
 <style lang="scss" scoped>
-.search-wrap {
-  flex-shrink: 0;
-  padding: 7px 20px 7px 7px;
-}
-
 .search-content {
   display: flex;
   flex-direction: column;
@@ -90,11 +94,20 @@ onLoad((option) => {
   box-sizing: border-box;
 }
 
+.input-wrap {
+  /*  #ifndef MP-WEIXIN  */
+  width: calc(100vw - 50px);
+  /*  #endif  */
+  /*  #ifdef MP-WEIXIN  */
+  width: calc(100vw - 150px);
+  /*  #endif  */
+}
+
 .search-list-wrap {
   height: calc(100vh - var(--status-bar-height));
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  padding-top: var(--status-bar-height);
+  padding-top: 5px;
 }
 </style>
