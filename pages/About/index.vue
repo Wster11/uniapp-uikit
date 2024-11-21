@@ -20,6 +20,7 @@
         <MenuItem
           :className="'about-menu'"
           v-for="item in menus"
+          :key="item.title"
           @tap="onMenuTap(item)"
         >
           <template v-slot:left>
