@@ -35,8 +35,6 @@ import { autorun } from "mobx";
 
 const inputValue = ref("");
 
-const userId = ChatUIKIT.getChatConn().user;
-
 const userInfo = ref({});
 
 const unwatchUserInfo = autorun(() => {

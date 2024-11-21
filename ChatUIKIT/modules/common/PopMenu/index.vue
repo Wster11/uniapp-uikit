@@ -71,7 +71,9 @@ const handleClick = (params) => {
     align-items: flex-start;
     text-align: left;
     color: #333;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    /* shadow/onlight/middle */
+    box-shadow: 2px 0px 8px 0px rgba(26, 26, 26, 0.1),
+      0px 4px 4px 0px rgba(77, 77, 77, 0.15);
     border-radius: 4px;
     background: #f9fafa;
     transition: transform 0.15s ease-in-out 0s;
