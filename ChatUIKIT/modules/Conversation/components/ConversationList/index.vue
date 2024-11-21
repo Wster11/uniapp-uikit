@@ -116,6 +116,8 @@ onUnmounted(() => {
 }
 
 .header-wrap {
+  display: flex;
+  flex-direction: column;
   position: fixed;
   z-index: 999;
   padding: 8px;

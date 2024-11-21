@@ -2,12 +2,14 @@
   <view>
     <NavBar @onLeftTap="onBack">
       <template v-slot:left>
-        <Avatar
-          :size="32"
-          :src="info.avatar"
-          :placeholder="isSingleChat ? USER_AVATAR_URL : GROUP_AVATAR_URL"
-        />
-        <view class="name ellipsis">{{ info.name }}</view>
+        <view class="left-content">
+          <Avatar
+            :size="32"
+            :src="info.avatar"
+            :placeholder="isSingleChat ? USER_AVATAR_URL : GROUP_AVATAR_URL"
+          />
+          <view class="name ellipsis">{{ info.name }}</view>
+        </view>
       </template>
     </NavBar>
   </view>
@@ -72,7 +74,12 @@ onUnmounted(() => {
   color: #171a1c;
   font-size: 16px;
   font-weight: 500;
-  line-height: 22px; /* 137.5% */
+  line-height: 22px;
   margin-left: 8px;
+}
+
+.left-content{
+  display: flex;
+  align-items: center;
 }
 </style>
