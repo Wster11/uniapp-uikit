@@ -52,7 +52,7 @@ const unwatchUserInfo = autorun(() => {
     info.value = {
       name: groupInfo?.groupName,
       id: conv.conversationId,
-      avatar: "",
+      avatar: ChatUIKIT.groupStore.getGroupAvatar(conv.conversationId),
       conversationType: conv.conversationType
     };
   }

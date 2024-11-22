@@ -48,7 +48,7 @@ class AppUserStore {
           res.data &&
             Object.keys(res.data).forEach((key) => {
               const result = res.data?.[key] || {};
-              this.addUserInfo(key, result);
+              this.setUserInfo(key, result);
             });
           resolve(res);
         })
@@ -58,8 +58,8 @@ class AppUserStore {
     });
   }
 
-  /** 添加用户属性 */
-  addUserInfo(userId: string, userInfo: Chat.UpdateOwnUserInfoParams) {
+  /** 设置用户属性 */
+  setUserInfo(userId: string, userInfo: Chat.UpdateOwnUserInfoParams) {
     this.appUserInfo.set(userId, userInfo);
   }
 
@@ -68,7 +68,7 @@ class AppUserStore {
     return ChatUIKIT.getChatConn()
       .updateUserInfo(params)
       .then((res) => {
-        this.addUserInfo(ChatUIKIT.getChatConn().user, res.data || {});
+        this.setUserInfo(ChatUIKIT.getChatConn().user, res.data || {});
         return res;
       });
   }

@@ -176,7 +176,7 @@ const uninstallConvInfoWatch = autorun(() => {
     const groupInfo = groupStore.getGroupInfoFromStore(convId);
     conversationInfo.value = {
       name: groupInfo?.groupName || convId,
-      avatar: ""
+      avatar: ChatUIKIT.groupStore.getGroupAvatar(convId)
     };
   } else {
     return (conversationInfo.value = appUserStore.getUserInfoFromStore(convId));

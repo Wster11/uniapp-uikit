@@ -1,8 +1,15 @@
 <script lang="ts">
 import { ChatUIKIT } from "./ChatUIKIT";
-import { APPKEY, API_URL, URL, CHAT_STORE } from "@/const/index";
+import {
+  APPKEY,
+  API_URL,
+  URL,
+  CHAT_STORE,
+  getInsideGroupAvatarUrl
+} from "@/const/index";
 import websdk from "easemob-websdk/uniApp/Easemob-chat";
 import { EasemobChatStatic } from "easemob-websdk/Easemob-chat";
+import { autorun, runInAction } from "mobx";
 
 const chat = new (websdk as unknown as EasemobChatStatic).connection({
   appKey: APPKEY,
@@ -39,12 +46,50 @@ ChatUIKIT.init({
 });
 
 // 手动设置用户属性
-// ChatUIKIT.appUserStore.addUserInfo("0c1bdd28c7", {
+// ChatUIKIT.appUserStore.setUserInfo("0c1bdd28c7", {
 //   nickname: "张三",
 //   avatarurl: "https://p9-passport.byteacctimg.com/img/user-avatar/6d239ae53c4aded5fadd95cda5fc6759~40x40.awebp"
 // });
 
 uni.$UIKIT = ChatUIKIT;
+
+// 监听群组变化获取群组头像
+autorun(() => {
+  const groupIds = ChatUIKIT.groupStore.joinedGroupList
+    .filter((group) => {
+      // 过滤掉已经有头像的群组
+      return !ChatUIKIT.groupStore.isHasGroupAvatar(group.groupId);
+    })
+    .map((group) => {
+      // 设置头像空头像, 避免重复请求
+      ChatUIKIT.groupStore.setGroupAvatar(group.groupId, "");
+      return group.groupId;
+    });
+
+  if (groupIds.length > 0) {
+    getGroupAvatarUrl(groupIds);
+  }
+});
+
+// 获取群组头像
+const getGroupAvatarUrl = async (groupIds: string[]) => {
+  for (let groupId of groupIds) {
+    try {
+      const res = await uni.request({
+        url: getInsideGroupAvatarUrl(groupId),
+        header: {
+          Authorization: "Bearer " + ChatUIKIT.getChatConn().accessToken
+        }
+      });
+      runInAction(() => {
+        // 设置群组头像
+        ChatUIKIT.groupStore.setGroupAvatar(groupId, res.data.avatarUrl);
+      });
+    } catch (error) {
+      console.error("Failed to fetch group avatar:", groupId, error);
+    }
+  }
+};
 
 const autoLogin = async () => {
   try {

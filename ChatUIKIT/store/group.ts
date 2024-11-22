@@ -1,19 +1,16 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import type { GroupNotice, GroupNoticeInfo, Chat } from "../types/index";
-import {
-  DEFAULT_GROUP_MEMBER_COUNT,
-  GET_GROUP_MEMBERS_PAGESIZE
-} from "../const/index";
+import { GET_GROUP_MEMBERS_PAGESIZE } from "../const/index";
 import { ChatUIKIT } from "../index";
 
 class GroupStore {
   joinedGroupList: Chat.GroupInfo[] = [];
   groupDetailMap: Map<string, Chat.GroupDetailInfo> = new Map();
+  groupAvatarMap: Map<string, string> = new Map();
   groupNoticeInfo: GroupNoticeInfo = {
     list: [],
     unReadCount: 0
   };
-  viewedGroupInfo: Chat.GroupInfo = {} as Chat.GroupInfo;
   isJoinedGroupListLast: boolean = true;
   getJoinedGroupListParams = {
     pageSize: 20, // 最大支持20
@@ -106,10 +103,6 @@ class GroupStore {
       .then((res) => {
         res.data?.forEach((info) => {
           this.groupDetailMap.set(info.id, info);
-          const userIdList = info.affiliations
-            .map((affiliation) => affiliation.member || affiliation.owner)
-            .slice(0, DEFAULT_GROUP_MEMBER_COUNT);
-          ChatUIKIT.appUserStore.getUsersInfo({ userIdList });
         });
         return res;
       });
@@ -118,10 +111,6 @@ class GroupStore {
   addGroupNotice = (event: GroupNotice) => {
     this.groupNoticeInfo.list.unshift(event);
     this.groupNoticeInfo.unReadCount++;
-  };
-
-  setViewedGroupInfo = (group: Chat.GroupInfo) => {
-    this.viewedGroupInfo = group;
   };
 
   inviteJoinGroup = (groupId: string, members: string[]) => {
@@ -205,6 +194,18 @@ class GroupStore {
     });
   };
 
+  getGroupAvatar = (groupId: string) => {
+    return this.groupAvatarMap.get(groupId) || "";
+  };
+
+  setGroupAvatar = (groupId: string, avatar: string) => {
+    this.groupAvatarMap.set(groupId, avatar);
+  };
+
+  isHasGroupAvatar = (groupId: string) => {
+    return this.groupAvatarMap.has(groupId);
+  };
+
   clear = () => {
     runInAction(() => {
       this.joinedGroupList = [];
@@ -213,7 +214,6 @@ class GroupStore {
         unReadCount: 0
       };
       this.groupDetailMap.clear();
-      this.viewedGroupInfo = {} as Chat.GroupInfo;
     });
   };
 }

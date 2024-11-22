@@ -3,7 +3,7 @@
     <Avatar
       class="avatar"
       :size="40"
-      :src="''"
+      :src="groupAvatar"
       :placeholder="GROUP_AVATAR_URL"
     />
     <view class="right">
@@ -16,12 +16,25 @@
 import Avatar from "../../../common/Avatar/index.vue";
 import type { Chat } from "../../../../sdk";
 import { GROUP_AVATAR_URL } from "../../../../const/index";
+import { ChatUIKIT } from "../../../../index";
+import { autorun } from "mobx";
+import { ref, onUnmounted } from "vue";
 
 interface Props {
   group: Chat.GroupInfo;
 }
 
 const props = defineProps<Props>();
+
+const groupAvatar = ref("");
+
+const unwatchGroupAvatar = autorun(() => {
+  groupAvatar.value = ChatUIKIT.groupStore.getGroupAvatar(props.group.groupId);
+});
+
+onUnmounted(() => {
+  unwatchGroupAvatar();
+});
 </script>
 <style lang="scss" scoped>
 @import url("../../../../styles/common.scss");

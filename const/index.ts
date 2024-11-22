@@ -12,6 +12,11 @@ const getInsideUploadUrl = (userId: string) => {
   return `https://a1-appserver.easemob.com/inside/app/user/${userId}/avatar/upload`;
 };
 
+// Demo内部获取群头像地址 (仅支持官方appkey使用)
+const getInsideGroupAvatarUrl = (groupId: string) => {
+  return `https://a1-appserver.easemob.com/inside/app/group/${groupId}/avatarurl`;
+};
+
 export {
   CHAT_STORE,
   SERVER_CONFIG_STORE,
@@ -19,5 +24,6 @@ export {
   API_URL,
   URL,
   IS_USE_CUSTOM_SERVER,
-  getInsideUploadUrl
+  getInsideUploadUrl,
+  getInsideGroupAvatarUrl
 };
