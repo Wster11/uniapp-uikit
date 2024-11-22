@@ -7,7 +7,6 @@
     </NavBar>
     <view class="list" v-if="groupList.length">
       <view
-        class="group-item"
         v-for="group in groupList"
         :key="group.groupId"
         @click="toChatPage(group.groupId)"
@@ -60,6 +59,7 @@ onUnmounted(() => {
 
 .list {
   flex: 1;
+  padding-right: 16px;
   overflow-y: scroll;
 }
 </style>
