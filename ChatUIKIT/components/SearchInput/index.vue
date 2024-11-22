@@ -85,7 +85,7 @@ const handleCancel = () => {
   flex-shrink: 0;
   width: 22px;
   height: 22px;
-  background-image: url("../../../assets/icon/search.png");
+  background-image: url("../../assets/icon/search.png");
   background-size: 100% 100%;
   margin-right: 5px;
 }
@@ -94,7 +94,7 @@ const handleCancel = () => {
   flex-shrink: 0;
   width: 22px;
   height: 22px;
-  background-image: url("../../../assets/icon/cancel.png");
+  background-image: url("../../assets/icon/cancel.png");
   background-size: 100% 100%;
 }
 

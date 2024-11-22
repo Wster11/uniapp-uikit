@@ -10,8 +10,8 @@ class AppUserStore {
   }
 
   /** 获取用户属性 */
-  getUsersInfo(props: { userIdList: string[]; withPresence?: boolean }) {
-    const { userIdList = [], withPresence = true } = props;
+  getUsersInfo(props: { userIdList: string[] }) {
+    const { userIdList = [] } = props;
     return new Promise((resolve, reject) => {
       if (ChatUIKIT.getFeatureConfig().useUserInfo === false) {
         resolve({});

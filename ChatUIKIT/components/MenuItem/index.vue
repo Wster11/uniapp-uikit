@@ -70,7 +70,7 @@ const props = defineProps({
   .arrow {
     width: 20px;
     height: 20px;
-    background-image: url("../../../assets//icon/arrow-right.png");
+    background-image: url("../../assets/icon/arrow-right.png");
     background-size: 100% 100%;
   }
 }

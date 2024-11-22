@@ -54,7 +54,7 @@ const onLeftTap = () => {
 .arrow-left {
   width: 24px;
   height: 24px;
-  background: url("../../../assets/icon/arrow-left.png") no-repeat;
+  background: url("../../assets/icon/arrow-left.png") no-repeat;
   background-size: 100% 100%;
 }
 </style>

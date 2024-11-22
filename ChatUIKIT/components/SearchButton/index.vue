@@ -20,7 +20,7 @@ const placeholder = props.placeholder || t("searchPlaceholder");
 .search-icon {
   width: 22px;
   height: 22px;
-  background: url("../../../assets/icon/search.png");
+  background: url("../../assets/icon/search.png");
   background-size: 100% 100%;
   margin-right: 5px;
 }

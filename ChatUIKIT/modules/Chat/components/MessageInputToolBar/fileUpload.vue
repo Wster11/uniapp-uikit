@@ -26,7 +26,7 @@ const conn = ChatUIKIT.getChatConn();
 const convStore = ChatUIKIT.convStore;
 
 const chooseFile = () => {
-  // #ifdef H5
+  // #ifdef MP-WEIXIN
   wx.chooseMessageFile({
     count: 1,
     type: "all",
