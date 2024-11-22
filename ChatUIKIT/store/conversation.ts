@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { getTimeStringAutoShort, sortByPinned } from "../utils/index";
-import type { ConversationBaseInfo } from "./types/index";
+import type { ConversationBaseInfo } from "../types/index";
 import type {
   MixedMessageBody,
   Chat,

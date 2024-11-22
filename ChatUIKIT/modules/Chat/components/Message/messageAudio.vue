@@ -41,8 +41,7 @@ import { ref, onUnmounted, watch } from "vue";
 interface Props {
   msg: Chat.AudioMsgBody;
 }
-const connStore = ChatUIKIT.connStore;
-const conn = connStore.getChatConn();
+const conn = ChatUIKIT.getChatConn();
 const props = defineProps<Props>();
 const audioContextMap = new Map<string, UniApp.InnerAudioContext>();
 const playing = ref(false);

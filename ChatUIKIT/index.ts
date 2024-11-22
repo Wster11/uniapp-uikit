@@ -1,5 +1,4 @@
 import AppUserStore from "./store/appUser";
-import BlockStore from "./store/block";
 import ChatStore from "./store/chat";
 import ConnStore from "./store/conn";
 import ContactStore from "./store/contact";
@@ -13,7 +12,6 @@ class ChatKIT {
   public chatStore: ChatStore;
   public appUserStore: AppUserStore;
   public convStore: ConversationStore;
-  public blockStore: BlockStore;
   public contactStore: ContactStore;
   public groupStore: GroupStore;
   public messageStore: MessageStore;
@@ -29,7 +27,6 @@ class ChatKIT {
     }
     this.configStore.setConfig(config.config);
     this.connStore.setChatConn(config.chat);
-    this.blockStore = new BlockStore();
     this.chatStore = new ChatStore();
     this.contactStore = new ContactStore();
     this.convStore = new ConversationStore();

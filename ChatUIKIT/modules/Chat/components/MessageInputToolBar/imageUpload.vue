@@ -23,7 +23,7 @@ const toolbarInject = inject<InputToolbarEvent>("InputToolbarEvent");
 
 const convStore = ChatUIKIT.convStore;
 
-const conn = ChatUIKIT.connStore.getChatConn();
+const conn = ChatUIKIT.getChatConn();
 
 const chooseImage = () => {
   uni.chooseImage({

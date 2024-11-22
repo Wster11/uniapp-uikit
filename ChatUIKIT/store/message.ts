@@ -1,9 +1,8 @@
-import { makeAutoObservable, runInAction, set } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import type { MixedMessageBody, Chat } from "../types/index";
 import { ChatUIKIT } from "../index";
 import { t } from "../locales/index";
-import { ConversationBaseInfo } from "./types";
-import { MessageStatus } from "../types/index";
+import { MessageStatus, ConversationBaseInfo } from "../types/index";
 import { chatSDK } from "../sdk";
 
 interface ConversationMessagesInfo {

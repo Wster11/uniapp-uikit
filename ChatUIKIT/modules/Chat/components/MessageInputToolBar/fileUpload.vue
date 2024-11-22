@@ -21,7 +21,7 @@ const title = t("file");
 
 const toolbarInject = inject<InputToolbarEvent>("InputToolbarEvent");
 
-const conn = ChatUIKIT.connStore.getChatConn();
+const conn = ChatUIKIT.getChatConn();
 
 const convStore = ChatUIKIT.convStore;
 

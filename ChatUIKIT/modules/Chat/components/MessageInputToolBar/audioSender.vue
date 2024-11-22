@@ -47,8 +47,7 @@ import { chatSDK } from "../../../../sdk";
 type RecordStatus = "record" | "recording" | "recordEnd";
 
 const audioPopupRef = ref(null);
-const connStore = ChatUIKIT.connStore;
-const conn = connStore.getChatConn();
+const conn = ChatUIKIT.getChatConn();
 const convStore = ChatUIKIT.convStore;
 const recordStatus = ref<RecordStatus>("record");
 const recorder = ref<UniApp.RecorderManager>();

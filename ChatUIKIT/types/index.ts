@@ -5,6 +5,11 @@ type InputToolbarEvent = {
   closeToolbar: () => void;
 };
 
+type ConversationBaseInfo = Pick<
+  Chat.ConversationItem,
+  "conversationId" | "conversationType"
+>;
+
 type ConnState = "none" | "reconnecting" | "connected" | "disconnected";
 
 type ContactNotice = Chat.ContactMsgBody & {
@@ -61,6 +66,7 @@ type UIKITConversationItem = Chat.ConversationItem & {
 export type {
   InputToolbarEvent,
   ContactNotice,
+  ConversationBaseInfo,
   GroupNotice,
   ContactNoticeInfo,
   GroupNoticeInfo,
