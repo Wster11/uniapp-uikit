@@ -35,8 +35,10 @@ class ChatStore {
           }
           ChatUIKIT.contactStore.getContacts();
           ChatUIKIT.groupStore.getJoinedGroupList();
-          // ChatUIKIT.blockStore.getBlockList();
-          ChatUIKIT.appUserStore.getUsersInfo({
+          ChatUIKIT.appUserStore.getUsersInfoFromServer({
+            userIdList: [params.user]
+          });
+          ChatUIKIT.appUserStore.getUsersPresenceFromServer({
             userIdList: [params.user]
           });
         });
@@ -50,7 +52,6 @@ class ChatStore {
       ChatUIKIT.messageStore.clear();
       ChatUIKIT.contactStore.clear();
       ChatUIKIT.groupStore.clear();
-      ChatUIKIT.blockStore.clear();
       ChatUIKIT.appUserStore.clear();
     });
   }
@@ -182,6 +183,30 @@ class ChatStore {
     ChatUIKIT.getChatConn().addEventHandler("STORE_GROUP", {
       onGroupEvent: async (event) => this.handleGroupEvent(event)
     });
+
+    ChatUIKIT.getChatConn().addEventHandler("STORE_Presence", {
+      onPresenceStatusChange: (msg) => {
+        msg.forEach((presenceInfo) => {
+          let ext = presenceInfo.ext;
+          const detailList = presenceInfo.statusDetails;
+          let isOnline = false;
+          detailList.forEach((item) => {
+            if (item.status === 1) {
+              isOnline = true;
+            }
+          });
+          if (isOnline && presenceInfo.ext === "") {
+            ext = "Online";
+          }
+          runInAction(() => {
+            ChatUIKIT.appUserStore.setUserPresence(presenceInfo.userId, {
+              presenceExt: ext,
+              isOnline
+            });
+          });
+        });
+      }
+    });
   }
 
   handleContactInvite(msg) {
@@ -190,7 +215,7 @@ class ChatStore {
       ext: "invited",
       time: Date.now()
     };
-    ChatUIKIT.appUserStore.getUsersInfo({ userIdList: [msg.from] });
+    ChatUIKIT.appUserStore.getUsersInfoFromServer({ userIdList: [msg.from] });
 
     const isDuplicate = ChatUIKIT.contactStore.contactsNoticeInfo.list.some(
       (item) => item.type === "subscribe" && item.from === msg.from
@@ -199,21 +224,21 @@ class ChatStore {
   }
 
   handleContactAgreed(msg) {
-    ChatUIKIT.appUserStore.getUsersInfo({ userIdList: [msg.from] });
+    ChatUIKIT.appUserStore.getUsersInfoFromServer({ userIdList: [msg.from] });
     ChatUIKIT.contactStore.addStoreContact({ userId: msg.from, remark: "" });
   }
 
   handleContactRefuse(msg) {
-    ChatUIKIT.appUserStore.getUsersInfo({ userIdList: [msg.from] });
+    ChatUIKIT.appUserStore.getUsersInfoFromServer({ userIdList: [msg.from] });
   }
 
   handleContactDeleted(msg) {
-    ChatUIKIT.appUserStore.getUsersInfo({ userIdList: [msg.from] });
+    ChatUIKIT.appUserStore.getUsersInfoFromServer({ userIdList: [msg.from] });
     ChatUIKIT.contactStore.deleteStoreContact(msg.from);
   }
 
   handleContactAdded(msg) {
-    ChatUIKIT.appUserStore.getUsersInfo({ userIdList: [msg.from] });
+    ChatUIKIT.appUserStore.getUsersInfoFromServer({ userIdList: [msg.from] });
     ChatUIKIT.contactStore.addStoreContact({ userId: msg.from, remark: "" });
   }
 

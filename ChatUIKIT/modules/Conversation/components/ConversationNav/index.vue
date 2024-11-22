@@ -5,7 +5,9 @@
         <Avatar
           :size="32"
           :src="userInfo.avatar"
+          :withPresence="true"
           :placeholder="USER_AVATAR_URL"
+          :presenceExt="userInfo.presenceExt"
         />
       </template>
       <template v-slot:center>
@@ -47,6 +49,7 @@ import { ChatUIKIT } from "../../../../index";
 import { t } from "../../../../locales/index";
 import { USER_AVATAR_URL } from "../../../../const";
 import { isWXProgram } from "../../../../utils/index";
+import { UserInfoWithPresence } from "../../../../types/index";
 import { autorun } from "mobx";
 
 const isShowPopMenu = ref(false);
@@ -61,7 +64,7 @@ const PopMenuStyle = isWXProgram
       top: "calc(var(--status-bar-height) + 50px"
     };
 
-const userInfo = ref({});
+const userInfo = ref<UserInfoWithPresence>({} as UserInfoWithPresence);
 
 const options = [
   {

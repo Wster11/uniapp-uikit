@@ -5,7 +5,9 @@
         <Avatar
           :size="32"
           :src="userInfo.avatar"
+          :withPresence="true"
           :placeholder="USER_AVATAR_URL"
+          :presenceExt="userInfo.presenceExt"
         />
       </template>
       <template v-slot:center>
@@ -33,9 +35,10 @@ import NavBar from "../../../../components/NavBar/index.vue";
 import { ref, onUnmounted } from "vue";
 import { ChatUIKIT } from "../../../../index";
 import { USER_AVATAR_URL } from "../../../../const";
+import { UserInfoWithPresence } from "../../../../types/index";
 import { autorun } from "mobx";
 
-const userInfo = ref({});
+const userInfo = ref<UserInfoWithPresence>({} as UserInfoWithPresence);
 
 const unwatchUserInfo = autorun(() => {
   userInfo.value = ChatUIKIT.appUserStore.getSelfUserInfo();
@@ -72,7 +75,6 @@ onUnmounted(() => {
   background-size: 100% 100%;
 }
 
-
 .wx-btn-wrap {
   position: fixed;
   display: flex;
@@ -95,5 +97,4 @@ onUnmounted(() => {
   background: url("../../../../assets/icon/wx_add.png") no-repeat;
   background-size: 100% 100%;
 }
-
 </style>

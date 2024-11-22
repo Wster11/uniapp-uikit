@@ -137,7 +137,7 @@ class GroupStore {
         pageSize: GET_GROUP_MEMBERS_PAGESIZE
       })
       .then((res) => {
-        ChatUIKIT.appUserStore.getUsersInfo({
+        ChatUIKIT.appUserStore.getUsersInfoFromServer({
           userIdList: res.data.map((item) => item.member || item.owner) || []
         });
         return res;

@@ -4,6 +4,9 @@
     :style="{ width: size + 'px', height: size + 'px' }"
   >
     <image class="image" :src="imageSrc" :alt="alt" @error="onError"> </image>
+    <view v-if="props.withPresence && presenceClass" class="presence-wrap">
+      <view :class="['status', presenceClass]"></view>
+    </view>
   </view>
 </template>
 
@@ -16,10 +19,39 @@ interface Props {
   size?: number;
   shape?: "circle" | "square";
   placeholder?: string;
+  withPresence?: boolean;
+  presenceExt?:
+    | "Online"
+    | "Offline"
+    | "Away"
+    | "Busy"
+    | "Do Not Disturb"
+    | string; // 自定义状态
 }
 
 const props = defineProps<Props>();
+
 const isError = ref(false);
+
+const presenceClass = computed(() => {
+  if (props.presenceExt) {
+    switch (props.presenceExt) {
+      case "Online":
+        return "online";
+      case "Offline":
+        return "offline";
+      case "Away":
+        return "leave";
+      case "Busy":
+        return "busy";
+      case "Do Not Disturb":
+        return "do-not-disturb";
+      default:
+        return "custom";
+    }
+  }
+  return "";
+});
 
 const imageSrc = computed(() => {
   if (isError.value) {
@@ -37,6 +69,7 @@ const onError = () => {
 
 <style lang="scss" scoped>
 .avatar {
+  position: relative;
   overflow: hidden;
   display: inline-block;
 }
@@ -59,10 +92,61 @@ const onError = () => {
 }
 
 .avatar.circle {
-  border-radius: 50%;
+  .image {
+    border-radius: 50%;
+  }
 }
 
 .avatar.square {
   border-radius: 4px;
+}
+
+.presence-wrap {
+  position: absolute;
+  right: -3px;
+  bottom: -3px;
+  width: 20%;
+  height: 20%;
+  background: #fff;
+  padding: 3px;
+  border-radius: 50%;
+  min-width: 8px;
+  min-height: 8px;
+}
+
+.status {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.online {
+  background-image: url("../../assets/presence/online.png");
+  background-size: 100% 100%;
+}
+
+.offline {
+  background-image: url("../../assets/presence/offline.png");
+  background-size: 100% 100%;
+}
+
+.busy {
+  background-image: url("../../assets/presence/busy.png");
+  background-size: 100% 100%;
+}
+
+.leave {
+  background-image: url("../../assets/presence/leave.png");
+  background-size: 100% 100%;
+}
+
+.do-not-disturb {
+  background-image: url("../../assets/presence/nodistribute.png");
+  background-size: 100% 100%;
+}
+
+.custom {
+  background-image: url("../../assets/presence/custom.png");
+  background-size: 100% 100%;
 }
 </style>

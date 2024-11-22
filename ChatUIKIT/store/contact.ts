@@ -21,7 +21,7 @@ class ContactStore {
     const start = (pageNum - 1) * pageSize;
     const end = pageNum * pageSize;
     ChatUIKIT.appUserStore
-      .getUsersInfo({
+      .getUsersInfoFromServer({
         userIdList: userIds.slice(start, end)
       })
       .then(() => {

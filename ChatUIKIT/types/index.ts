@@ -63,7 +63,23 @@ type UIKITConversationItem = Chat.ConversationItem & {
   atType?: AT_TYPE;
 };
 
+type PresenceInfo = {
+  /** 是否在线 */
+  isOnline?: boolean;
+  /** presence 扩展字段 */
+  presenceExt?: string;
+};
+
+type UserInfoWithPresence = Chat.UpdateOwnUserInfoParams &
+  PresenceInfo & {
+    /** UIKIT中展示的用户名 */
+    name: string;
+    /** UIKIT中展示的用户头像 */
+    avatar: string;
+  };
+
 export type {
+  PresenceInfo,
   InputToolbarEvent,
   ContactNotice,
   ConversationBaseInfo,
@@ -76,6 +92,7 @@ export type {
   UIKITConversationItem,
   ConnState,
   AT_TYPE,
+  UserInfoWithPresence,
   Chat,
   ChatSDKStatic
 };

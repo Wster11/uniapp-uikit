@@ -6,6 +6,8 @@
         :src="userInfo.avatar"
         :size="100"
         :placeholder="USER_AVATAR_URL"
+        :withPresence="true"
+        :presenceExt="userInfo.presenceExt"
       />
       <view class="name">{{ userInfo.name }}</view>
       <view class="userId"
@@ -65,11 +67,12 @@ import { t } from "../../const/locales";
 import { ChatUIKIT } from "../../ChatUIKIT/index";
 import { CHAT_STORE } from "@/const/index";
 import { USER_AVATAR_URL } from "../../ChatUIKIT/const";
+import { UserInfoWithPresence } from "../../ChatUIKIT/types";
 import { autorun } from "mobx";
 
 const userId = ChatUIKIT.getChatConn().user;
 
-const userInfo = ref({});
+const userInfo = ref<UserInfoWithPresence>({} as UserInfoWithPresence);
 
 const unwatchUserInfo = autorun(() => {
   userInfo.value = ChatUIKIT.appUserStore.getSelfUserInfo();
