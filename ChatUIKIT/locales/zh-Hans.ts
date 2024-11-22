@@ -11,6 +11,7 @@ export default {
   conversationSearchPlaceholder: "搜索会话",
   conversationEmptyTip: "暂无会话，快去聊天吧～",
   deleteConv: "删除会话",
+  confirmDeleteConv: "确认删除并清空记录",
   pinConv: "置顶会话",
   muteConv: "消息免打扰",
   markRead: "标记已读",
@@ -144,5 +145,5 @@ export default {
   contactAddInputPlaceholder: "请输入联系人ID",
   contactRequestListTitle: "新请求",
   contactRequestListTip: "请求添加您为好友",
-  contactRequestAgreeButton: "同意",
+  contactRequestAgreeButton: "同意"
 };

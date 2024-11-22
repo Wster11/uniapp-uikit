@@ -11,6 +11,7 @@ export default {
   conversationSearchPlaceholder: "Search conversations",
   conversationEmptyTip: "No conversations yet, start chatting now~",
   deleteConv: "Delete",
+  confirmDeleteConv: 'Confirm delete and clear the records',
   pinConv: "Pin Conversation",
   muteConv: "Mute Notifications",
   markRead: "Mark as Read",

@@ -77,7 +77,7 @@
     <view class="menu-wrap">
       <view
         :class="['menu', menu.class]"
-        v-for="menu in menuList"
+        v-for="menu in currentMenuList"
         :key="menu.action"
         @click="handleMenuClick(menu.action)"
       >
@@ -120,6 +120,8 @@ const conversationInfo = ref<any>({});
 
 const isMute = ref<Boolean>(false);
 
+const isTapDelete = ref<Boolean>(false);
+
 const featureConfig = ChatUIKIT.getFeatureConfig();
 
 const menuList = computed(() => {
@@ -148,6 +150,18 @@ const menuList = computed(() => {
   }
 
   return list;
+});
+
+const confirmDeleteMenu = ref([
+  {
+    name: t("confirmDeleteConv"),
+    action: "confirmDelete",
+    class: "confirm-delete"
+  }
+]);
+
+const currentMenuList = computed(() => {
+  return isTapDelete.value ? confirmDeleteMenu.value : menuList.value;
 });
 
 const uninstallIsMuteWatch = autorun(() => {
@@ -179,6 +193,7 @@ const getAvatarPlaceholder = () => {
 
 const toChatPage = () => {
   emits("leftSwipe", null);
+  isTapDelete.value = false;
   uni.navigateTo({
     url: `/ChatUIKIT/modules/Chat/index?type=${props.conversation.conversationType}&id=${props.conversation.conversationId}`
   });
@@ -194,9 +209,13 @@ const handleMenuClick = (action: string) => {
   } else if (action === "pin") {
     emits("pin", props.conversation);
   } else if (action === "delete") {
+    isTapDelete.value = true;
+    return;
+  } else if (action === "confirmDelete") {
     emits("delete", props.conversation);
   }
   emits("leftSwipe", null);
+  isTapDelete.value = false;
 };
 
 // 滑动开始
@@ -214,6 +233,7 @@ const touchMoveHandler = (e) => {
 
   if (moveX > 0) {
     emits("leftSwipe", null);
+    isTapDelete.value = false;
   } else {
     emits("leftSwipe", props.conversation.conversationId);
   }
@@ -226,7 +246,7 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss">
-.conversation-item-wrap{
+.conversation-item-wrap {
   &:active {
     background-color: #f5f5f5;
   }
