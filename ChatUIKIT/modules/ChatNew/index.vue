@@ -16,11 +16,7 @@
       :options="contactList"
     >
       <template v-slot:indexedItem="slotProps">
-        <UserItem
-          @tap="toChatPage(slotProps.item)"
-          class="contact-item"
-          :user="slotProps.item"
-        />
+        <UserItem @tap="toChatPage(slotProps.item)" :user="slotProps.item" />
       </template>
     </IndexedList>
     <Empty v-else />
@@ -97,11 +93,6 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-}
-
-.contact-item {
-  display: flex;
-  width: 100vw;
 }
 
 .contact-indexed-list {

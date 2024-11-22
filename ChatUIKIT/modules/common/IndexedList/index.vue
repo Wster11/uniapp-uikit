@@ -26,7 +26,9 @@
                 :value="indexedItem.id"
                 :checked="props.checkedList.includes(indexedItem.id)"
               />
-              <slot name="indexedItem" :item="indexedItem"></slot>
+              <view class="index-item">
+                <slot name="indexedItem" :item="indexedItem"></slot>
+              </view>
             </label>
           </view>
         </view>
@@ -45,7 +47,9 @@
               v-for="indexedItem in indexedData[item]"
               :key="indexedItem.id"
             >
+            <view class="index-item">
               <slot name="indexedItem" :item="indexedItem"></slot>
+            </view>
             </view>
           </view>
         </view>
@@ -209,6 +213,10 @@ const scrollInToView = (id: string) => {
   width: 100%;
   align-items: center;
   margin-left: 16px;
+}
+
+.index-item {
+  flex: 1;
 }
 
 .checkbox {

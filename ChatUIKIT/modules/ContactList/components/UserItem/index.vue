@@ -63,11 +63,11 @@ onUnmounted(() => {
   color: #171a1c;
   line-height: 22px;
   font-weight: 500;
-  max-width: calc(100vw - 90px);
 }
 
 .right {
   flex: 1;
+  width: 0;
   display: flex;
   height: 100%;
   align-items: center;

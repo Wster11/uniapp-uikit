@@ -105,8 +105,8 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   flex: 1;
-  overflow-y: auto;
-  padding-left: 16px;
+  padding: 0 16px;
+  overflow-y: scroll;
 }
 
 .search-item {

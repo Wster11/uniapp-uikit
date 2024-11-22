@@ -92,6 +92,7 @@ const toChatPage = (item) => {
 
 .search-item {
   box-sizing: border-box;
+  padding-right: 16px;
 }
 
 .input-wrap {

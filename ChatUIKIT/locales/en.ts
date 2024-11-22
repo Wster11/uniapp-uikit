@@ -143,5 +143,6 @@ export default {
   contactAddBtn: "Add",
   contactAddInputPlaceholder: "Enter the user's ID",
   contactRequestListTitle: "New Requests",
-  contactRequestListTip: "Request to add you as a friend"
+  contactRequestListTip: "Request to add you as a friend",
+  contactRequestAgreeButton: "Agree",
 };

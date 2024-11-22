@@ -9,11 +9,11 @@
     <view class="right">
       <view class="content">
         <view class="user-name ellipsis">{{ userInfo.name }}</view>
-        <view class="tip ellipsis">请求添加您为好友</view>
+        <view class="tip ellipsis" v-text="t('contactRequestListTip')"></view>
       </view>
 
       <view class="action" @tap="acceptContactInvite">
-        <view class="btn">添加</view>
+        <view class="btn">{{t("contactRequestAgreeButton")}}</view>
       </view>
     </view>
   </view>
@@ -25,6 +25,7 @@ import type { Chat } from "../../../../sdk";
 import { USER_AVATAR_URL } from "../../../../const/index";
 import { ChatUIKIT } from "../../../../index";
 import { ref, onUnmounted } from "vue";
+import { t } from "../../../../locales";
 import { autorun } from "mobx";
 
 interface Props {
@@ -74,11 +75,11 @@ onUnmounted(() => {
   color: #171a1c;
   line-height: 22px;
   font-weight: 500;
-  max-width: calc(100vw - 100px);
 }
 
 .right {
   flex: 1;
+  width: 0;
   display: flex;
   height: 100%;
   align-items: center;
@@ -89,6 +90,8 @@ onUnmounted(() => {
 .content {
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  margin-right: 20px;
 }
 
 .tip {
@@ -96,7 +99,6 @@ onUnmounted(() => {
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
-  max-width: calc(100vw - 100px);
 }
 
 .action {
