@@ -20,8 +20,8 @@
 
 <script setup lang="ts">
 import GroupItem from "./components/GroupItem/index.vue";
-import Empty from "../common/Empty/index.vue";
-import NavBar from "../common/NavBar/index.vue";
+import Empty from "../../components/Empty/index.vue";
+import NavBar from "../../components/NavBar/index.vue";
 import type { Chat } from "../../sdk";
 import { ChatUIKIT } from "../../index";
 import { ref, onUnmounted } from "vue";

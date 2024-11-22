@@ -37,10 +37,10 @@
 </template>
 
 <script setup lang="ts">
-import SearchButton from "../../modules/common/SearchButton/index.vue";
-import MenuItem from "../common/MenuItem/index.vue";
+import SearchButton from "../../components/SearchButton/index.vue";
+import MenuItem from "../../components/MenuItem/index.vue";
 import UserItem from "./components/UserItem/index.vue";
-import IndexedList from "../common/IndexedList/index.vue";
+import IndexedList from "../../components/IndexedList/index.vue";
 import ContactNav from "./components/ContactNav/index.vue";
 import type { Chat } from "../../sdk";
 import { t } from "../../locales/index";

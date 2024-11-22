@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import NavBar from "../../ChatUIKIT/modules/common/NavBar/index.vue";
+import NavBar from "../../ChatUIKIT/components/NavBar/index.vue";
 import { ref, onUnmounted, computed } from "vue";
 import { ChatUIKIT } from "../../ChatUIKIT/index";
 import { t } from "../../const/locales";

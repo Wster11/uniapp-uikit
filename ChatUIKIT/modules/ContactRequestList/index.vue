@@ -19,8 +19,8 @@
 </template>
 
 <script setup lang="ts">
-import Navbar from "../common/NavBar/index.vue";
-import Empty from "../common/Empty/index.vue";
+import Navbar from "../../components/NavBar/index.vue";
+import Empty from "../../components/Empty/index.vue";
 import RequestItem from "./components/RequestItem/index.vue";
 import { t } from "../../locales/index";
 import { ChatUIKIT } from "../../index";

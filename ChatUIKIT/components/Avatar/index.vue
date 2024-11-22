@@ -9,7 +9,7 @@
 
 <script lang="ts" setup>
 import { ref, computed } from "vue";
-import { ChatUIKIT } from "../../../index";
+import { ChatUIKIT } from "../../index";
 interface Props {
   src: string;
   alt?: string;

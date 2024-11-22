@@ -24,11 +24,11 @@
 </template>
 
 <script setup lang="ts">
-import SearchButton from "../common/SearchButton/index.vue";
-import NavBar from "../common/NavBar/index.vue";
+import SearchButton from "../../components/SearchButton/index.vue";
+import NavBar from "../../components/NavBar/index.vue";
 import UserItem from "../ContactList/components/UserItem/index.vue";
-import Empty from "../common/Empty/index.vue";
-import IndexedList from "../common/IndexedList/index.vue";
+import Empty from "../../components/Empty/index.vue";
+import IndexedList from "../../components/IndexedList/index.vue";
 import { ChatUIKIT } from "../../index";
 import { t } from "../../locales";
 import { Chat } from "../../sdk";

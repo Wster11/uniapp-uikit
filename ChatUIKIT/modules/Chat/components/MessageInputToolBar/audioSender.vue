@@ -39,7 +39,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed } from "vue";
-import Popup from "../../../common/Popup/index.vue";
+import Popup from "../../../../components/Popup/index.vue";
 import { t } from "../../../../locales/index";
 import { ChatUIKIT } from "../../../../index";
 import { chatSDK } from "../../../../sdk";

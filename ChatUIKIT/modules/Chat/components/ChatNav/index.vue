@@ -16,8 +16,8 @@
 </template>
 
 <script setup lang="ts">
-import Avatar from "../../../common/Avatar/index.vue";
-import NavBar from "../../../common/NavBar/index.vue";
+import Avatar from "../../../../components/Avatar/index.vue";
+import NavBar from "../../../../components/NavBar/index.vue";
 import { ref, computed, onUnmounted } from "vue";
 import { ChatUIKIT } from "../../../../index";
 import { USER_AVATAR_URL, GROUP_AVATAR_URL } from "../../../../const";

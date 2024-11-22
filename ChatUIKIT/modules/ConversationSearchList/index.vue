@@ -33,11 +33,11 @@
 </template>
 
 <script setup lang="ts">
-import NavBar from "../common/NavBar/index.vue";
-import SearchInput from "../common/SearchInput/index.vue";
+import NavBar from "../../components/NavBar/index.vue";
+import SearchInput from "../../components/SearchInput/index.vue";
 import GroupItem from "../GroupList/components/GroupItem/index.vue";
 import UserItem from "../ContactList/components/UserItem/index.vue";
-import Empty from "../common/Empty/index.vue";
+import Empty from "../../components/Empty/index.vue";
 import { ChatUIKIT } from "../../index";
 import { t } from "../../locales";
 import { ref, computed } from "vue";

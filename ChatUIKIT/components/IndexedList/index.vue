@@ -74,7 +74,7 @@
 
 <script lang="ts" setup>
 import { ref, computed } from "vue";
-import { groupByName } from "../../../utils/index";
+import { groupByName } from "../../utils/index";
 
 let timerId: any = "";
 

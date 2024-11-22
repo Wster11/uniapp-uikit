@@ -88,7 +88,7 @@
 </template>
 
 <script setup lang="ts">
-import Avatar from "../../../common/Avatar/index.vue";
+import Avatar from "../../../../components/Avatar/index.vue";
 import { t } from "../../../../locales/index";
 import { ref, onUnmounted, computed } from "vue";
 import { ChatUIKIT } from "../../../../index";

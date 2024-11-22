@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-import Navbar from "../common/NavBar/index.vue";
+import Navbar from "../../components/NavBar/index.vue";
 import { t } from "../../locales/index";
 import { ChatUIKIT } from "../../index";
 import { ref } from "vue";

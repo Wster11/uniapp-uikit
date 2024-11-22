@@ -36,9 +36,9 @@
 </template>
 
 <script setup lang="ts">
-import Avatar from "../../../common/Avatar/index.vue";
-import NavBar from "../../../common/NavBar/index.vue";
-import PopMenu from "../../../common/PopMenu/index.vue";
+import Avatar from "../../../../components/Avatar/index.vue";
+import NavBar from "../../../../components/NavBar/index.vue";
+import PopMenu from "../../../../components/PopMenu/index.vue";
 import ChatMenuIcon from "../../../../assets/icon/chat.png";
 import AddContactMenuIcon from "../../../../assets/icon/addContact.png";
 import CreateGroupIcon from "../../../../assets/icon/createGroup.png";

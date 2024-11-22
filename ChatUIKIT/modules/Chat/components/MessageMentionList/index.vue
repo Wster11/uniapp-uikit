@@ -41,7 +41,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import Popup from "../../../common/Popup/index.vue";
+import Popup from "../../../../components/Popup/index.vue";
 import UserItem from "../../../ContactList/components/UserItem/index.vue";
 import { t } from "../../../../locales/index";
 import { ChatUIKIT } from "../../../../index";

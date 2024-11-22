@@ -20,7 +20,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { t } from "../../../locales";
+import { t } from "../../locales";
 
 const props = defineProps({
   focus: {

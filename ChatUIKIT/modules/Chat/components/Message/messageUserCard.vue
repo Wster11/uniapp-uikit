@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts" setup>
-import Avatar from "../../../common/Avatar/index.vue";
+import Avatar from "../../../../components/Avatar/index.vue";
 import { USER_AVATAR_URL } from "../../../../const";
 import { Chat } from "../../../../types";
 import { ChatUIKIT } from "../../../../index";

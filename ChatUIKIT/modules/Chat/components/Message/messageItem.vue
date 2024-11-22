@@ -73,7 +73,7 @@
 </template>
 
 <script lang="ts" setup>
-import Avatar from "../../../common/Avatar/index.vue";
+import Avatar from "../../../../components/Avatar/index.vue";
 import TextMessage from "./messageTxt.vue";
 import ImageMessage from "./messageImage.vue";
 import VideoMessage from "./messageVideo.vue";
