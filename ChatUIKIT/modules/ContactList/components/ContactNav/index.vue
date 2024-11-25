@@ -8,6 +8,7 @@
           :withPresence="true"
           :placeholder="USER_AVATAR_URL"
           :presenceExt="userInfo.presenceExt"
+          :isOnline="userInfo.isOnline"
         />
       </template>
       <template v-slot:center>

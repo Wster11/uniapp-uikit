@@ -73,11 +73,6 @@ class AppUserStore {
           ) {
             isOnline = true;
           }
-
-          if (item.ext === "" && isOnline) {
-            ext = "Online";
-          }
-
           this.setUserPresence(item.uid, {
             presenceExt: ext,
             isOnline
@@ -85,6 +80,29 @@ class AppUserStore {
         });
       });
   }
+
+  /** 订阅指定用户的在线状态 */
+  subscribePresence(props: { userIdList: string[] }) {
+    return ChatUIKIT.getChatConn().subscribePresence({
+      usernames: props.userIdList,
+      expiry: 86400
+    });
+  }
+
+  /** 取消订阅指定用户的在线状态 */
+  unsubscribePresence(props: { userIdList: string[] }) {
+    return ChatUIKIT.getChatConn().unsubscribePresence({
+      usernames: props.userIdList
+    });
+  }
+
+  /** 发布自定义在线状态 */
+  publishPresence(props: { presenceExt: string }) {
+    return ChatUIKIT.getChatConn().publishPresence({
+      description: props.presenceExt
+    });
+  }
+
   /** 设置用户属性 */
   setUserInfo(userId: string, userInfo: Chat.UpdateOwnUserInfoParams) {
     this.appUserInfo.set(userId, userInfo);

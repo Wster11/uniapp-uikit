@@ -1,10 +1,10 @@
 <template>
   <view>
-    <Navbar @onLeftTap="onBack">
+    <NavBar @onLeftTap="onBack">
       <template v-slot:left>
         <view class="title" v-text="t('contactAddTitle')"></view>
       </template>
-    </Navbar>
+    </NavBar>
     <view class="content">
       <view class="input-wrap">
         <input
@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-import Navbar from "../../components/NavBar/index.vue";
+import NavBar from "../../components/NavBar/index.vue";
 import { t } from "../../locales/index";
 import { ChatUIKIT } from "../../index";
 import { ref } from "vue";

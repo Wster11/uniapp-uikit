@@ -8,6 +8,7 @@
         :placeholder="USER_AVATAR_URL"
         :withPresence="true"
         :presenceExt="userInfo.presenceExt"
+        :isOnline="userInfo.isOnline"
       />
       <view class="name">{{ userInfo.name }}</view>
       <view class="userId"
@@ -20,7 +21,11 @@
         {{ t("meSettingGroupName") }}
       </view>
       <view class="menu-wrap">
-        <MenuItem :className="'me-menu'" :title="t('meStatus')">
+        <MenuItem
+          :className="'me-menu'"
+          :title="t('meStatus')"
+          @tap="toPresenceSetting"
+        >
           <template v-slot:left>
             <view class="icon status"> </view>
           </template>
@@ -101,6 +106,12 @@ const toProfile = () => {
 const toAbout = () => {
   uni.navigateTo({
     url: "/pages/About/index"
+  });
+};
+
+const toPresenceSetting = () => {
+  uni.navigateTo({
+    url: "/pages/PresenceSetting/index"
   });
 };
 

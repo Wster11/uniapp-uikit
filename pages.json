@@ -43,6 +43,15 @@
 			}
 		},
 		{
+			"path": "pages/PresenceSetting/index",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+		},
+		{
 			"path": "pages/About/index",
 			"style": {
 				"navigationStyle": "custom",

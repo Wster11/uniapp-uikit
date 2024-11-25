@@ -146,4 +146,6 @@ export default {
   contactRequestListTitle: "New Requests",
   contactRequestListTip: "Request to add you as a friend",
   contactRequestAgreeButton: "Agree",
+  modalConfirm: "Confirm",
+  modalCancel: "Cancel",
 };

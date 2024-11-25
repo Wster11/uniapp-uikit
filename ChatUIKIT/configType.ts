@@ -21,20 +21,22 @@ interface FeatureConfig {
   editMessage?: boolean;
   /** 是否开启回复消息 */
   replyMessage?: boolean;
-  /** 是否支持表情消息 */
+  /** 是否开启表情消息 */
   inputEmoji?: boolean;
-  /** 是否支持图片消息 */
+  /** 是否开启图片消息 */
   inputImage?: boolean;
-  /** 是否支持语音消息 */
+  /** 是否开启语音消息 */
   inputAudio?: boolean;
-  /** 是否支持视频消息 */
+  /** 是否开启视频消息 */
   inputVideo?: boolean;
-  /** 是否支持文件消息, 目前支有h5和小程序支持发送文件消息 */
+  /** 是否开启文件消息, 目前支有h5和小程序开启发送文件消息 */
   inputFile?: boolean;
-  /** 是否支持Mention消息 */
+  /** 是否开启Mention消息 */
   inputMention?: boolean;
-  /** 是否支持名片消息 */
+  /** 是否开启名片消息 */
   userCard?: boolean;
+  /** 是否开启Presence */
+  usePresence?: boolean;
 }
 
 interface ThemeConfig {

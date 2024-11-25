@@ -1,10 +1,10 @@
 <template>
   <view class="profile-wrap">
-    <Navbar @onLeftTap="onBack">
+    <NavBar @onLeftTap="onBack">
       <template v-slot:left>
         <view class="title" v-text="t('profileTitle')"></view>
       </template>
-    </Navbar>
+    </NavBar>
     <view class="menu-wrap">
       <MenuItem
         :className="'profile-menu'"
@@ -34,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import Navbar from "../../ChatUIKIT/components/NavBar/index.vue";
+import NavBar from "../../ChatUIKIT/components/NavBar/index.vue";
 import Avatar from "../../ChatUIKIT/components/Avatar/index.vue";
 import MenuItem from "../../ChatUIKIT/components/MenuItem/index.vue";
 import { ref, onUnmounted } from "vue";

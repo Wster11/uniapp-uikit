@@ -1,6 +1,5 @@
 <template>
   <view :class="['popup-container', { 'popup-container-hide ': !show }]">
-    <!-- 遮罩层 -->
     <view
       v-show="show"
       class="mask"

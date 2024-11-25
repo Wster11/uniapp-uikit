@@ -195,9 +195,6 @@ class ChatStore {
               isOnline = true;
             }
           });
-          if (isOnline && presenceInfo.ext === "") {
-            ext = "Online";
-          }
           runInAction(() => {
             ChatUIKIT.appUserStore.setUserPresence(presenceInfo.userId, {
               presenceExt: ext,

@@ -4,7 +4,7 @@
     :style="{ width: size + 'px', height: size + 'px' }"
   >
     <image class="image" :src="imageSrc" :alt="alt" @error="onError"> </image>
-    <view v-if="props.withPresence && presenceClass" class="presence-wrap">
+    <view v-if="showPresence" class="presence-wrap">
       <view :class="['status', presenceClass]"></view>
     </view>
   </view>
@@ -20,6 +20,7 @@ interface Props {
   shape?: "circle" | "square";
   placeholder?: string;
   withPresence?: boolean;
+  isOnline?: boolean;
   presenceExt?:
     | "Online"
     | "Offline"
@@ -33,8 +34,12 @@ const props = defineProps<Props>();
 
 const isError = ref(false);
 
+const featureConfig = ChatUIKIT.getFeatureConfig();
+
+const showPresence = props.withPresence && featureConfig.usePresence;
+
 const presenceClass = computed(() => {
-  if (props.presenceExt) {
+  if (props.isOnline) {
     switch (props.presenceExt) {
       case "Online":
         return "online";
@@ -50,7 +55,7 @@ const presenceClass = computed(() => {
         return "custom";
     }
   }
-  return "";
+  return "offline";
 });
 
 const imageSrc = computed(() => {

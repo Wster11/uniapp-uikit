@@ -52,7 +52,16 @@ const locales = {
     aboutBusiness: "商务合作",
     aboutQudao: "渠道合作",
     aboutIssue: "投诉建议",
-    chatIM: "环信IM"
+    chatIM: "环信IM",
+    presenceTitle: "在线状态",
+    presenceOnline: "在线",
+    presenceBusy: "忙碌",
+    presenceAway: "离开",
+    presenceOffline: "离线",
+    presenceNoDisturb: "请勿打扰",
+    presenceCustom: "自定义在线状态",
+    presenceConfirm: "确认",
+    presencePlaceholder: "请输入自定义状态"
   },
   en: {
     loginTitle: "EaseMob IM",
@@ -107,7 +116,16 @@ const locales = {
     aboutBusiness: "Business Cooperation",
     aboutQudao: "Channel Cooperation",
     aboutIssue: "Complaints and Suggestions",
-    chatIM: "Ease IM"
+    chatIM: "Ease IM",
+    presenceTitle: "Online Status",
+    presenceOnline: "Online",
+    presenceBusy: "Busy",
+    presenceAway: "Away",
+    presenceOffline: "Offline",
+    presenceNoDisturb: "Do Not Disturb",
+    presenceCustom: "Custom Status",
+    presenceConfirm: "Confirm",
+    presencePlaceholder: "Enter custom status"
   }
 };
 

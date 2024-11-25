@@ -145,5 +145,7 @@ export default {
   contactAddInputPlaceholder: "请输入联系人ID",
   contactRequestListTitle: "新请求",
   contactRequestListTip: "请求添加您为好友",
-  contactRequestAgreeButton: "同意"
+  contactRequestAgreeButton: "同意",
+  modalConfirm: "确认",
+  modalCancel: "取消",
 };

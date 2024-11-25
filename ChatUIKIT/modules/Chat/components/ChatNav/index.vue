@@ -9,6 +9,7 @@
             :placeholder="isSingleChat ? USER_AVATAR_URL : GROUP_AVATAR_URL"
             :withPresence="isSingleChat ? true : false"
             :presenceExt="info.presenceExt"
+            :isOnline="info.isOnline"
           />
           <view class="name ellipsis">{{ info.name }}</view>
         </view>
@@ -34,6 +35,8 @@ const isSingleChat = computed(() => {
   return info.value.conversationType === "singleChat";
 });
 
+const featureConfig = ChatUIKIT.getFeatureConfig();
+
 const unwatchUserInfo = autorun(() => {
   const conv = ChatUIKIT.convStore.currConversation;
   if (conv?.conversationType === "singleChat") {
@@ -45,7 +48,8 @@ const unwatchUserInfo = autorun(() => {
       id: conv.conversationId,
       avatar: userinfo?.avatar,
       conversationType: conv.conversationType,
-      presenceExt: userinfo?.presenceExt
+      presenceExt: userinfo?.presenceExt,
+      isOnline: userinfo?.isOnline
     };
   } else if (conv?.conversationType === "groupChat") {
     const groupInfo = ChatUIKIT.groupStore.getGroupInfoFromStore(
@@ -66,13 +70,25 @@ const onBack = () => {
 };
 
 onMounted(() => {
-  isSingleChat &&
+  if (featureConfig.usePresence && isSingleChat) {
+    // 获取用户在线状态
     ChatUIKIT.appUserStore.getUsersPresenceFromServer({
       userIdList: [info.value.id]
     });
+    // 订阅用户在线状态
+    ChatUIKIT.appUserStore.subscribePresence({
+      userIdList: [info.value.id]
+    });
+  }
 });
 
 onUnmounted(() => {
+  if (featureConfig.usePresence && isSingleChat) {
+    // 取消订阅用户在线状态
+    ChatUIKIT.appUserStore.unsubscribePresence({
+      userIdList: [info.value.id]
+    });
+  }
   unwatchUserInfo();
 });
 </script>

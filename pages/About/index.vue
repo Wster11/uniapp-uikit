@@ -1,10 +1,10 @@
 <template>
   <view class="about-wrap">
-    <Navbar @onLeftTap="onBack">
+    <NavBar @onLeftTap="onBack">
       <template v-slot:left>
         <view class="title" v-text="t('aboutTitle')"></view>
       </template>
-    </Navbar>
+    </NavBar>
     <view class="about-info-wrap">
       <Avatar
         class="about-avatar"
@@ -36,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import Navbar from "../../ChatUIKIT/components/NavBar/index.vue";
+import NavBar from "../../ChatUIKIT/components/NavBar/index.vue";
 import Avatar from "../../ChatUIKIT/components/Avatar/index.vue";
 import MenuItem from "../../ChatUIKIT/components/MenuItem/index.vue";
 import { t } from "../../const/locales";

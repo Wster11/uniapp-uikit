@@ -1,10 +1,10 @@
 <template>
   <view class="request-list-wrap">
-    <Navbar @onLeftTap="onBack">
+    <NavBar @onLeftTap="onBack">
       <template v-slot:left>
         <view class="title" v-text="t('contactRequestListTitle')"></view>
       </template>
-    </Navbar>
+    </NavBar>
     <view class="list">
       <view v-if="contactApplyRequestList.length">
         <RequestItem
@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import Navbar from "../../components/NavBar/index.vue";
+import NavBar from "../../components/NavBar/index.vue";
 import Empty from "../../components/Empty/index.vue";
 import RequestItem from "./components/RequestItem/index.vue";
 import { t } from "../../locales/index";
