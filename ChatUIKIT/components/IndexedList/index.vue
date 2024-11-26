@@ -23,6 +23,12 @@
             <label class="label">
               <checkbox
                 class="checkbox"
+                backgroundColor="#f9fafa"
+                borderColor="#ACB4B9"
+                activeBackgroundColor="#009DFF"
+                activeBorderColor="#009DFF"
+                style="transform:scale(0.8)"
+                iconColor="#fff"
                 :value="indexedItem.id"
                 :checked="props.checkedList.includes(indexedItem.id)"
               />
@@ -47,9 +53,9 @@
               v-for="indexedItem in indexedData[item]"
               :key="indexedItem.id"
             >
-            <view class="index-item">
-              <slot name="indexedItem" :item="indexedItem"></slot>
-            </view>
+              <view class="index-item">
+                <slot name="indexedItem" :item="indexedItem"></slot>
+              </view>
             </view>
           </view>
         </view>

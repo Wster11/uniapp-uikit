@@ -6,12 +6,17 @@
       </template>
     </NavBar>
     <view class="menu-wrap">
-      <radio-group @change="checkboxChange">
+      <radio-group @change="onChange">
         <label v-for="item in presenceMenus" :key="item.value" class="label">
           <radio
-            class="checkbox"
+            class="presence-radio"
             :value="item.value"
             :checked="checkedStatus === item.value"
+            backgroundColor="#f9fafa"
+            borderColor="#ACB4B9"
+            activeBackgroundColor="#009DFF"
+            activeBorderColor="#009DFF"
+            iconColor="#fff"
           />
           <MenuItem
             :className="'presence-menu'"
@@ -104,7 +109,7 @@ const onBack = () => {
   uni.navigateBack();
 };
 
-const checkboxChange = (e) => {
+const onChange = (e) => {
   presenceExt.value = e.detail.value;
 };
 
@@ -140,7 +145,7 @@ onUnmounted(() => {
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .wrap {
   display: flex;
   flex-direction: column;
