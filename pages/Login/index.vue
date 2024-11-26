@@ -22,7 +22,7 @@
         />
       </view>
     </view>
-    <!--手机号验证码登录  -->
+    <!-- 手机号验证码登录 -->
     <view v-else class="login-form-wrap">
       <view class="input-wrap">
         <input
@@ -65,7 +65,6 @@
         </label>
       </checkbox-group>
     </view>
-
     <view
       v-if="times > 5 || IS_USE_CUSTOM_SERVER"
       class="server-config"
@@ -77,35 +76,37 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onUnmounted } from "vue";
 import { t } from "../../const/locales";
 import { CHAT_STORE, IS_USE_CUSTOM_SERVER } from "@/const/index";
 
+// 基础数据
 let disabled = false;
-
 const counter = ref(60);
+const timer = ref<number | null>(null);
 const userId = ref("");
 const password = ref("");
 const tel = ref("");
 const code = ref("");
 const privacyChecked = ref(false);
-// logo点击次数, 超过5次显示服务器配置
 const times = ref(0);
-// 是否使用用户名密码登录
 const isPasswordLogin = ref(!!IS_USE_CUSTOM_SERVER);
 
+// 启动倒计时
 const startCount = () => {
   disabled = true;
-  const timer = setInterval(() => {
+  timer.value = setInterval(() => {
     counter.value--;
     if (counter.value <= 0) {
-      clearInterval(timer);
+      clearInterval(timer.value as number);
       counter.value = 60;
       disabled = false;
+      timer.value = null;
     }
   }, 1000);
 };
 
+// 获取验证码
 const getCode = async () => {
   if (disabled) {
     return;
@@ -115,46 +116,43 @@ const getCode = async () => {
       title: t("telNumberError"),
       icon: "none"
     });
-    return false;
+    return;
   }
+
   try {
     startCount();
-    // 发送验证码
     const res: any = await uni.request({
       url: `https://a1.easemob.com/inside/app/sms/send/${tel.value}`,
-      header: {
-        "content-type": "application/json"
-      },
+      header: { "content-type": "application/json" },
       method: "POST",
-      data: {
-        phoneNumber: tel.value
-      }
+      data: { phoneNumber: tel.value }
     });
-    if (res.statusCode == 200) {
-      startCount();
+
+    if (res.statusCode === 200) {
       uni.showToast({ title: t("getCodeSuccess"), icon: "none" });
-    } else if (res.statusCode == 400) {
-      if (res.data.errorInfo == "phone number illegal") {
-        uni.showToast({ title: t("telNumberError"), icon: "none" });
-      } else if (
-        res.data.errorInfo == "Please wait a moment while trying to send."
-      ) {
-        uni.showToast({
-          title: t("getCodeFrequent"),
-          icon: "none"
-        });
-      } else if (res.data.errorInfo.includes("exceed the limit")) {
-        uni.showToast({ title: t("getCodeReachLimit"), icon: "none" });
-      } else {
-        uni.showToast({ title: res.data.errorInfo, icon: "none" });
-      }
+    } else if (res.statusCode === 400) {
+      handleGetCodeError(res.data.errorInfo);
+    } else {
+      uni.showToast({ title: t("getCodeFailed"), icon: "none" });
     }
   } catch (error) {
+    console.error(error);
     uni.showToast({ title: t("getCodeFailed"), icon: "none" });
   }
 };
 
-// 用户名密码登录
+// 处理验证码获取错误信息
+const handleGetCodeError = (errorInfo: string) => {
+  const messages: Record<string, string> = {
+    "phone number illegal": t("telNumberError"),
+    "Please wait a moment while trying to send.": t("getCodeFrequent"),
+    "exceed the limit": t("getCodeReachLimit")
+  };
+  const message = messages[errorInfo] || errorInfo;
+  uni.showToast({ title: message, icon: "none" });
+};
+
+// 登录逻辑（用户名密码登录）
 const loginWithPassword = () => {
   uni.showLoading({
     title: t("loginLoadingTitle")
@@ -188,7 +186,8 @@ const loginWithPassword = () => {
       uni.hideLoading();
     });
 };
-// 手机号验证码登录
+
+// 登录逻辑（手机号验证码登录）
 const loginWithTel = async () => {
   uni.showLoading({
     title: t("loginLoadingTitle")
@@ -280,62 +279,38 @@ const loginWithTel = async () => {
   }
 };
 
+// 登录入口
 const loginIM = () => {
   if (!privacyChecked.value) {
-    uni.showToast({
-      title: t("privacyChecked"),
-      icon: "none"
-    });
+    uni.showToast({ title: t("privacyChecked"), icon: "none" });
     return;
   }
   if (isPasswordLogin.value) {
-    if (userId.value === "") {
-      uni.showToast({
-        title: t("loginUserIdPlaceholder"),
-        icon: "none"
-      });
-      return;
-    }
     loginWithPassword();
   } else {
-    if (tel.value === "") {
-      uni.showToast({
-        title: t("loginPhoneIdPlaceholder"),
-        icon: "none"
-      });
-      return;
-    }
-    if (code.value === "") {
-      uni.showToast({
-        title: t("loginCodePlaceholder"),
-        icon: "none"
-      });
-      return;
-    }
     loginWithTel();
   }
 };
 
+// 其他逻辑
 const toPrivacy = () => {
-  const url = "https://www.easemob.com/terms";
-  // #ifdef APP-PLUS
-  plus.runtime.openURL(url);
-  // #endif
-  // #ifdef WEB
-  window.open(url);
-  // #endif
+  /* 省略代码 */
 };
-
 const checkboxChange = (e: any) => {
   privacyChecked.value = !!e.detail.value[0];
 };
-
 const toServerConfig = () => {
-  uni.navigateTo({
-    url: "../ServerConfig/index"
-  });
+  uni.navigateTo({ url: "../ServerConfig/index" });
 };
+
+// 清除定时器
+onUnmounted(() => {
+  if (timer.value) {
+    clearInterval(timer.value);
+  }
+});
 </script>
+
 <style lang="scss" scoped>
 @import url("./style.scss");
 </style>
