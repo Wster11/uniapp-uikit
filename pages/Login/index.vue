@@ -56,7 +56,15 @@
     <view class="private-wrap">
       <checkbox-group @change="checkboxChange">
         <label class="label">
-          <checkbox value="true" :checked="privacyChecked" />
+          <checkbox
+            backgroundColor="#f9fafa"
+            borderColor="#ACB4B9"
+            activeBackgroundColor="#009DFF"
+            activeBorderColor="#009DFF"
+            style="transform: scale(0.8)"
+            iconColor="#fff"
+            :checked="privacyChecked"
+          />
           {{ t("agreeTo") }}
           <a class="privacy" @tap="toPrivacy">《{{ t("privacyPolicy") }}》</a>
         </label>

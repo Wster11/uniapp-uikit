@@ -192,8 +192,11 @@ const getAvatarPlaceholder = () => {
 };
 
 const toChatPage = () => {
-  emits("leftSwipe", null);
-  isTapDelete.value = false;
+  if (props.showMenu) {
+    isTapDelete.value = false;
+    emits("leftSwipe", null);
+    return;
+  }
   uni.navigateTo({
     url: `/ChatUIKIT/modules/Chat/index?type=${props.conversation.conversationType}&id=${props.conversation.conversationId}`
   });
