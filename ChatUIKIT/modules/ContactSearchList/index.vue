@@ -4,7 +4,7 @@
       <template v-slot:left>
         <view class="input-wrap">
           <SearchInput
-            :focus="true"
+            ref="searchRef"
             :placeholder="t('searchContact')"
             @input="onInput"
             @cancel="cancelSearch"
@@ -13,13 +13,14 @@
       </template>
     </NavBar>
     <view class="search-content" v-if="searchList.length">
-      <UserItem
-        v-for="item in searchList"
-        :key="item.conversationId"
-        class="search-item"
-        @tap="toChatPage(item)"
-        :user="{ userId: item.userId }"
-      />
+      <view class="search-item">
+        <UserItem
+          v-for="item in searchList"
+          :key="item.conversationId"
+          @tap="toChatPage(item)"
+          :user="{ userId: item.userId }"
+        />
+      </view>
     </view>
     <Empty v-else />
   </view>
@@ -36,6 +37,7 @@ import { onLoad } from "@dcloudio/uni-app";
 import { ref, computed } from "vue";
 
 const searchValue = ref("");
+const searchRef = ref(null);
 
 let sourceUrl = "";
 
@@ -104,6 +106,7 @@ onLoad((option) => {
 }
 
 .search-list-wrap {
+  height: calc(100vh - var(--status-bar-height));
   display: flex;
   flex-direction: column;
   overflow: hidden;

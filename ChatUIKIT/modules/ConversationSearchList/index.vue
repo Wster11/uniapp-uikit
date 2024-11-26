@@ -4,7 +4,7 @@
       <template v-slot:left>
         <view class="input-wrap">
           <SearchInput
-            :focus="true"
+            ref="searchRef"
             :placeholder="t('conversationSearchPlaceholder')"
             @input="onInput"
             @cancel="cancelSearch"
@@ -43,6 +43,7 @@ import { t } from "../../locales";
 import { ref, computed } from "vue";
 
 const searchValue = ref("");
+const searchRef = ref(null);
 
 const onInput = (value: string) => {
   searchValue.value = value;

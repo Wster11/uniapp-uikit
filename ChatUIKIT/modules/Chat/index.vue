@@ -81,8 +81,6 @@ const isShowEmojiPicker = ref(false);
 const conversationType = ref<Chat.ConversationItem["conversationType"]>(
   "" as Chat.ConversationItem["conversationType"]
 );
-const appUserStore = ChatUIKIT.appUserStore;
-const groupStore = ChatUIKIT.groupStore;
 const featureConfig = ChatUIKIT.getFeatureConfig();
 const isShowMask = computed(() => {
   return isShowToolbar.value || isShowEmojiPicker.value;

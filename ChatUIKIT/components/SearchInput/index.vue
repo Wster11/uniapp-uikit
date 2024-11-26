@@ -7,7 +7,10 @@
         class="input"
         @input="handleInput"
         type="text"
-        :focus="props.focus"
+        :focus="isFocus"
+        @blur="onBlur"
+        @focus="onFocus"
+        confirm-type="done"
         :placeholder="props.placeholder"
       />
       <view v-if="text.length" class="clear-icon" @tap="handleClear"></view>
@@ -23,10 +26,6 @@ import { ref } from "vue";
 import { t } from "../../locales";
 
 const props = defineProps({
-  focus: {
-    type: Boolean,
-    default: false
-  },
   placeholder: {
     type: String,
     default: ""
@@ -41,6 +40,8 @@ const text = ref("");
 
 const emits = defineEmits(["input", "cancel"]);
 
+const isFocus = ref(true);
+
 const handleInput = (e) => {
   emits("input", e.detail.value);
 };
@@ -53,6 +54,20 @@ const handleClear = () => {
 const handleCancel = () => {
   emits("cancel");
 };
+
+const onBlur = () => {
+  isFocus.value = false;
+};
+
+const onFocus = () => {
+  isFocus.value = true;
+};
+
+defineExpose({
+  setIsFocus(focus: boolean) {
+    isFocus.value = focus;
+  }
+});
 </script>
 
 <style lang="scss" scoped>

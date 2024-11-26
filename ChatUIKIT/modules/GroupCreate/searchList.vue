@@ -4,7 +4,7 @@
       <template v-slot:left>
         <view class="input-wrap">
           <SearchInput
-            :focus="true"
+            ref="searchRef"
             :placeholder="t('searchContact')"
             @input="onInput"
             @cancel="cancelSearch"
@@ -22,6 +22,12 @@
         >
           <checkbox
             class="checkbox"
+            backgroundColor="#f9fafa"
+            borderColor="#ACB4B9"
+            activeBackgroundColor="#009DFF"
+            activeBorderColor="#009DFF"
+            style="transform: scale(0.8)"
+            iconColor="#fff"
             :value="item.userId"
             :checked="props.checkedList.includes(item.userId)"
           />
@@ -56,6 +62,8 @@ const props = defineProps<Props>();
 const emits = defineEmits(["checkboxChange", "cancel"]);
 
 const contacts = ref([]);
+
+const searchRef = ref(null);
 
 const searchValue = ref("");
 

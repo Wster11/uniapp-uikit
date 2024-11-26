@@ -63,6 +63,7 @@
             activeBorderColor="#009DFF"
             style="transform: scale(0.8)"
             iconColor="#fff"
+            value="true"
             :checked="privacyChecked"
           />
           {{ t("agreeTo") }}
