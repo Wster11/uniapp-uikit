@@ -6,25 +6,31 @@
     </view>
     <IndexedList class="contact-index-list" :options="contactList">
       <template v-slot:header>
-        <MenuItem @tap="toRequestListPage" :className="'contact-menu'" :title="t('newRequest')">
-          <template v-slot:right>
-            <view class="request-count" v-if="contactRequestCount">
-              {{ contactRequestCount > 99 ? "99+" : contactRequestCount }}
-            </view>
-          </template>
-        </MenuItem>
+        <view class="contact-menu-wrap">
+          <MenuItem
+            @tap="toRequestListPage"
+            class="contact-menu"
+            :title="t('newRequest')"
+          >
+            <template v-slot:right>
+              <view class="request-count" v-if="contactRequestCount">
+                {{ contactRequestCount > 99 ? "99+" : contactRequestCount }}
+              </view>
+            </template>
+          </MenuItem>
 
-        <MenuItem
-          @tap="toGroupPage"
-          :className="'contact-menu'"
-          :title="t('groupList')"
-        >
-          <template v-slot:right>
-            <view class="count" v-if="joinedGroupCount">
-              {{ joinedGroupCount }}
-            </view>
-          </template>
-        </MenuItem>
+          <MenuItem
+            @tap="toGroupPage"
+            class="contact-menu"
+            :title="t('groupList')"
+          >
+            <template v-slot:right>
+              <view class="count" v-if="joinedGroupCount">
+                {{ joinedGroupCount }}
+              </view>
+            </template>
+          </MenuItem>
+        </view>
       </template>
       <template v-slot:indexedItem="slotProps">
         <UserItem
@@ -87,7 +93,6 @@ const toSearchPage = () => {
   });
 };
 
-
 const toRequestListPage = () => {
   uni.navigateTo({
     url: `/ChatUIKIT/modules/ContactRequestList/index`
@@ -107,7 +112,11 @@ onUnmounted(() => {
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.contact-menu-wrap {
+  display: flex;
+  flex-direction: column;
+}
 .contact-menu {
   padding-left: 16px;
 }

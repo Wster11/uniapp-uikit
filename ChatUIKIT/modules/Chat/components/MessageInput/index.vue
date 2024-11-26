@@ -1,6 +1,6 @@
 <template>
   <view class="message-input-wrap">
-    <!-- #1ifndef WEB -->
+    <!-- #ifndef WEB -->
     <view
       v-if="featureConfig.inputAudio"
       @tap="showAudioPopup"
@@ -10,8 +10,7 @@
     </view>
 
     <AudioMessageSender v-if="featureConfig.inputAudio" ref="audioPopupRef" />
-
-    <!-- #1endif -->
+    <!-- #endif -->
     <view class="send-input" @tap="onInputTap">
       <input
         :class="[{ 'prevent-event': props.preventEvent }]"
@@ -22,6 +21,7 @@
         :adjust-position="true"
         :auto-blur="true"
         confirm-type="send"
+        :confirm-hold="true"
         @input="onInput"
         @confirm="handleSendMessage"
         @blur="onBlur"
@@ -47,7 +47,6 @@ import AudioMessageSender from "../MessageInputToolBar/audioSender.vue";
 import { formatTextMessage, formatMessage } from "../../../../utils/index";
 import PlusIcon from "../../../../assets/icon/plus.png";
 import AudioIcon from "../../../../assets/icon/audioButton.png";
-import Keyboard from "../../../../assets/icon/keyboard.png";
 import EmojiIcon from "../../../../assets/icon/emoji.png";
 import SendIcon from "../../../../assets/icon/send.png";
 import { ChatUIKIT } from "../../../../index";
@@ -77,8 +76,6 @@ const emits = defineEmits([
 ]);
 
 const convStore = ChatUIKIT.convStore;
-
-const convType = ChatUIKIT.convStore.currConversation?.conversationType;
 
 const isFocus = ref(false);
 

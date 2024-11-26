@@ -6,7 +6,7 @@
       </template>
     </NavBar>
     <view class="menu-wrap">
-      <radio-group @change="onChange">
+      <radio-group class="radio-group" @change="onChange">
         <label v-for="item in presenceMenus" :key="item.value" class="label">
           <radio
             class="presence-radio"
@@ -19,7 +19,7 @@
             iconColor="#fff"
           />
           <MenuItem
-            :className="'presence-menu'"
+            class="presence-menu"
             :title="item.value !== 'Custom' ? item.title : customPresence"
             :showArrow="false"
           >
@@ -52,9 +52,9 @@
     </Modal>
 
     <view class="presence-btn-wrap">
-      <view :class="['presence-btn']" @tap="publishPresence">
+      <UIKITButton class="presence-btn" @tap="publishPresence">
         {{ t("presenceConfirm") }}
-      </view>
+      </UIKITButton>
     </view>
   </view>
 </template>
@@ -62,6 +62,7 @@
 <script setup lang="ts">
 import NavBar from "../../ChatUIKIT/components/NavBar/index.vue";
 import MenuItem from "../../ChatUIKIT/components/MenuItem/index.vue";
+import UIKITButton from "../../ChatUIKIT/components/Button/index.vue";
 import { ChatUIKIT } from "../../ChatUIKIT/index";
 import { PRESENCE_STATUS_LIST } from "../../ChatUIKIT/const";
 import { t } from "../../const/locales";
@@ -146,6 +147,17 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss" scoped>
+
+.presence-menu {
+  width: 100%;
+  padding: 0 16px;
+}
+
+.radio-group {
+  display: flex;
+  flex-direction: column;
+}
+
 .wrap {
   display: flex;
   flex-direction: column;
@@ -165,23 +177,7 @@ onUnmounted(() => {
 }
 
 .presence-btn {
-  display: flex;
   width: 100%;
-  padding: 11px 24px;
-  justify-content: center;
-  align-items: center;
-  border-radius: 4px;
-  background: linear-gradient(180deg, #009eff 0%, #334bff 100%);
-  color: #f9fafa;
-  text-align: center;
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 24px;
-}
-
-.presence-menu {
-  width: 100%;
-  padding: 0 16px;
 }
 
 .custom-wrap {

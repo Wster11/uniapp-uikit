@@ -7,7 +7,7 @@
     </NavBar>
     <view class="menu-wrap">
       <MenuItem
-        :className="'profile-menu'"
+        class="profile-menu"
         :title="t('profileAvatar')"
         @tap="changeAvatar"
       >
@@ -21,12 +21,12 @@
         </template>
       </MenuItem>
       <MenuItem
-        :className="'profile-menu'"
+        class="profile-menu"
         :title="t('profileNick')"
         @tap="toProfileSetting"
       >
         <template v-slot:right>
-          <view>{{ userInfo.name }}</view>
+          <view class="profile-name ellipsis">{{ userInfo.name }}</view>
         </template>
       </MenuItem>
     </view>
@@ -91,9 +91,18 @@ onUnmounted(() => {
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.menu-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
 .profile-menu {
   padding: 0 16px;
+}
+
+.profile-name {
+  width: calc(100vw - 200px);
 }
 </style>
 <style lang="scss" scoped>

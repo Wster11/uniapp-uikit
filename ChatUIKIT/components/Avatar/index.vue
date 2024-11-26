@@ -36,7 +36,9 @@ const isError = ref(false);
 
 const featureConfig = ChatUIKIT.getFeatureConfig();
 
-const showPresence = props.withPresence && featureConfig.usePresence;
+const showPresence = computed(() => {
+  return props.withPresence && featureConfig.usePresence;
+});
 
 const presenceClass = computed(() => {
   if (props.isOnline) {

@@ -23,16 +23,13 @@
       </IndexedList>
       <Empty v-else />
       <view class="create-btn-wrap">
-        <view
-          v-if="contactList.length"
-          :class="[
-            'create-btn',
-            { 'create-btn-disabled': !selectedUserIds.length }
-          ]"
+        <UIKITButton
+          class="crate-btn"
+          :disabled="!selectedUserIds.length"
           @tap="createGroup"
         >
           {{ t("createGroupBtn") + "(" + selectedUserIds.length + ")" }}
-        </view>
+        </UIKITButton>
       </view>
     </view>
     <SearchList
@@ -50,6 +47,7 @@ import NavBar from "../../components/NavBar/index.vue";
 import UserItem from "../ContactList/components/UserItem/index.vue";
 import Empty from "../../components/Empty/index.vue";
 import IndexedList from "../../components/IndexedList/index.vue";
+import UIKITButton from "../../components/Button/index.vue";
 import SearchList from "./searchList.vue";
 import { ChatUIKIT } from "../../index";
 import { t } from "../../locales";
@@ -183,23 +181,7 @@ onUnmounted(() => {
   backdrop-filter: blur(10px);
 }
 
-.create-btn {
-  display: flex;
+.crate-btn {
   width: 100%;
-  padding: 11px 24px;
-  justify-content: center;
-  align-items: center;
-  border-radius: 4px;
-  background: linear-gradient(180deg, #009eff 0%, #334bff 100%);
-  color: #f9fafa;
-  text-align: center;
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 24px;
-}
-
-.create-btn-disabled {
-  color: #acb4b9;
-  background: #f1f2f3;
 }
 </style>

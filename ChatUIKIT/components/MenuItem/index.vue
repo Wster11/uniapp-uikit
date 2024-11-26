@@ -1,5 +1,5 @@
 <template>
-  <view :class="[props.className, 'menu-item' ]" @tap="onTap">
+  <view class="menu-item" @tap="onTap">
     <view class="left">
       <slot name="left"></slot>
       <view>
@@ -26,16 +26,11 @@ const props = defineProps({
     type: String,
     default: ""
   },
-  className: {
-    type: String,
-    default: ""
-  },
   showArrow: {
     type: Boolean,
     default: true
   }
 });
-
 </script>
 <style lang="scss" scoped>
 .menu-item {

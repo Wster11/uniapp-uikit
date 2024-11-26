@@ -14,12 +14,10 @@
           :placeholder="t('contactAddInputPlaceholder')"
         />
       </view>
-
-      <view
-        :class="[{ 'btn-disabled': !userId.length }, 'btn']"
-        @tap="addContact"
-      >
-        {{ t("contactAddBtn") }}
+      <view class="btn-wrap">
+        <UIKITButton :disabled="!userId.length" @tap="addContact">
+          {{ t("contactAddBtn") }}
+        </UIKITButton>
       </view>
     </view>
   </view>
@@ -27,6 +25,7 @@
 
 <script setup lang="ts">
 import NavBar from "../../components/NavBar/index.vue";
+import UIKITButton from "../../components/Button/index.vue";
 import { t } from "../../locales/index";
 import { ChatUIKIT } from "../../index";
 import { ref } from "vue";
@@ -72,24 +71,7 @@ const addContact = async () => {
   background: #f1f2f3;
 }
 
-.btn {
-  display: flex;
-  padding: 11px 24px;
-  justify-content: center;
-  align-items: center;
-  border-radius: 4px;
-  background: linear-gradient(180deg, #009eff 0%, #334bff 100%);
-  color: #f9fafa;
-  text-align: center;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 24px;
+.btn-wrap {
   margin-top: 24px;
-}
-
-.btn-disabled {
-  background: #f1f2f3;
-  color: #acb4b9;
 }
 </style>

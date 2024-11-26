@@ -22,7 +22,7 @@
       </view>
       <view class="menu-wrap">
         <MenuItem
-          :className="'me-menu'"
+          class="me-menu"
           :title="t('meStatus')"
           @tap="toPresenceSetting"
         >
@@ -30,27 +30,27 @@
             <view class="icon status"> </view>
           </template>
         </MenuItem>
-        <MenuItem :className="'me-menu'" :title="t('meInfo')" @tap="toProfile">
+        <MenuItem class="me-menu" :title="t('meInfo')" @tap="toProfile">
           <template v-slot:left>
             <view class="icon person"> </view>
           </template>
         </MenuItem>
-        <MenuItem :className="'me-menu'" :title="t('meSetting')">
+        <MenuItem class="me-menu" :title="t('meSetting')">
           <template v-slot:left>
             <view class="icon general"> </view>
           </template>
         </MenuItem>
-        <MenuItem :className="'me-menu'" :title="t('meNotice')">
+        <MenuItem class="me-menu" :title="t('meNotice')">
           <template v-slot:left>
             <view class="icon notice"> </view>
           </template>
         </MenuItem>
-        <MenuItem :className="'me-menu'" :title="t('mePrivacy')">
+        <MenuItem class="me-menu" :title="t('mePrivacy')">
           <template v-slot:left>
             <view class="icon privacy"> </view>
           </template>
         </MenuItem>
-        <MenuItem :className="'me-menu'" :title="t('meAbout')" @tap="toAbout">
+        <MenuItem class="me-menu" :title="t('meAbout')" @tap="toAbout">
           <template v-slot:left>
             <view class="icon about"> </view>
           </template>
@@ -120,7 +120,12 @@ onUnmounted(() => {
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.menu-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
 .me-menu {
   padding: 0 16px;
 }

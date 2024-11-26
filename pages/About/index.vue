@@ -18,7 +18,7 @@
     <view class="content">
       <view class="menu-wrap">
         <MenuItem
-          :className="'about-menu'"
+          class="about-menu"
           v-for="item in menus"
           :key="item.title"
           @tap="onMenuTap(item)"
@@ -85,7 +85,12 @@ const onMenuTap = (menu) => {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.menu-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
 .about-menu {
   padding: 0 16px;
 }

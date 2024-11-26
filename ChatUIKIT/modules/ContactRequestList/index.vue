@@ -47,35 +47,6 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss" scoped>
-.input-wrap {
-  display: flex;
-  padding: 13px 16px;
-  align-items: center;
-  border-radius: 4px;
-  background: #f1f2f3;
-}
-
-.btn {
-  display: flex;
-  padding: 11px 24px;
-  justify-content: center;
-  align-items: center;
-  border-radius: 4px;
-  background: linear-gradient(180deg, #009eff 0%, #334bff 100%);
-  color: #f9fafa;
-  text-align: center;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 24px;
-  margin-top: 24px;
-}
-
-.btn-disabled {
-  background: #f1f2f3;
-  color: #acb4b9;
-}
-
 .request-list-wrap {
   display: flex;
   flex-direction: column;
