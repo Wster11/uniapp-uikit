@@ -39,13 +39,7 @@
           maxlength="6"
           :placeholder="t('loginCodePlaceholder')"
         />
-        <text
-          size="mini"
-          type="primary"
-          class="get-code"
-          @tap="getCode"
-          :disabled="counter !== 60"
-        >
+        <text size="mini" type="primary" class="get-code" @tap="getCode">
           {{ counter === 60 ? t("getCode") : counter }}
         </text>
       </view>
@@ -86,6 +80,9 @@
 import { ref } from "vue";
 import { t } from "../../const/locales";
 import { CHAT_STORE, IS_USE_CUSTOM_SERVER } from "@/const/index";
+
+let disabled = false;
+
 const counter = ref(60);
 const userId = ref("");
 const password = ref("");
@@ -98,16 +95,21 @@ const times = ref(0);
 const isPasswordLogin = ref(!!IS_USE_CUSTOM_SERVER);
 
 const startCount = () => {
+  disabled = true;
   const timer = setInterval(() => {
     counter.value--;
     if (counter.value <= 0) {
       clearInterval(timer);
       counter.value = 60;
+      disabled = false;
     }
   }, 1000);
 };
 
 const getCode = async () => {
+  if (disabled) {
+    return;
+  }
   if (!/^1[3456789]\d{9}$/.test(tel.value)) {
     uni.showToast({
       title: t("telNumberError"),
