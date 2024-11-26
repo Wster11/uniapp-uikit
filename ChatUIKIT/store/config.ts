@@ -1,16 +1,44 @@
 import { makeAutoObservable } from "mobx";
-import type { ChatUIKITConfig } from "../configType";
-import { DEFAULT_FEATURES_CONFIG, DEFAULT_THEME_CONFIG } from "../const/index";
+import type {
+  ChatUIKITConfig,
+  ThemeConfig,
+  FeatureConfig
+} from "../configType";
 
 class ConfigStore {
   /** UIKIT全局配置 */
   config: ChatUIKITConfig;
   constructor() {
+    this.config = {
+      features: {
+        useUserInfo: true,
+        muteConversation: true,
+        pinConversation: true,
+        deleteConversation: true,
+        messageStatus: true,
+        copyMessage: true,
+        deleteMessage: true,
+        recallMessage: true,
+        editMessage: true,
+        replyMessage: true,
+        inputEmoji: true,
+        inputImage: true,
+        inputAudio: true,
+        inputVideo: true,
+        inputFile: true,
+        inputMention: true,
+        userCard: true,
+        usePresence: true
+      },
+      theme: {
+        avatarShape: "square"
+      }
+    };
     makeAutoObservable(this);
   }
-  /** 初始化全局配置 */
-  setConfig(config: ChatUIKITConfig) {
-    this.config = config;
+  /** 设置化主题配置 */
+  setThemeConfig(config: ThemeConfig) {
+    this.config.theme = config;
   }
   /** 获取全局配置 */
   getConfig() {
@@ -18,17 +46,22 @@ class ConfigStore {
   }
   /** 获取主题配置 */
   getThemeConfig() {
-    return {
-      ...DEFAULT_THEME_CONFIG,
-      ...(this.config.theme || {})
-    };
+    return this.config.theme;
   }
   /** 获取功能配置 */
   getFeatureConfig() {
-    return {
-      ...DEFAULT_FEATURES_CONFIG,
-      ...(this.config.features || {})
-    };
+    return this.config.features;
+  }
+  /** 隐藏UIKIT功能 */
+  hideFeature(features: Array<keyof FeatureConfig>) {
+    if (!features || !features.length) {
+      return;
+    }
+    features.forEach((feature) => {
+      if (this.config.features[feature]) {
+        this.config.features[feature] = false;
+      }
+    });
   }
 }
 

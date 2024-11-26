@@ -6,7 +6,7 @@ import ConversationStore from "./store/conversation";
 import GroupStore from "./store/group";
 import MessageStore from "./store/message";
 import ConfigStore from "./store/config";
-import { ChatUIKITInitParams } from "./configType";
+import { ChatUIKITInitParams, FeatureConfig } from "./configType";
 class ChatKIT {
   public connStore: ConnStore;
   public chatStore: ChatStore;
@@ -25,7 +25,7 @@ class ChatKIT {
     if (this.connStore.conn) {
       return;
     }
-    this.configStore.setConfig(config.config);
+    this.configStore.setThemeConfig(config.themeConfig);
     this.connStore.setChatConn(config.chat);
     this.chatStore = new ChatStore();
     this.contactStore = new ContactStore();
@@ -46,6 +46,17 @@ class ChatKIT {
   /** 获取UIKIT功能配置 */
   public getFeatureConfig() {
     return this.configStore.getFeatureConfig();
+  }
+  /** 隐藏UIKIT功能 */
+  public hideFeature(features: Array<keyof FeatureConfig>) {
+    this.configStore.hideFeature(features);
+  }
+  /** 在 onShow 生命周期检测IM链接是否有效*/
+  public onShow() {
+    // 如果IM是登录状态，则检测IM链接是否有效
+    if (!this.getChatConn().logout) {
+      this.getChatConn().onShow();
+    }
   }
 }
 

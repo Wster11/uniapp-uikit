@@ -47,16 +47,16 @@ interface ThemeConfig {
 /** UIKIT Config */
 interface ChatUIKITConfig {
   /** UIKIT功能配置 */
-  features?: FeatureConfig;
+  features: FeatureConfig;
   /** UIKIT 主题配置 */
-  theme?: ThemeConfig;
+  theme: ThemeConfig;
 }
 
 interface ChatUIKITInitParams {
   /** IM SDK实例 */
   chat: Chat.Connection;
-  /** UIKIT Config */
-  config: ChatUIKITConfig;
+  /** UIKIT theme Config */
+  themeConfig: ThemeConfig;
 }
 
 export { ChatUIKITInitParams, ChatUIKITConfig, FeatureConfig, ThemeConfig };

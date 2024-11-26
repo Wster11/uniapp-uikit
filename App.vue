@@ -21,29 +21,12 @@ const chat = new (websdk as unknown as EasemobChatStatic).connection({
 
 ChatUIKIT.init({
   chat,
-  config: {
-    theme: {
-      avatarShape: "circle"
-    },
-    features: {
-      // useUserInfo: false,
-      // muteConversation: false,
-      // pinConversation: false,
-      // deleteConversation: false,
-      // messageStatus: false,
-      // copyMessage: false,
-      // deleteMessage: false,
-      // recallMessage: false,
-      // editMessage: false,
-      // replyMessage: false,
-      // inputEmoji: false,
-      // inputImage: false,
-      // inputAudio: false,
-      // inputVideo: false,
-      // inputMention: false
-    }
+  themeConfig: {
+    avatarShape: "circle"
   }
 });
+
+// ChatUIKIT.hideFeature(["pinConversation"]);
 
 // 手动设置用户属性
 // ChatUIKIT.appUserStore.setUserInfo("0c1bdd28c7", {
@@ -128,6 +111,7 @@ export default {
   },
   onShow: function () {
     console.log("App Show");
+    ChatUIKIT.onShow();
   },
   onHide: function () {
     console.log("App Hide");
