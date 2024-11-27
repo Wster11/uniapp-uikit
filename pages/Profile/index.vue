@@ -103,6 +103,7 @@ onUnmounted(() => {
 
 .profile-name {
   width: calc(100vw - 200px);
+  text-align: right;
 }
 </style>
 <style lang="scss" scoped>

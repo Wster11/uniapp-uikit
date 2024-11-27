@@ -18,7 +18,7 @@
     </view>
 
     <view class="profile-btn-wrap">
-      <UIKITButton class="profile-btn" @tap="updateNickName">
+      <UIKITButton class="profile-btn" :disabled="disabled" @tap="updateNickName">
         {{ t("presenceConfirm") }}
       </UIKITButton>
     </view>
