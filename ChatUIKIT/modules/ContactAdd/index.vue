@@ -71,6 +71,10 @@ const addContact = async () => {
   background: #f1f2f3;
 }
 
+.input {
+  width: 100%;
+}
+
 .btn-wrap {
   margin-top: 24px;
 }

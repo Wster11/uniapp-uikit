@@ -4,13 +4,6 @@
       <template v-slot:left>
         <view class="title" v-text="t('profileSettingTitle')"></view>
       </template>
-      <template v-slot:right>
-        <view
-          :class="['save', { 'save-disabled': disabled }]"
-          @tap="updateNickName"
-          >{{ t("profileSettingSave") }}</view
-        >
-      </template>
     </NavBar>
     <view class="content">
       <textarea
@@ -23,11 +16,18 @@
       ></textarea>
       <view class="count"> {{ inputValue.length }} / 128 </view>
     </view>
+
+    <view class="profile-btn-wrap">
+      <UIKITButton class="profile-btn" @tap="updateNickName">
+        {{ t("presenceConfirm") }}
+      </UIKITButton>
+    </view>
   </view>
 </template>
 
 <script setup lang="ts">
 import NavBar from "../../ChatUIKIT/components/NavBar/index.vue";
+import UIKITButton from "../../ChatUIKIT/components/Button/index.vue";
 import { ref, onUnmounted, computed } from "vue";
 import { ChatUIKIT } from "../../ChatUIKIT/index";
 import { t } from "../../const/locales";
@@ -50,11 +50,13 @@ const updateNickName = () => {
   if (disabled.value) {
     return;
   }
-  ChatUIKIT.appUserStore.updateUserInfo({
-    nickname: inputValue.value
-  });
-
-  uni.navigateBack();
+  ChatUIKIT.appUserStore
+    .updateUserInfo({
+      nickname: inputValue.value
+    })
+    .finally(() => {
+      onBack();
+    });
 };
 
 const onBack = () => {
@@ -69,6 +71,23 @@ onUnmounted(() => {
 <style lang="scss">
 .profile-menu {
   padding: 0 16px;
+}
+
+.profile-btn-wrap {
+  position: fixed;
+  width: 100%;
+  box-sizing: border-box;
+  bottom: 45px;
+  display: flex;
+  padding: 14px;
+  align-items: center;
+  border-top: 0.5px solid #e3e6e8;
+  background: #f9fafa;
+  backdrop-filter: blur(10px);
+}
+
+.profile-btn {
+  width: 100%;
 }
 </style>
 <style lang="scss" scoped>
