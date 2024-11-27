@@ -1,11 +1,11 @@
 <template>
   <view class="conversation-list-wrap">
-    <view v-if="conversationList.length">
+    <view >
       <view class="header-wrap">
         <ConversationNav />
         <SearchButton class="convs-search-btn" @tap="onSearch" />
       </view>
-      <view class="convs-wrap">
+      <view v-if="conversationList.length" class="convs-wrap">
         <view
           v-for="conv in conversationList"
           :key="conv.conversationId"
@@ -24,7 +24,7 @@
         </view>
       </view>
     </view>
-    <Empty v-else />
+    <Empty v-if="!conversationList.length" />
   </view>
 </template>
 
