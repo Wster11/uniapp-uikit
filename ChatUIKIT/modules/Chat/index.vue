@@ -1,5 +1,5 @@
 <template>
-  <view class="chat-wrap">
+  <view class="chat-wrap" :style="{ height: `calc(100% - ${keyboardHeight})` }">
     <ChatNav />
     <!-- 消息列表 -->
     <view class="msgs-wrap">
@@ -78,6 +78,7 @@ const contactListRef = ref(null);
 const conversationId = ref("");
 const isShowToolbar = ref(false);
 const isShowEmojiPicker = ref(false);
+const keyboardHeight = ref("0px");
 const conversationType = ref<Chat.ConversationItem["conversationType"]>(
   "" as Chat.ConversationItem["conversationType"]
 );
@@ -93,6 +94,11 @@ const unwatchQuoteMsg = autorun(() => {
     msgInputRef?.value?.setIsFocus(false);
   }
 });
+
+const onKeyboardHeightChange = ({ height }) => {
+  console.log(height, "height");
+  keyboardHeight.value = height + "px";
+};
 
 const onInputTap = () => {
   closeToolbar();
@@ -186,6 +192,8 @@ onLoad((option) => {
       conversationType: conversationType.value
     });
   }
+  uni.onKeyboardHeightChange &&
+    uni.onKeyboardHeightChange(onKeyboardHeightChange);
 });
 
 provide<InputToolbarEvent>("InputToolbarEvent", {

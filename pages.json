@@ -74,7 +74,8 @@
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
-					"bounce": "none"
+					"bounce": "none",
+					"softinputNavBar": "none"
 				}
 			}
 		},

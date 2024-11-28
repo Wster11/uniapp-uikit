@@ -18,7 +18,7 @@
         cursor-spacing="20"
         type="text"
         :focus="isFocus"
-        :adjust-position="true"
+        :adjust-position="false"
         :auto-blur="true"
         confirm-type="send"
         :confirm-hold="true"
