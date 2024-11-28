@@ -116,7 +116,11 @@ const onInput = (e: any) => {
 };
 
 const handleSendMessage = async () => {
-  let textMessage = formatTextMessage(text.value);
+  let textMessage = formatTextMessage(text.value).trim();
+  if (!textMessage) {
+    console.warn("No text message");
+    return;
+  }
   let msgQuoteExt: MessageQuoteExt = {} as MessageQuoteExt;
   let isAtAll = false;
   mentionUserIds.value;
@@ -126,7 +130,7 @@ const handleSendMessage = async () => {
     msgQuoteExt = {
       msgID: quoteMessage.id,
       msgPreview: formatMessage(quoteMessage),
-      msgSender: ChatUIKIT.appUserStore.getSelfUserInfo().nickname,
+      msgSender: ChatUIKIT.appUserStore.getSelfUserInfo().nickname || "",
       msgType: quoteMessage.type
     };
     ChatUIKIT.messageStore.setQuoteMessage(null);
