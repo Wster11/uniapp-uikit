@@ -162,7 +162,7 @@ const scrollToBottom = () => {
   scrollTop.value = msgs.value.length * 999;
   setTimeout(() => {
     scrollTop.value += 1;
-  }, 200);
+  }, 400);
 };
 
 const setViewMsgId = (msgId: string) => {

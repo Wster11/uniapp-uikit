@@ -125,7 +125,7 @@ onUnmounted(() => {
 }
 
 .block {
-  height: 104px;
+  height: calc(104px + var(--status-bar-height))
 }
 
 .wx-block {
