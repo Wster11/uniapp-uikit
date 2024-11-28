@@ -1,10 +1,12 @@
 <template>
   <view class="conversation-list-wrap">
-    <view >
+    <view>
       <view class="header-wrap">
         <ConversationNav />
         <SearchButton class="convs-search-btn" @tap="onSearch" />
       </view>
+      <!-- nav占位 -->
+      <view :class="isWXProgram ? 'wx-block' : 'block'"></view>
       <view v-if="conversationList.length" class="convs-wrap">
         <view
           v-for="conv in conversationList"
@@ -36,7 +38,7 @@ import Empty from "../../../../components/Empty/index.vue";
 import { ref, onUnmounted } from "vue";
 import type { Chat } from "../../../../types/index";
 import { ChatUIKIT } from "../../../../index";
-import { deepClone } from "../../../../utils/index";
+import { deepClone, isWXProgram } from "../../../../utils/index";
 import { autorun } from "mobx";
 
 const selectedConvId = ref<Chat.ConversationItem | null>(null);
@@ -120,7 +122,7 @@ onUnmounted(() => {
   flex-direction: column;
   position: fixed;
   z-index: 999;
-  padding: 8px;
+  padding: 0 8px 8px 8px;
   width: 100%;
   background: #f9fafa;
   box-sizing: border-box;
@@ -130,8 +132,12 @@ onUnmounted(() => {
   margin: 8px;
 }
 
-.convs-wrap {
-  padding-top: calc(112px + var(--status-bar-height));
+.block {
+  height: 104px;
+}
+
+.wx-block {
+  height: 151px;
 }
 
 @import url("../../../../styles//common.scss");

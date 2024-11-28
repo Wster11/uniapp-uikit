@@ -4,6 +4,7 @@
       <template v-slot:left>
         <view class="left-content">
           <Avatar
+            class="nav-avatar"
             :size="32"
             :src="info.avatar"
             :placeholder="isSingleChat ? USER_AVATAR_URL : GROUP_AVATAR_URL"
@@ -107,5 +108,9 @@ onUnmounted(() => {
 .left-content {
   display: flex;
   align-items: center;
+}
+
+.nav-avatar {
+  height: 32px;
 }
 </style>

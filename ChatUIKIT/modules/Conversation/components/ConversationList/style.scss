@@ -1,12 +1,9 @@
 .conversation-list-wrap {
   position: relative;
-  /*  #ifdef WEB  */
-  padding-bottom: 65px;
-  /*  #endif  */
+  padding-bottom: var(--window-bottom);
   overflow: hidden;
 }
 
 .input-wrap input {
   border: 1px solid #ccc;
 }
-

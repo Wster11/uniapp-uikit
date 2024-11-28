@@ -1,5 +1,5 @@
 <template>
-  <view class="nav-tar-wrap">
+  <view :class="['nav-bar-wrap', { 'nav-bar-weixin': isWXProgram }]">
     <view class="left">
       <view
         v-if="props.showBackArrow"
@@ -18,6 +18,7 @@
 </template>
 
 <script setup lang="ts">
+import { isWXProgram } from "../../utils/index";
 const props = defineProps({
   showBackArrow: {
     type: Boolean,
@@ -34,15 +35,19 @@ const onLeftTap = () => {
 </script>
 
 <style lang="scss" scoped>
-.nav-tar-wrap {
+.nav-bar-wrap {
   display: flex;
   width: 100%;
   height: 44px;
   align-items: center;
   justify-content: space-between;
-  padding: 8px;
+  padding: 0 8px;
   box-sizing: border-box;
   margin-top: var(--status-bar-height);
+}
+
+.nav-bar-weixin {
+  margin-top: calc(var(--status-bar-height) + 22px) !important;
 }
 
 .left {

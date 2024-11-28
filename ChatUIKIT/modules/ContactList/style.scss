@@ -1,12 +1,19 @@
 .contact-list-wrap {
   display: flex;
   flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .header-wrap {
   display: flex;
   flex-direction: column;
-  padding: 8px;
+  position: fixed;
+  z-index: 999;
+  padding: 0 8px;
+  width: 100%;
+  background: #f9fafa;
+  box-sizing: border-box;
 }
 
 .count {
@@ -26,7 +33,7 @@ uni-page-body {
   overflow: hidden;
 }
 
-.request-count{
+.request-count {
   padding: 1px 4px;
   height: 15px;
   min-width: 10px;
@@ -41,5 +48,7 @@ uni-page-body {
 
 .contact-index-list {
   box-sizing: border-box;
-  height: calc(100vh - 160px);
+  flex: 1;
+  padding-bottom: calc(var(--tab-bar-height) + env(safe-area-inset-bottom) + var(--window-bottom));
+  overflow-y: scroll;
 }

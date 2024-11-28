@@ -4,6 +4,8 @@
       <ContactNav />
       <SearchButton @tap="toSearchPage" class="contact-search" />
     </view>
+    <!-- nav占位 -->
+    <view :class="isWXProgram ? 'wx-block' : 'block'"></view>
     <IndexedList class="contact-index-list" :options="contactList">
       <template v-slot:header>
         <view class="contact-menu-wrap">
@@ -52,6 +54,7 @@ import type { Chat } from "../../sdk";
 import { t } from "../../locales/index";
 import { ChatUIKIT } from "../../index";
 import { ref, onUnmounted } from "vue";
+import { isWXProgram } from "../../utils/index";
 import { autorun } from "mobx";
 
 const contactList = ref<Chat.ContactItem[]>([]);
@@ -119,6 +122,14 @@ onUnmounted(() => {
 }
 .contact-menu {
   padding-left: 16px;
+}
+
+.block {
+  height: 104px;
+}
+
+.wx-block {
+  height: 151px;
 }
 </style>
 
