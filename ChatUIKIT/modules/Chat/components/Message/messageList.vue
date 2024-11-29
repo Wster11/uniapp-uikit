@@ -20,9 +20,12 @@
       <view class="isLast" v-if="isLast">{{ t("noMoreMessage") }}</view>
       <view v-if="isLoading" class="loading"></view>
       <view
-        :class="['scroll-msg-item', { blink: blinkMsgId === msg.id }]"
+        :class="[
+          'scroll-msg-item',
+          { blink: blinkMsgId === (msg.serverMsgId || msg.id) }
+        ]"
         v-for="(msg, idx) in msgs"
-        :id="`msg-${msg.id}`"
+        :id="`msg-${msg.serverMsgId || msg.id}`"
         :key="msg.id"
       >
         <!-- 微信风格时间间隔 -->

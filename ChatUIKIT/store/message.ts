@@ -107,18 +107,8 @@ class MessageStore {
     });
   }
 
-  replaceConvMessageId(localMsgId: string, msg: MixedMessageBody) {
-    const convId = ChatUIKIT.convStore.getCvsIdFromMessage(msg);
-    const idx =
-      this.conversationMessagesMap
-        .get(convId)
-        ?.messageIds.findIndex((id) => id === localMsgId) ?? -1;
-
-    if (idx > -1) {
-      this.conversationMessagesMap
-        .get(convId)
-        ?.messageIds.splice(idx, 1, msg.id);
-    }
+  updateLocalMessage(localMsgId: string, msg: MixedMessageBody) {
+    this.messageMap.set(localMsgId, msg);
   }
 
   updateMessageStatus(msgId: string, status: MessageStatus) {
@@ -170,9 +160,12 @@ class MessageStore {
             ...res.message,
             status: "sent"
           } as MixedMessageBody;
-          this.replaceConvMessageId(msgCopy.id, sentMessage);
-          // 消息发送成功删除本地的消息
-          this.removeMessageFromMap(msgCopy.id);
+          this.updateLocalMessage(msgCopy.id, {
+            ...msgCopy,
+            status: "sent",
+            serverMsgId: res.serverMsgId
+          });
+          // 同时存储服务器消息
           res.message &&
             this.addMessageToMap({
               ...sentMessage,
@@ -254,10 +247,15 @@ class MessageStore {
     });
   }
 
-  async recallMessage(msg: any) {
-    const res = await ChatUIKIT.getChatConn().recallMessage(msg);
+  async recallMessage(msg: MixedMessageBody) {
+    const mid = msg.serverMsgId || msg.id;
+    const res = await ChatUIKIT.getChatConn().recallMessage({
+      mid,
+      to: ChatUIKIT.convStore.getCvsIdFromMessage(msg),
+      chatType: msg.chatType
+    });
     runInAction(() => {
-      this.onRecallMessage(msg.mid, ChatUIKIT.getChatConn().user);
+      this.onRecallMessage(msg.id, ChatUIKIT.getChatConn().user);
     });
     return res;
   }
@@ -318,7 +316,8 @@ class MessageStore {
     });
   }
 
-  deleteMessage(cvs: ConversationBaseInfo, messageId: string) {
+  deleteMessage(cvs: ConversationBaseInfo, msg: MixedMessageBody) {
+    const messageId = msg.serverMsgId || msg.id;
     ChatUIKIT.getChatConn()
       .removeHistoryMessages({
         targetId: cvs.conversationId,
@@ -327,11 +326,14 @@ class MessageStore {
       })
       .then(() => {
         runInAction(() => {
-          this.removeMessageFromMap(messageId);
+          this.removeMessageFromMap(msg.id);
+          if (msg.serverMsgId) {
+            this.removeMessageFromMap(msg.serverMsgId);
+          }
           if (this.conversationMessagesMap.has(cvs.conversationId)) {
             const info = this.conversationMessagesMap.get(cvs.conversationId);
             if (info) {
-              const idx = info.messageIds.findIndex((id) => id === messageId);
+              const idx = info.messageIds.findIndex((id) => id === msg.id);
               if (idx > -1) {
                 info.messageIds.splice(idx, 1);
               }
@@ -341,7 +343,7 @@ class MessageStore {
             cvs.conversationId
           );
           let lastMessage = conv?.lastMessage;
-          if (lastMessage?.id === messageId) {
+          if (lastMessage?.id === msg.id) {
             ChatUIKIT.convStore.updateConversationLastMessage(
               {
                 conversationId: conv?.conversationId || "",
@@ -363,7 +365,8 @@ class MessageStore {
     this.editingMessage = msg;
   }
 
-  modifyServerMessage(messageId: string, msg: Chat.ModifiedMsg) {
+  modifyServerMessage(beforeMsg: MixedMessageBody, msg: Chat.ModifiedMsg) {
+    const messageId = beforeMsg.serverMsgId || beforeMsg.id;
     if (!messageId || !msg) {
       throw new Error("modifyServerMessage params error");
     }
@@ -373,7 +376,7 @@ class MessageStore {
         modifiedMessage: msg
       })
       .then((res) => {
-        this.modifyLocalMessage(messageId, res.message);
+        this.modifyLocalMessage(beforeMsg.id, res.message);
       });
   }
 

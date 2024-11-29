@@ -128,7 +128,7 @@ const handleSendMessage = async () => {
   const quoteMessage = ChatUIKIT.messageStore.quoteMessage;
   if (quoteMessage) {
     msgQuoteExt = {
-      msgID: quoteMessage.id,
+      msgID: quoteMessage.serverMsgId || quoteMessage.id,
       msgPreview: formatMessage(quoteMessage),
       msgSender: ChatUIKIT.appUserStore.getSelfUserInfo().nickname || "",
       msgType: quoteMessage.type

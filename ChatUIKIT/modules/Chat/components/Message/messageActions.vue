@@ -217,16 +217,12 @@ const deleteMessage = () => {
       conversationType: props.msg.chatType,
       conversationId: ChatUIKIT.convStore.getCvsIdFromMessage(props.msg)
     },
-    props.msg.id
+    props.msg
   );
 };
 
 const recallMessage = () => {
-  ChatUIKIT.messageStore.recallMessage({
-    mid: props.msg.id,
-    to: ChatUIKIT.convStore.getCvsIdFromMessage(props.msg),
-    chatType: props.msg.chatType
-  });
+  ChatUIKIT.messageStore.recallMessage(props.msg);
   showActions.value = false;
 };
 

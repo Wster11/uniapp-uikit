@@ -56,6 +56,8 @@ type AT_TYPE = "NONE" | "ALL" | "ME";
 type MixedMessageBody = Chat.ExcludeAckMessageBody & {
   noticeInfo?: MessageNoticeInfo;
   status?: MessageStatus;
+  /** 服务端消息ID */
+  serverMsgId?: string;
 };
 
 type UIKITConversationItem = Chat.ConversationItem & {

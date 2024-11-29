@@ -11,6 +11,7 @@
           :auto-height="true"
           :focus="isFocus"
           :confirm-type="'send'"
+          :show-confirm-bar="false"
         />
         <view
           @tap="editMessage"
@@ -54,10 +55,7 @@ const editMessage = () => {
       chatType: editingMsg.value.chatType,
       msg: txt.value
     }) as Chat.ModifiedMsg;
-    ChatUIKIT.messageStore.modifyServerMessage(
-      editingMsg.value.id,
-      modifiedMsg
-    );
+    ChatUIKIT.messageStore.modifyServerMessage(editingMsg.value, modifiedMsg);
     ChatUIKIT.messageStore.setEditingMessage(null);
   }
 };

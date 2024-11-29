@@ -96,7 +96,9 @@ const unwatchQuoteMsg = autorun(() => {
 });
 
 const onKeyboardHeightChange = ({ height }) => {
-  console.log(height, "height");
+  if (ChatUIKIT.messageStore.editingMessage) {
+    return;
+  }
   keyboardHeight.value = height + "px";
 };
 
@@ -180,6 +182,8 @@ onMounted(() => {
 
 onUnmounted(() => {
   ChatUIKIT.convStore.setCurrentConversation(null);
+  ChatUIKIT.messageStore.setQuoteMessage(null);
+  ChatUIKIT.messageStore.setEditingMessage(null);
   unwatchQuoteMsg();
 });
 
