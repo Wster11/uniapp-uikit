@@ -28,7 +28,7 @@ import { ref, onUnmounted } from "vue";
 import { t } from "../../locales/index";
 import { autorun } from "mobx";
 
-const groupList = ref<Chat.ContactItem[]>([]);
+const groupList = ref<Chat.GroupInfo[]>([]);
 
 const onBack = () => {
   uni.navigateBack();

@@ -18,6 +18,7 @@ import type { Chat } from "../../../../sdk";
 import { USER_AVATAR_URL } from "../../../../const/index";
 import { ChatUIKIT } from "../../../../index";
 import { ref, onUnmounted } from "vue";
+import { UserInfoWithPresence } from "../../../../types/index";
 import { autorun } from "mobx";
 
 interface Props {
@@ -27,7 +28,7 @@ interface Props {
 
 const props = defineProps<Props>();
 
-const userInfo = ref({});
+const userInfo = ref<UserInfoWithPresence>({} as UserInfoWithPresence);
 
 const unwatchUserInfo = autorun(() => {
   userInfo.value = ChatUIKIT.appUserStore.getUserInfoFromStore(

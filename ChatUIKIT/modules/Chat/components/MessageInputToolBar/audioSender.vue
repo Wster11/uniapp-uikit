@@ -183,6 +183,7 @@ const uploadAndSendAudio = () => {
           url: data.uri + "/" + data.entities[0].uuid,
           filename: "audio.mp3",
           type: "mp3",
+		  //@ts-ignore
           length: audioLength
         },
         ext: {

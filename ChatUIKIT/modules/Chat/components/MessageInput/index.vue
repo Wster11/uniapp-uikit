@@ -83,7 +83,7 @@ const audioPopupRef = ref(null);
 
 const text = ref("");
 
-const mentionUserIds = ref<string>([]);
+const mentionUserIds = ref<string[]>([]);
 
 const showAudioPopup = () => {
   audioPopupRef.value.showAudioPopup();

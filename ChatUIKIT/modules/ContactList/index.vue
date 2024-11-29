@@ -102,12 +102,6 @@ const toRequestListPage = () => {
   });
 };
 
-const toCreateGroup = () => {
-  uni.navigateTo({
-    url: `/ChatUIKIT/modules/GroupCreate/index`
-  });
-};
-
 onUnmounted(() => {
   unwatchContactList();
   unwatchContactRequestCount();

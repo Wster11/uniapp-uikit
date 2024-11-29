@@ -24,12 +24,23 @@ import Avatar from "../../../../components/Avatar/index.vue";
 import NavBar from "../../../../components/NavBar/index.vue";
 import { ref, computed, onMounted, onUnmounted } from "vue";
 import { ChatUIKIT } from "../../../../index";
+import { Chat } from "../../../../types";
 import { USER_AVATAR_URL, GROUP_AVATAR_URL } from "../../../../const";
 import { autorun } from "mobx";
 
-const info = ref({
+type ChatNavInfo = {
+  avatar: string;
+  name: string;
+  id: string;
+  conversationType?: Chat.ChatType;
+  presenceExt?: string;
+  isOnline?: boolean;
+};
+
+const info = ref<ChatNavInfo>({
   avatar: "",
-  name: ""
+  name: "",
+  id: ""
 });
 
 const isSingleChat = computed(() => {

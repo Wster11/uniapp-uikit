@@ -1,7 +1,6 @@
 import type { Chat, ChatSDKStatic } from "../sdk";
 
 type InputToolbarEvent = {
-  onMessageSend: () => void;
   closeToolbar: () => void;
 };
 

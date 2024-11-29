@@ -13,7 +13,7 @@
       </view>
 
       <view class="action" @tap="acceptContactInvite">
-        <view class="btn">{{t("contactRequestAgreeButton")}}</view>
+        <view class="btn">{{ t("contactRequestAgreeButton") }}</view>
       </view>
     </view>
   </view>
@@ -26,6 +26,7 @@ import { USER_AVATAR_URL } from "../../../../const/index";
 import { ChatUIKIT } from "../../../../index";
 import { ref, onUnmounted } from "vue";
 import { t } from "../../../../locales";
+import { UserInfoWithPresence } from "../../../../types/index";
 import { autorun } from "mobx";
 
 interface Props {
@@ -35,7 +36,7 @@ interface Props {
 
 const props = defineProps<Props>();
 
-const userInfo = ref({});
+const userInfo = ref<UserInfoWithPresence>({} as UserInfoWithPresence);
 
 const unwatchUserInfo = autorun(() => {
   userInfo.value = ChatUIKIT.appUserStore.getUserInfoFromStore(

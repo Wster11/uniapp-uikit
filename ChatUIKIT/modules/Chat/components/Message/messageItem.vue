@@ -108,7 +108,7 @@ const actionRef = ref(null);
 const appUserStore = ChatUIKIT.appUserStore;
 
 const getUserInfo = (id: string) => {
-  return appUserStore.getUserInfoFromStore(id || "") || {};
+  return appUserStore.getUserInfoFromStore(id || "");
 };
 
 const messageStatus = ChatUIKIT.getFeatureConfig().messageStatus;

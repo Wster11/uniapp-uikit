@@ -19,7 +19,8 @@
         /* 模块配置 */
         "modules" : {
             "Record" : {},
-            "VideoPlayer" : {}
+            "VideoPlayer" : {},
+            "Camera" : {}
         },
         /* 应用发布信息 */
         "distribute" : {
@@ -92,7 +93,8 @@
     "mp-weixin" : {
         "appid" : "wx7b9f2e69fd703352",
         "setting" : {
-            "urlCheck" : false
+            "urlCheck" : false,
+            "es6" : false
         },
         "usingComponents" : true
     },
