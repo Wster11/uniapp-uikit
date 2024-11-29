@@ -11,7 +11,6 @@ class GroupStore {
     list: [],
     unReadCount: 0
   };
-  isJoinedGroupListLast: boolean = true;
   getJoinedGroupListParams = {
     pageSize: 20, // 最大支持20
     pageNum: 0,
@@ -29,9 +28,7 @@ class GroupStore {
       .then((res) => {
         if (res.entities) {
           this.setJoinedGroupList(res.entities as Chat.GroupInfo[]);
-          if (res.entities.length < this.getJoinedGroupListParams.pageSize) {
-            this.isJoinedGroupListLast = true;
-          } else {
+          if (res.entities.length >= this.getJoinedGroupListParams.pageSize) {
             this.getJoinedGroupListParams.pageNum++;
             this.getJoinedGroupList();
           }
@@ -208,6 +205,12 @@ class GroupStore {
 
   clear = () => {
     runInAction(() => {
+      this.getJoinedGroupListParams = {
+        pageSize: 20, // 最大支持20
+        pageNum: 0,
+        needAffiliations: true,
+        needRole: true
+      };
       this.joinedGroupList = [];
       this.groupNoticeInfo = {
         list: [],
