@@ -11,33 +11,64 @@ interface ConversationMessagesInfo {
   isLast: boolean;
   isGetHistoryMessage?: boolean; // 是否获取过历史消息
 }
+
+// 获取历史消息的PAGE_SIZE
+const PAGE_SIZE = 15;
+
 class MessageStore {
+  // 存储所有消息的映射表，key 为消息 ID，value 为消息内容，对于本地发送的消息 key为本地消息ID，对于服务器消息 key为服务器消息ID
   messageMap: Map<string, MixedMessageBody> = new Map();
+
+  // 存储会话消息信息的映射表，key 为会话 ID，value 为该会话的消息信息
   conversationMessagesMap: Map<string, ConversationMessagesInfo> = new Map();
+
+  // 当前正在播放的语音消息 ID
   playingAudioMsgId: string = "";
-  quoteMessage: MixedMessageBody | null = null; // 当前引用的消息
-  editingMessage: Chat.ModifiedMsg | null = null; // 当前编辑的消息
+
+  // 当前被引用（回复）的消息对象
+  quoteMessage: MixedMessageBody | null = null;
+
+  // 当前正在编辑的消息对象
+  editingMessage: Chat.ModifiedMsg | null = null;
 
   constructor() {
     makeAutoObservable(this);
   }
 
+  /**
+   * 将消息添加到消息映射中
+   * @param msg 要添加的消息对象
+   */
   addMessageToMap(msg: MixedMessageBody) {
     this.messageMap.set(msg.id, msg);
   }
 
+  /**
+   * 从消息映射中移除指定消息
+   * @param msgId 要移除的消息ID
+   */
   removeMessageFromMap(msgId: string) {
     this.messageMap.delete(msgId);
   }
 
+  /**
+   * 设置当前正在播放的音频消息ID
+   * @param msgId 音频消息ID
+   */
   setPlayingAudioMessageId(msgId: string) {
     this.playingAudioMsgId = msgId;
   }
 
+  /**
+   * 获取历史消息
+   * @param conversation 会话对象
+   * @param cursor 分页游标
+   * @param onSuccess 获取成功的回调函数
+   */
   async getHistoryMessages(
     conversation: Chat.ConversationItem,
     cursor?: string,
-    onSuccess?: () => void // 调用接口获取成功的回调， msgIds为获取到的消息id列表
+    onSuccess?: () => void
   ) {
     try {
       const dt = await ChatUIKIT.getChatConn().getHistoryMessages({
@@ -46,6 +77,8 @@ class MessageStore {
         pageSize: 15,
         cursor: cursor || ""
       });
+
+      console.log("[Message] Get history messages success", dt);
 
       runInAction(() => {
         dt.messages.forEach((msg: any) => {
@@ -75,7 +108,7 @@ class MessageStore {
         }
       });
     } catch (error) {
-      console.warn("获取漫游消息失败，请检查是否开通漫游消息", error);
+      console.error("[Message] Get history messages failed", error);
       const info = this.conversationMessagesMap.get(
         conversation.conversationId
       );
@@ -89,6 +122,10 @@ class MessageStore {
     }
   }
 
+  /**
+   * 插入新消息
+   * @param msg 要插入的消息对象
+   */
   insertMessage(msg: MixedMessageBody) {
     const convId = ChatUIKIT.convStore.getCvsIdFromMessage(msg);
     runInAction(() => {
@@ -107,10 +144,20 @@ class MessageStore {
     });
   }
 
+  /**
+   * 更新本地消息
+   * @param localMsgId 本地消息ID
+   * @param msg 更新后的消息对象
+   */
   updateLocalMessage(localMsgId: string, msg: MixedMessageBody) {
     this.messageMap.set(localMsgId, msg);
   }
 
+  /**
+   * 更新消息状态
+   * @param msgId 消息ID
+   * @param status 新的消息状态
+   */
   updateMessageStatus(msgId: string, status: MessageStatus) {
     if (this.messageMap.has(msgId)) {
       const msg = this.messageMap.get(msgId) as MixedMessageBody;
@@ -123,6 +170,10 @@ class MessageStore {
     }
   }
 
+  /**
+   * 将会话中的所有消息标记为已读
+   * @param cvs 会话基本信息
+   */
   setAllMessageRead(cvs: ConversationBaseInfo) {
     const info = this.conversationMessagesMap.get(cvs.conversationId);
     if (info) {
@@ -142,6 +193,10 @@ class MessageStore {
     }
   }
 
+  /**
+   * 发送消息
+   * @param msg 要发送的消息对象
+   */
   sendMessage(msg: Chat.MessageBody) {
     runInAction(async () => {
       if (
@@ -154,6 +209,8 @@ class MessageStore {
           this.addMessageToMap(msgCopy);
           this.insertMessage(msgCopy);
           const res = await ChatUIKIT.getChatConn().send(msg);
+          console.log("[Message] Send message success", res);
+
           const convId = ChatUIKIT.convStore.getCvsIdFromMessage(msgCopy);
           const conv = ChatUIKIT.convStore.getConversationById(convId);
           const sentMessage = {
@@ -199,13 +256,17 @@ class MessageStore {
             }
           }
         } catch (error) {
-          console.error("send message failed", error);
+          console.error("[Message] Send message failed", error);
           this.updateMessageStatus(msg.id, "failed");
         }
       }
     });
   }
 
+  /**
+   * 处理接收到的消息
+   * @param msg 接收到的消息对象
+   */
   onMessage(msg: MixedMessageBody) {
     runInAction(() => {
       this.addMessageToMap(msg);
@@ -250,19 +311,35 @@ class MessageStore {
     });
   }
 
+  /**
+   * 撤回消息
+   * @param msg 要撤回的消息对象
+   * @returns 撤回操作的结果
+   */
   async recallMessage(msg: MixedMessageBody) {
-    const mid = msg.serverMsgId || msg.id;
-    const res = await ChatUIKIT.getChatConn().recallMessage({
-      mid,
-      to: ChatUIKIT.convStore.getCvsIdFromMessage(msg),
-      chatType: msg.chatType
-    });
-    runInAction(() => {
-      this.onRecallMessage(msg.id, ChatUIKIT.getChatConn().user);
-    });
-    return res;
+    try {
+      const mid = msg.serverMsgId || msg.id;
+      const res = await ChatUIKIT.getChatConn().recallMessage({
+        mid,
+        to: ChatUIKIT.convStore.getCvsIdFromMessage(msg),
+        chatType: msg.chatType
+      });
+      console.log("[Message] Recall message success", res);
+      runInAction(() => {
+        this.onRecallMessage(msg.id, ChatUIKIT.getChatConn().user);
+      });
+      return res;
+    } catch (error) {
+      console.error("[Message] Recall message failed", error);
+      throw error;
+    }
   }
 
+  /**
+   * 处理消息撤回事件
+   * @param mid 消息ID
+   * @param from 撤回消息的用户ID
+   */
   onRecallMessage(mid: string, from: string) {
     const recalledMessage = this.messageMap.get(mid);
     if (recalledMessage) {
@@ -309,6 +386,10 @@ class MessageStore {
     }
   }
 
+  /**
+   * 插入通知类消息
+   * @param msg 通知消息对象
+   */
   insertNoticeMessage(msg: MixedMessageBody) {
     const cvsId = ChatUIKIT.convStore.getCvsIdFromMessage(msg);
     runInAction(() => {
@@ -319,6 +400,11 @@ class MessageStore {
     });
   }
 
+  /**
+   * 删除消息
+   * @param cvs 会话基本信息
+   * @param msg 要删除的消息对象
+   */
   deleteMessage(cvs: ConversationBaseInfo, msg: MixedMessageBody) {
     const messageId = msg.serverMsgId || msg.id;
     ChatUIKIT.getChatConn()
@@ -328,6 +414,7 @@ class MessageStore {
         messageIds: [messageId]
       })
       .then(() => {
+        console.log("[Message] Delete message success", messageId);
         runInAction(() => {
           this.removeMessageFromMap(msg.id);
           if (msg.serverMsgId) {
@@ -357,17 +444,34 @@ class MessageStore {
             );
           }
         });
+      })
+      .catch((error) => {
+        console.error("[Message] Delete message failed", error);
       });
   }
 
+  /**
+   * 设置引用消息
+   * @param msg 要引用的消息对象或null
+   */
   setQuoteMessage(msg: MixedMessageBody | null) {
     this.quoteMessage = msg;
   }
 
+  /**
+   * 设置正在编辑的消息
+   * @param msg 要编辑的消息对象或null
+   */
   setEditingMessage(msg: Chat.ModifiedMsg | null) {
     this.editingMessage = msg;
   }
 
+  /**
+   * 修改服务器上的消息
+   * @param beforeMsg 修改前的消息对象
+   * @param msg 修改后的消息对象
+   * @returns Promise
+   */
   modifyServerMessage(beforeMsg: MixedMessageBody, msg: Chat.ModifiedMsg) {
     const messageId = beforeMsg.serverMsgId || beforeMsg.id;
     if (!messageId || !msg) {
@@ -379,10 +483,20 @@ class MessageStore {
         modifiedMessage: msg
       })
       .then((res) => {
+        console.log("[Message] Modify message success", res);
         this.modifyLocalMessage(beforeMsg.id, res.message);
+      })
+      .catch((error) => {
+        console.error("[Message] Modify message failed", error);
+        throw error;
       });
   }
 
+  /**
+   * 修改本地消息
+   * @param messageId 消息ID
+   * @param msg 修改后的消息对象
+   */
   modifyLocalMessage(messageId: string, msg: Chat.ModifiedMsg) {
     if (this.messageMap.has(messageId)) {
       const oldMsg = this.messageMap.get(messageId);
@@ -394,11 +508,18 @@ class MessageStore {
     }
   }
 
-  /** 检查是不是自己发的消息 */
+  /**
+   * 检查消息是否是自己发送的
+   * @param msg 消息对象
+   * @returns boolean 是否是自己发送的消息
+   */
   checkMessageFromIsSelf(msg: MixedMessageBody) {
     return msg.from === ChatUIKIT.getChatConn().user || msg.from === "";
   }
 
+  /**
+   * 清空所有消息数据
+   */
   clear() {
     runInAction(() => {
       this.messageMap.clear();
