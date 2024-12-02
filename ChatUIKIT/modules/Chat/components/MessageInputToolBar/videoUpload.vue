@@ -56,7 +56,6 @@ const sendVideoMessage = (res: any) => {
         type: "video",
         to: convStore.currConversation!.conversationId,
         chatType: convStore.currConversation!.conversationType,
-        file_length: res.duration,
         //@ts-ignore
         body: {
           url: data.uri + "/" + data.entities[0].uuid

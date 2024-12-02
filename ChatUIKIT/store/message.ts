@@ -162,8 +162,10 @@ class MessageStore {
           } as MixedMessageBody;
           this.updateLocalMessage(msgCopy.id, {
             ...msgCopy,
+            ...res.message as any,
             status: "sent",
-            serverMsgId: res.serverMsgId
+            serverMsgId: res.serverMsgId,
+            id: msgCopy.id
           });
           // 同时存储服务器消息
           res.message &&
