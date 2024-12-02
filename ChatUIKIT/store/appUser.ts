@@ -12,6 +12,7 @@ class AppUserStore {
   appUserPresence: Map<string, PresenceInfo> = new Map();
 
   constructor() {
+    console.log("[AppUserStore] Initializing...");
     makeAutoObservable(this);
   }
 
@@ -22,29 +23,29 @@ class AppUserStore {
    */
   getUsersInfoFromServer(props: { userIdList: string[] }) {
     const { userIdList = [] } = props;
-    console.log("[AppUser] Getting users info from server for:", userIdList);
+    console.log("[AppUserStore] Getting users info from server for:", userIdList);
     
     if (ChatUIKIT.getFeatureConfig().useUserInfo === false) {
-      console.log("[AppUser] User info feature is disabled");
+      console.log("[AppUserStore] User info feature is disabled");
       return Promise.resolve({});
     }
 
     if (userIdList.length === 0) {
-      console.log("[AppUser] Empty user list, resolving");
+      console.log("[AppUserStore] Empty user list, resolving");
       return Promise.resolve({});
     }
 
     const fetchUserIds = userIdList.filter(userId => !this.appUserInfo.has(userId));
 
     if (fetchUserIds.length === 0) {
-      console.log("[AppUser] All users info already in cache");
+      console.log("[AppUserStore] All users info already in cache");
       return Promise.resolve({});
     }
 
     return ChatUIKIT.getChatConn()
       .fetchUserInfoById(fetchUserIds)
       .then((res) => {
-        console.log("[AppUser] Successfully fetched users info:", res);
+        console.log("[AppUserStore] Successfully fetched users info:", res);
         res.data &&
           Object.keys(res.data).forEach((key) => {
             const result = res.data?.[key] || {};
@@ -53,7 +54,7 @@ class AppUserStore {
         return res;
       })
       .catch((e) => {
-        console.error("[AppUser] Failed to fetch users info:", e);
+        console.error("[AppUserStore] Failed to fetch users info:", e);
         throw e;
       });
   }
@@ -63,11 +64,11 @@ class AppUserStore {
    * @param props 包含用户ID列表的对象
    */
   getUsersPresenceFromServer(props: { userIdList: string[] }) {
-    console.log("[AppUser] Getting users presence from server for:", props.userIdList);
+    console.log("[AppUserStore] Getting users presence from server for:", props.userIdList);
     ChatUIKIT.getChatConn()
       .getPresenceStatus({ usernames: props.userIdList })
       .then((res) => {
-        console.log("[AppUser] Successfully got presence status:", res);
+        console.log("[AppUserStore] Successfully got presence status:", res);
         res?.data?.result.forEach((item: Chat.SubscribePresence) => {
           let isOnline = false;
           let ext = item.ext;
@@ -84,7 +85,7 @@ class AppUserStore {
         });
       })
       .catch((e) => {
-        console.error("[AppUser] Failed to get presence status:", e);
+        console.error("[AppUserStore] Failed to get presence status:", e);
       });
   }
 
@@ -94,7 +95,7 @@ class AppUserStore {
    * @returns Promise 返回订阅操作的结果
    */
   subscribePresence(props: { userIdList: string[] }) {
-    console.log("[AppUser] Subscribing to presence for users:", props.userIdList);
+    console.log("[AppUserStore] Subscribing to presence for users:", props.userIdList);
     return ChatUIKIT.getChatConn().subscribePresence({
       usernames: props.userIdList,
       expiry: 86400
@@ -107,7 +108,7 @@ class AppUserStore {
    * @returns Promise 返回取消订阅操作的结果
    */
   unsubscribePresence(props: { userIdList: string[] }) {
-    console.log("[AppUser] Unsubscribing from presence for users:", props.userIdList);
+    console.log("[AppUserStore] Unsubscribing from presence for users:", props.userIdList);
     return ChatUIKIT.getChatConn().unsubscribePresence({
       usernames: props.userIdList
     });
@@ -119,7 +120,7 @@ class AppUserStore {
    * @returns Promise 返回发布操作的结果
    */
   publishPresence(props: { presenceExt: string }) {
-    console.log("[AppUser] Publishing presence with ext:", props.presenceExt);
+    console.log("[AppUserStore] Publishing presence with ext:", props.presenceExt);
     return ChatUIKIT.getChatConn().publishPresence({
       description: props.presenceExt
     });
@@ -131,7 +132,7 @@ class AppUserStore {
    * @param userInfo 用户信息对象
    */
   setUserInfo(userId: string, userInfo: Chat.UpdateOwnUserInfoParams) {
-    console.log("[AppUser] Setting user info for:", userId, userInfo);
+    console.log("[AppUserStore] Setting user info for:", userId, userInfo);
     this.appUserInfo.set(userId, userInfo);
   }
 
@@ -141,16 +142,16 @@ class AppUserStore {
    * @returns Promise 返回更新操作的结果
    */
   updateUserInfo(params: Chat.UpdateOwnUserInfoParams) {
-    console.log("[AppUser] Updating user info:", params);
+    console.log("[AppUserStore] Updating user info:", params);
     return ChatUIKIT.getChatConn()
       .updateUserInfo(params)
       .then((res) => {
-        console.log("[AppUser] Successfully updated user info:", res);
+        console.log("[AppUserStore] Successfully updated user info:", res);
         this.setUserInfo(ChatUIKIT.getChatConn().user, res.data || {});
         return res;
       })
       .catch((e) => {
-        console.error("[AppUser] Failed to update user info:", e);
+        console.error("[AppUserStore] Failed to update user info:", e);
         throw e;
       });
   }
@@ -187,7 +188,7 @@ class AppUserStore {
    * @param presence 在线状态信息
    */
   setUserPresence(userId: string, presence: PresenceInfo) {
-    console.log("[AppUser] Setting presence for user:", userId, presence);
+    console.log("[AppUserStore] Setting presence for user:", userId, presence);
     this.appUserPresence.set(userId, presence);
   }
 
@@ -204,7 +205,7 @@ class AppUserStore {
    * 清空所有用户属性信息
    */
   clear() {
-    console.log("[AppUser] Clearing all user info");
+    console.log("[AppUserStore] Clearing all user info");
     this.appUserInfo.clear();
   }
 }

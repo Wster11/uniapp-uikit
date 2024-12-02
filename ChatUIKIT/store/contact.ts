@@ -2,20 +2,37 @@ import { makeAutoObservable } from "mobx";
 import type { ContactNotice, ContactNoticeInfo, Chat } from "../types/index";
 import { ChatUIKIT } from "../index";
 
+/**
+ * 联系人管理类
+ * 负责管理联系人列表、好友申请通知等功能
+ */
 class ContactStore {
+  /** 联系人列表 */
   contacts: Chat.ContactItem[] = [];
+  /** 好友申请通知信息,包含通知列表和未读数 */
   contactsNoticeInfo: ContactNoticeInfo = {
     list: [],
     unReadCount: 0
   };
+  /** 当前查看的用户信息 */
   viewedUserInfo: Chat.ContactItem = {} as Chat.ContactItem;
 
+  /**
+   * 构造函数
+   * 初始化并使对象可观察
+   */
   constructor() {
+    console.log("[ContactStore] Initializing...");
     makeAutoObservable(this);
   }
 
-  /** 递归获取联系人信息 */
+  /**
+   * 递归获取联系人信息
+   * @param userIdList 用户ID列表
+   * @param pageNum 页码,默认为1
+   */
   deepGetUserInfo(userIdList: string[], pageNum: number = 1) {
+    console.log("[ContactStore] Getting user info recursively for page:", pageNum);
     const pageSize = 100;
     const userIds = userIdList;
     const start = (pageNum - 1) * pageSize;
@@ -31,64 +48,100 @@ class ContactStore {
       });
   }
 
-  /** 获取全部联系人 */
+  /**
+   * 获取全部联系人
+   */
   getContacts() {
+    console.log("[ContactStore] Getting all contacts");
     ChatUIKIT.getChatConn()
       .getAllContacts()
       .then((res) => {
         if (res.data) {
           this.deepGetUserInfo(res.data.map((item) => item.userId) || []);
           this.contacts = res.data;
+          console.log("[ContactStore] Successfully got contacts:", res.data.length);
         }
       });
   }
 
-  /** 添加好友 */
+  /**
+   * 添加好友
+   * @param userId 用户ID
+   * @returns Promise 添加结果
+   */
   addContact(userId: string) {
+    console.log("[ContactStore] Adding contact:", userId);
     return ChatUIKIT.getChatConn()
       .addContact(userId, "apply join contact")
       .then((res) => {
+        console.log("[ContactStore] Successfully added contact:", userId);
         return res;
       });
   }
 
-  /** 删除好友 */
+  /**
+   * 删除好友
+   * @param userId 用户ID
+   * @returns Promise 删除结果
+   */
   deleteContact(userId: string) {
+    console.log("[ContactStore] Deleting contact:", userId);
     return ChatUIKIT.getChatConn()
       .deleteContact(userId)
       .then((res) => {
         this.deleteStoreContact(userId);
+        console.log("[ContactStore] Successfully deleted contact:", userId);
         return res;
       });
   }
 
-  /** 拒绝好友申请 */
+  /**
+   * 拒绝好友申请
+   * @param userId 用户ID
+   * @returns Promise 拒绝结果
+   */
   declineContactInvite(userId: string) {
+    console.log("[ContactStore] Declining contact invite from:", userId);
     return ChatUIKIT.getChatConn()
       .declineContactInvite(userId)
       .then((res) => {
+        console.log("[ContactStore] Successfully declined contact invite from:", userId);
         return res;
       });
   }
 
-  /** 接受好友申请 */
+  /**
+   * 接受好友申请
+   * @param userId 用户ID
+   * @returns Promise 接受结果
+   */
   acceptContactInvite(userId: string) {
+    console.log("[ContactStore] Accepting contact invite from:", userId);
     return ChatUIKIT.getChatConn()
       .acceptContactInvite(userId)
       .then((res) => {
         this.deleteContactNotice(userId);
+        console.log("[ContactStore] Successfully accepted contact invite from:", userId);
         return res;
       });
   }
 
-  /** push 好友通知 */
+  /**
+   * 添加好友通知
+   * @param msg 通知消息
+   */
   addContactNotice(msg: ContactNotice) {
+    console.log("[ContactStore] Adding contact notice:", msg);
     this.contactsNoticeInfo.list.unshift(msg);
     this.contactsNoticeInfo.unReadCount++;
   }
 
-  /** 删除好友通知 */
+  /**
+   * 删除好友通知
+   * @param userId 用户ID
+   */
   deleteContactNotice(userId: string) {
+    console.log("[ContactStore] Deleting contact notice for:", userId);
     const index = this.contactsNoticeInfo.list.findIndex(
       (item) => item.from === userId
     );
@@ -98,27 +151,46 @@ class ContactStore {
     }
   }
 
-  /** 删除 store 中的联系人 */
+  /**
+   * 从store中删除联系人
+   * @param userId 用户ID
+   */
   deleteStoreContact(userId: string) {
+    console.log("[ContactStore] Deleting contact from store:", userId);
     const index = this.contacts.findIndex((item) => item.userId === userId);
     if (index !== -1) {
       this.contacts.splice(index, 1);
     }
   }
 
-  /** 添加 store 的联系人 */
+  /**
+   * 向store中添加联系人
+   * @param user 联系人信息
+   */
   addStoreContact(user: Chat.ContactItem) {
+    console.log("[ContactStore] Adding contact to store:", user);
     if (!this.contacts.find((item) => item.userId === user.userId)) {
       this.contacts.unshift(user);
     }
   }
 
+  /**
+   * 设置当前查看的用户信息
+   * @param user 用户信息
+   */
   setViewedUserInfo(user: Chat.ContactItem) {
+    console.log("[ContactStore] Setting viewed user info:", user);
     this.viewedUserInfo = user;
   }
 
-  /** 设置联系人备注 */
+  /**
+   * 设置联系人备注
+   * @param userId 用户ID
+   * @param remark 备注内容
+   * @returns Promise 设置结果
+   */
   setContactRemark(userId: string, remark: string) {
+    console.log("[ContactStore] Setting contact remark for:", userId, remark);
     return ChatUIKIT.getChatConn()
       .setContactRemark({ userId, remark })
       .then((res) => {
@@ -126,17 +198,24 @@ class ContactStore {
         if (index !== -1) {
           this.contacts[index].remark = remark;
         }
+        console.log("[ContactStore] Successfully set contact remark for:", userId);
         return res;
       });
   }
 
-  /** 清空联系人通知未读数 */
+  /**
+   * 清空联系人通知未读数
+   */
   clearContactNoticeUnReadCount() {
+    console.log("[ContactStore] Clearing contact notice unread count");
     this.contactsNoticeInfo.unReadCount = 0;
   }
 
-  /** 清空联系人 Store */
+  /**
+   * 清空联系人Store
+   */
   clear() {
+    console.log("[ContactStore] Clearing contact store");
     this.contacts = [];
     this.contactsNoticeInfo = { list: [], unReadCount: 0 };
     this.viewedUserInfo = {} as Chat.ContactItem;

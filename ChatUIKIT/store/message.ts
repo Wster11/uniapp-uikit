@@ -1,3 +1,7 @@
+/**
+ * 消息管理类
+ * 负责管理消息的存储、发送、接收、撤回、删除等功能
+ */
 import { makeAutoObservable, runInAction } from "mobx";
 import type { MixedMessageBody, Chat } from "../types/index";
 import { ChatUIKIT } from "../index";
@@ -5,16 +9,22 @@ import { t } from "../locales/index";
 import { MessageStatus, ConversationBaseInfo } from "../types/index";
 import { chatSDK } from "../sdk";
 
+/**
+ * 会话消息信息接口
+ */
 interface ConversationMessagesInfo {
-  messageIds: string[];
-  cursor: string;
-  isLast: boolean;
+  messageIds: string[]; // 消息ID列表
+  cursor: string; // 分页游标
+  isLast: boolean; // 是否为最后一页
   isGetHistoryMessage?: boolean; // 是否获取过历史消息
 }
 
 // 获取历史消息的PAGE_SIZE
 const PAGE_SIZE = 15;
 
+/**
+ * 消息存储类
+ */
 class MessageStore {
   // 存储所有消息的映射表，key 为消息 ID，value 为消息内容，对于本地发送的消息 key为本地消息ID，对于服务器消息 key为服务器消息ID
   messageMap: Map<string, MixedMessageBody> = new Map();
@@ -31,6 +41,10 @@ class MessageStore {
   // 当前正在编辑的消息对象
   editingMessage: Chat.ModifiedMsg | null = null;
 
+  /**
+   * 构造函数
+   * 初始化并使对象可观察
+   */
   constructor() {
     makeAutoObservable(this);
   }
@@ -74,11 +88,11 @@ class MessageStore {
       const dt = await ChatUIKIT.getChatConn().getHistoryMessages({
         targetId: conversation.conversationId,
         chatType: conversation.conversationType,
-        pageSize: 15,
+        pageSize: PAGE_SIZE,
         cursor: cursor || ""
       });
 
-      console.log("[Message] Get history messages success", dt);
+      console.log("[MessageStore] Get history messages success", dt);
 
       runInAction(() => {
         dt.messages.forEach((msg: any) => {
@@ -108,7 +122,7 @@ class MessageStore {
         }
       });
     } catch (error) {
-      console.error("[Message] Get history messages failed", error);
+      console.error("[MessageStore] Get history messages failed", error);
       const info = this.conversationMessagesMap.get(
         conversation.conversationId
       );
@@ -209,7 +223,7 @@ class MessageStore {
           this.addMessageToMap(msgCopy);
           this.insertMessage(msgCopy);
           const res = await ChatUIKIT.getChatConn().send(msg);
-          console.log("[Message] Send message success", res);
+          console.log("[MessageStore] Send message success", res);
 
           const convId = ChatUIKIT.convStore.getCvsIdFromMessage(msgCopy);
           const conv = ChatUIKIT.convStore.getConversationById(convId);
@@ -256,7 +270,7 @@ class MessageStore {
             }
           }
         } catch (error) {
-          console.error("[Message] Send message failed", error);
+          console.log("[MessageStore] Send message failed", error);
           this.updateMessageStatus(msg.id, "failed");
         }
       }
@@ -324,13 +338,13 @@ class MessageStore {
         to: ChatUIKIT.convStore.getCvsIdFromMessage(msg),
         chatType: msg.chatType
       });
-      console.log("[Message] Recall message success", res);
+      console.log("[MessageStore] Recall message success", res);
       runInAction(() => {
         this.onRecallMessage(msg.id, ChatUIKIT.getChatConn().user);
       });
       return res;
     } catch (error) {
-      console.error("[Message] Recall message failed", error);
+      console.error("[MessageStore] Recall message failed", error);
       throw error;
     }
   }
@@ -414,7 +428,7 @@ class MessageStore {
         messageIds: [messageId]
       })
       .then(() => {
-        console.log("[Message] Delete message success", messageId);
+        console.log("[MessageStore] Delete message success", messageId);
         runInAction(() => {
           this.removeMessageFromMap(msg.id);
           if (msg.serverMsgId) {
@@ -446,7 +460,7 @@ class MessageStore {
         });
       })
       .catch((error) => {
-        console.error("[Message] Delete message failed", error);
+        console.error("[MessageStore] Delete message failed", error);
       });
   }
 
@@ -483,11 +497,11 @@ class MessageStore {
         modifiedMessage: msg
       })
       .then((res) => {
-        console.log("[Message] Modify message success", res);
+        console.log("[MessageStore] Modify message success", res);
         this.modifyLocalMessage(beforeMsg.id, res.message);
       })
       .catch((error) => {
-        console.error("[Message] Modify message failed", error);
+        console.error("[MessageStore] Modify message failed", error);
         throw error;
       });
   }

@@ -19,6 +19,9 @@ const chat = new (websdk as unknown as EasemobChatStatic).connection({
   delivery: true
 });
 
+websdk.logger.disableAll();
+
+
 ChatUIKIT.init({
   chat,
   themeConfig: {
@@ -26,7 +29,7 @@ ChatUIKIT.init({
   }
 });
 
-// ChatUIKIT.hideFeature(["pinConversation"]);
+// ChatUIKIT.hideFeature(["useUserInfo", "usePresence"]);
 
 // 手动设置用户属性
 // ChatUIKIT.appUserStore.setUserInfo("0c1bdd28c7", {
