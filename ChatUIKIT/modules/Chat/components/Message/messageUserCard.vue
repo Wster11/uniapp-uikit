@@ -2,11 +2,12 @@
   <view class="msg-user-card-wrap">
     <view :class="['msg-user-card', { isSelf: isSelfMessage }]">
       <Avatar
+        class="user-card-avatar"
         :size="44"
         :src="userInfo.avatar"
         :placeholder="USER_AVATAR_URL"
       />
-      <view class="user-name">{{ userInfo.nickname }}</view>
+      <view class="user-name ellipsis">{{ userInfo.nickname }}</view>
     </view>
     <view class="tag">{{ t("contact") }}</view>
   </view>
@@ -53,6 +54,10 @@ const userInfo = computed(() => {
 
 .isSelf {
   border-bottom: 0.5px solid #99d8ff;
+}
+
+.user-card-avatar {
+  flex-shrink: 0;
 }
 
 .user-name {

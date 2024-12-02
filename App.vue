@@ -22,7 +22,7 @@ const chat = new (websdk as unknown as EasemobChatStatic).connection({
 ChatUIKIT.init({
   chat,
   themeConfig: {
-    avatarShape: "circle"
+    avatarShape: "square"
   }
 });
 

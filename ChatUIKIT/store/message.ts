@@ -162,7 +162,7 @@ class MessageStore {
           } as MixedMessageBody;
           this.updateLocalMessage(msgCopy.id, {
             ...msgCopy,
-            ...res.message as any,
+            ...(res.message as any),
             status: "sent",
             serverMsgId: res.serverMsgId,
             id: msgCopy.id
@@ -199,6 +199,7 @@ class MessageStore {
             }
           }
         } catch (error) {
+          console.error("send message failed", error);
           this.updateMessageStatus(msg.id, "failed");
         }
       }

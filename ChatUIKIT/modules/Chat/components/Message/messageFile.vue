@@ -16,8 +16,9 @@ interface Props {
 }
 
 const props = defineProps<Props>();
+const fileLength = props.msg.file_length || props.msg.body.file_length;
 const isSelf = ChatUIKIT.messageStore.checkMessageFromIsSelf(props.msg);
-const fileSize = (props.msg.file_length / 1024).toFixed(2) + "kb";
+const fileSize = (fileLength / 1024).toFixed(2) + "kb";
 
 const previewFile = () => {
   /*  #ifndef WEB  */

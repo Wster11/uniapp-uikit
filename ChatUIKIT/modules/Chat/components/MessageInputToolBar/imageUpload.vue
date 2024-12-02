@@ -54,7 +54,6 @@ const sendImageMessage = (res: any) => {
       Authorization: "Bearer " + token
     },
     success: async (res: any) => {
-      console.log("图片上传成功", res);
       const data = JSON.parse(res.data);
       const imgMsg = chatSDK.message.create({
         type: "img",

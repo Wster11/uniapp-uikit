@@ -155,12 +155,14 @@ class ChatStore {
       onRecallMessage: (msg) =>
         ChatUIKIT.messageStore.onRecallMessage(msg.mid, msg.from),
       onDeliveredMessage: (msg) => {
-        ChatUIKIT.messageStore.updateMessageStatus(msg.mid, "received");
+        ChatUIKIT.messageStore.updateMessageStatus(msg.mid || "", "received");
       },
       onReadMessage: (msg) => {
-        ChatUIKIT.messageStore.updateMessageStatus(msg.mid, "read");
+        ChatUIKIT.messageStore.updateMessageStatus(msg.mid || "", "read");
       },
       onChannelMessage: (msg) => {
+        // 多端同步消息不需要处理
+        if (msg.from === ChatUIKIT.getChatConn().user) return;
         ChatUIKIT.messageStore.setAllMessageRead({
           conversationId: ChatUIKIT.convStore.getCvsIdFromMessage(msg),
           conversationType: msg.chatType
