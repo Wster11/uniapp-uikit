@@ -513,11 +513,30 @@ class MessageStore {
   modifyLocalMessage(messageId: string, msg: Chat.ModifiedMsg) {
     if (this.messageMap.has(messageId)) {
       const oldMsg = this.messageMap.get(messageId);
-      //@ts-ignore
-      this.messageMap.set(messageId, {
+      const convId = ChatUIKIT.convStore.getCvsIdFromMessage(msg);
+      this.updateLocalMessage(messageId, {
         ...oldMsg,
-        ...msg
+        ...msg,
+        id: oldMsg!.id
       });
+
+      const conv = ChatUIKIT.convStore.getConversationById(convId);
+      let lastMessage = conv?.lastMessage;
+
+      if (lastMessage?.id === oldMsg!.id) {
+        ChatUIKIT.convStore.updateConversationLastMessage(
+          {
+            conversationId: conv?.conversationId || "",
+            conversationType: conv?.conversationType as any
+          },
+          {
+            ...oldMsg,
+            ...msg,
+            id: oldMsg?.id
+          } as Chat.MessageBody,
+          conv?.unReadCount || 0
+        );
+      }
     }
   }
 
