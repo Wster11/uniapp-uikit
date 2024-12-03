@@ -385,6 +385,15 @@ class MessageStore {
               to: recalledMessage.to,
               chatType: recalledMessage.chatType
             });
+            //@ts-ignore
+            lastMessage.noticeInfo = {
+              type: "notice",
+              noticeType: "recall",
+              ext: {
+                isRecalled: true,
+                from: from
+              }
+            };
           }
           ChatUIKIT.convStore.updateConversationLastMessage(
             {

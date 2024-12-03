@@ -111,7 +111,7 @@ export default {
   pin: "置顶",
   unpin: "取消置顶",
   selfRecallTip: "你撤回了一条消息",
-  otherRecallTip: "对方撤回了一条消息",
+  otherRecallTip: "有人撤回了一条消息",
   you: "你",
   reply: "正在回复",
   messageNotFound: "消息未找到",

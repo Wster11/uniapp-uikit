@@ -41,7 +41,11 @@
               class="last-msg ellipsis"
               v-if="conversation.lastMessage?.type === 'txt'"
             >
-              <span v-if="conversation.conversationType === 'groupChat'"
+              <span
+                v-if="
+                  conversation.conversationType === 'groupChat' &&
+                  !conversation.lastMessage?.noticeInfo
+                "
                 >{{ getLastMsgFrom(conversation.lastMessage) }}:
               </span>
               <span

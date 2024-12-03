@@ -8,8 +8,8 @@
     >
       <view class="icon audio-icon"></view>
     </view>
-    <!-- #endif -->
     <AudioMessageSender v-if="featureConfig.inputAudio" ref="audioPopupRef" />
+    <!-- #endif -->
     <view class="send-input" @tap="onInputTap">
       <input
         :class="[{ 'prevent-event': props.preventEvent }]"
