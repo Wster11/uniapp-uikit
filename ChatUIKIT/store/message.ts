@@ -246,7 +246,6 @@ class MessageStore {
             });
 
           if (msg.chatType !== "chatRoom") {
-            msg.id = res.serverMsgId;
             if (conv) {
               ChatUIKIT.convStore.updateConversationLastMessage(
                 {
