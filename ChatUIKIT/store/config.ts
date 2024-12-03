@@ -36,7 +36,7 @@ class ConfigStore {
         inputVideo: true, // 是否允许发送视频
         inputFile: true, // 是否允许发送文件
         inputMention: true, // 是否允许@功能
-        userCard: true, // 是否支持用户名片
+        userCard: false, // 是否支持用户名片
         usePresence: true // 是否使用在线状态功能
       },
       theme: {

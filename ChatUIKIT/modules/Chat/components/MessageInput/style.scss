@@ -32,6 +32,26 @@
   height: 25px;
 }
 
+.audio-icon {
+  background: url("../../../../assets/icon/audioButton.png") no-repeat center;
+  background-size: 100% 100%;
+}
+
+.emoji-icon {
+  background: url("../../../../assets/icon/emoji.png") no-repeat center;
+  background-size: 100% 100%;
+}
+
+.plus-icon {
+  background: url("../../../../assets/icon/plus.png") no-repeat center;
+  background-size: 100% 100%;
+}
+
+.send-icon {
+  background: url("../../../../assets/icon/send.png") no-repeat center;
+  background-size: 100% 100%;
+}
+
 .prevent-event {
   pointer-events: none;
 }

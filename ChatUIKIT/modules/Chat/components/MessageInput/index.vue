@@ -6,11 +6,10 @@
       @tap="showAudioPopup"
       class="icon-wrap"
     >
-      <image class="icon" :src="AudioIcon"></image>
+      <view class="icon audio-icon"></view>
     </view>
-
-    <AudioMessageSender v-if="featureConfig.inputAudio" ref="audioPopupRef" />
     <!-- #endif -->
+    <AudioMessageSender v-if="featureConfig.inputAudio" ref="audioPopupRef" />
     <view class="send-input" @tap="onInputTap">
       <input
         :class="[{ 'prevent-event': props.preventEvent }]"
@@ -30,13 +29,13 @@
       />
     </view>
     <view v-if="featureConfig.inputEmoji" class="icon-wrap">
-      <image class="icon" @tap.stop="showEmojiPicker" :src="EmojiIcon"></image>
+      <view class="icon emoji-icon" @tap.stop="showEmojiPicker"></view>
     </view>
     <view class="icon-wrap" v-if="isShowToolbar && text.length === 0">
-      <image class="icon" @tap.stop="showToolbar" :src="PlusIcon"></image>
+      <view class="icon plus-icon" @tap.stop="showToolbar"></view>
     </view>
     <view class="icon-wrap" v-else>
-      <image class="icon" @tap.stop="handleSendMessage" :src="SendIcon"></image>
+      <view class="icon send-icon" @tap.stop="handleSendMessage"></view>
     </view>
   </view>
 </template>
@@ -47,14 +46,9 @@ import AudioMessageSender from "../MessageInputToolBar/audioSender.vue";
 import { formatTextMessage, formatMessage } from "../../../../utils/index";
 import { ChatUIKIT } from "../../../../index";
 import { t } from "../../../../locales/index";
-import { AT_ALL, ASSETS_URL } from "../../../../const/index";
+import { AT_ALL } from "../../../../const/index";
 import { MessageQuoteExt } from "../../../../types/index";
 import { chatSDK } from "../../../../sdk";
-
-const PlusIcon = ASSETS_URL + "icon/plus.png";
-const AudioIcon = ASSETS_URL + "icon/audioButton.png";
-const EmojiIcon = ASSETS_URL + "icon/emoji.png";
-const SendIcon = ASSETS_URL + "icon/send.png";
 
 interface Props {
   preventEvent: boolean; // 输入框是否禁止事件
