@@ -23,9 +23,11 @@
 
 <script lang="ts" setup>
 import type { Chat } from "../../../../types/index";
-import VideoNotFound from "../../../../assets/video404.png";
-import VideoPlayBtn from "../../../../assets/videoplay.png";
+import { ASSETS_URL } from "../../../../const/index";
 import { ref } from "vue";
+
+const VideoNotFound = ASSETS_URL + "video404.png";
+const VideoPlayBtn = ASSETS_URL + "videoplay.png";
 
 interface Props {
   msg: Chat.VideoMsgBody;

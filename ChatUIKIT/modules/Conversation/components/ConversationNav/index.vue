@@ -42,16 +42,17 @@
 import Avatar from "../../../../components/Avatar/index.vue";
 import NavBar from "../../../../components/NavBar/index.vue";
 import PopMenu from "../../../../components/PopMenu/index.vue";
-import ChatMenuIcon from "../../../../assets/icon/chat.png";
-import AddContactMenuIcon from "../../../../assets/icon/addContact.png";
-import CreateGroupIcon from "../../../../assets/icon/createGroup.png";
 import { ref, onUnmounted } from "vue";
 import { ChatUIKIT } from "../../../../index";
 import { t } from "../../../../locales/index";
-import { USER_AVATAR_URL } from "../../../../const";
+import { USER_AVATAR_URL, ASSETS_URL } from "../../../../const/index";
 import { isWXProgram } from "../../../../utils/index";
 import { UserInfoWithPresence } from "../../../../types/index";
 import { autorun } from "mobx";
+
+const ChatMenuIcon = ASSETS_URL + "icon/chat.png";
+const AddContactMenuIcon = ASSETS_URL + "icon/addContact.png";
+const CreateGroupIcon = ASSETS_URL + "icon/createGroup.png";  
 
 const isShowPopMenu = ref(false);
 

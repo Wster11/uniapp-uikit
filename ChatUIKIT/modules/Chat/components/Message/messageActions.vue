@@ -31,13 +31,15 @@
 import { ref, computed, onMounted } from "vue";
 import type { MixedMessageBody } from "../../../../types/index";
 import { ChatUIKIT } from "../../../../index";
-import CopyIcon from "../../../../assets/icon/copy.png";
-import RecallIcon from "../../../../assets/icon/recall.png";
-import ReplyIcon from "../../../../assets/icon/reply.png";
-import EditIcon from "../../../../assets/icon/edit.png";
-import DeleteIcon from "../../../../assets/icon/delete.png";
+import { ASSETS_URL } from "../../../../const/index";
 import { renderTxt } from "../../../../utils/index";
 import { t } from "../../../../locales";
+
+const CopyIcon = ASSETS_URL + "icon/copy.png";
+const RecallIcon = ASSETS_URL + "icon/recall.png";
+const ReplyIcon = ASSETS_URL + "icon/reply.png";
+const EditIcon = ASSETS_URL + "icon/edit.png";
+const DeleteIcon = ASSETS_URL + "icon/delete.png";
 
 interface Props {
   msg: MixedMessageBody;

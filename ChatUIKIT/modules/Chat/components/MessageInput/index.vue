@@ -45,15 +45,16 @@
 import { ref, nextTick } from "vue";
 import AudioMessageSender from "../MessageInputToolBar/audioSender.vue";
 import { formatTextMessage, formatMessage } from "../../../../utils/index";
-import PlusIcon from "../../../../assets/icon/plus.png";
-import AudioIcon from "../../../../assets/icon/audioButton.png";
-import EmojiIcon from "../../../../assets/icon/emoji.png";
-import SendIcon from "../../../../assets/icon/send.png";
 import { ChatUIKIT } from "../../../../index";
 import { t } from "../../../../locales/index";
-import { AT_ALL } from "../../../../const/index";
+import { AT_ALL, ASSETS_URL } from "../../../../const/index";
 import { MessageQuoteExt } from "../../../../types/index";
 import { chatSDK } from "../../../../sdk";
+
+const PlusIcon = ASSETS_URL + "icon/plus.png";
+const AudioIcon = ASSETS_URL + "icon/audioButton.png";
+const EmojiIcon = ASSETS_URL + "icon/emoji.png";
+const SendIcon = ASSETS_URL + "icon/send.png";
 
 interface Props {
   preventEvent: boolean; // 输入框是否禁止事件

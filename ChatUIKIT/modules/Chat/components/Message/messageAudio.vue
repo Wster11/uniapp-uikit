@@ -32,11 +32,13 @@
 <script lang="ts" setup>
 import type { Chat } from "../../../../types/index";
 import { ChatUIKIT } from "../../../../index";
-import ReceiveAudioIcon from "../../../../assets/icon/receiveAudio.png";
-import SendAudioIcon from "../../../../assets/icon/sendAudio.png";
-import SendAudioPlayingIcon from "../../../../assets/icon/sendAudioPlaying.gif";
-import ReceiveAudioPlayingIcon from "../../../../assets/icon/receiveAudioPlaying.gif";
+import { ASSETS_URL } from "../../../../const/index";
 import { ref, onUnmounted, watch } from "vue";
+
+const ReceiveAudioIcon = ASSETS_URL + "icon/receiveAudio.png";
+const SendAudioIcon = ASSETS_URL + "icon/sendAudio.png";
+const SendAudioPlayingIcon = ASSETS_URL + "icon/sendAudioPlaying.gif";
+const ReceiveAudioPlayingIcon = ASSETS_URL + "icon/receiveAudioPlaying.gif";  
 
 interface Props {
   msg: Chat.AudioMsgBody;

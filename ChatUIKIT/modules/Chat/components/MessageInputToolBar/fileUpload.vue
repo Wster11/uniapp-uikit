@@ -6,16 +6,14 @@
 
 <script lang="ts" setup>
 import ItemContainer from "./itemContainer.vue";
-import fileButton from "../../../../assets/icon/folder.png";
+import { ASSETS_URL } from "../../../../const/index";
 import type { InputToolbarEvent } from "../../../../types/index";
 import { inject } from "vue";
 import { t } from "../../../../locales/index";
 import { ChatUIKIT } from "../../../../index";
 import { chatSDK } from "../../../../sdk";
-interface Props {
-  title?: string;
-}
-defineProps<Props>();
+
+const fileButton = ASSETS_URL + "icon/folder.png";
 
 const title = t("file");
 

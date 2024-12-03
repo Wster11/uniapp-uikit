@@ -46,8 +46,10 @@ import UserItem from "../../../ContactList/components/UserItem/index.vue";
 import { t } from "../../../../locales/index";
 import { ChatUIKIT } from "../../../../index";
 import { Chat } from "../../../../sdk";
-import { GET_GROUP_MEMBERS_PAGESIZE, AT_ALL } from "../../../../const/index";
-import MentionAll from "../../../../assets/icon/alAll.png";
+import { GET_GROUP_MEMBERS_PAGESIZE, AT_ALL, ASSETS_URL } from "../../../../const/index";
+
+
+const MentionAll = ASSETS_URL + "icon/alAll.png";
 
 const emits = defineEmits(["onSelect"]);
 const memberList = ref<Chat.GroupMember[]>([]);

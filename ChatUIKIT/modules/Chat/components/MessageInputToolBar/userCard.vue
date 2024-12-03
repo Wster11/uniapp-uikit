@@ -8,8 +8,10 @@
 import type { InputToolbarEvent } from "../../../../types/index";
 import { inject } from "vue";
 import ItemContainer from "./itemContainer.vue";
-import UserCard from "../../../../assets/icon/usercard.png";
+import { ASSETS_URL } from "../../../../const/index";
 import { t } from "../../../../locales";
+
+const UserCard = ASSETS_URL + "icon/usercard.png";
 
 const toolbarInject = inject<InputToolbarEvent>("InputToolbarEvent");
 
