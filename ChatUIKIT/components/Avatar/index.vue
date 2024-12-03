@@ -3,7 +3,19 @@
     :class="['avatar', shape]"
     :style="{ width: size + 'px', height: size + 'px' }"
   >
-    <image class="image" :src="imageSrc" :alt="alt" @error="onError"> </image>
+    <image
+      class="image"
+      :src="imageSrc"
+      :alt="alt"
+      @error="onError"
+      @load="onLoad"
+    >
+    </image>
+    <image
+      v-if="isLoading"
+      class="image loading-avatar"
+      :src="placeholder"
+    ></image>
     <view v-if="showPresence" class="presence-wrap">
       <view :class="['status', presenceClass]"></view>
     </view>
@@ -33,6 +45,7 @@ interface Props {
 const props = defineProps<Props>();
 
 const isError = ref(false);
+const isLoading = ref(true);
 
 const featureConfig = ChatUIKIT.getFeatureConfig();
 
@@ -71,6 +84,10 @@ const shape = props.shape || ChatUIKIT.getThemeConfig().avatarShape;
 
 const onError = () => {
   isError.value = true;
+};
+
+const onLoad = () => {
+  isLoading.value = false;
 };
 </script>
 
@@ -155,5 +172,12 @@ const onError = () => {
 .custom {
   background-image: url("../../assets/presence/custom.png");
   background-size: 100% 100%;
+}
+
+.loading-avatar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
 }
 </style>
