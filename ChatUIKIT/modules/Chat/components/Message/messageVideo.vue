@@ -7,7 +7,7 @@
         @error="onError"
         @load="onImgLoad"
         class="image"
-        :src="isError ? ImageNotFound : msg.thumb"
+        :src="isError ? VideoNotFound : msg.thumb"
       />
       <view
         v-if="!isError && isLoaded"
@@ -23,7 +23,7 @@
 
 <script lang="ts" setup>
 import type { Chat } from "../../../../types/index";
-import ImageNotFound from "../../../../assets/img404.jpg";
+import VideoNotFound from "../../../../assets/video404.png";
 import VideoPlayBtn from "../../../../assets/videoplay.png";
 import { ref } from "vue";
 

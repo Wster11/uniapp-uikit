@@ -8,7 +8,7 @@
     <view class="about-info-wrap">
       <Avatar
         class="about-avatar"
-        :src="'https://www.easemob.com/statics/common/images/logo.png?20211109'"
+        src="https://uikit-demo.oss-cn-beijing.aliyuncs.com/demo-assets/app.png"
         :size="72"
       />
       <view class="name">{{ t("chatIM") }}</view>

@@ -4,9 +4,12 @@ const GroupEventFromIds: Array<string> = [];
 
 const AT_ALL = "ALL";
 
-const USER_AVATAR_URL = "https://img.yzcdn.cn/vant/cat.jpeg";
+const ASSETS_URL =
+  "https://uikit-demo.oss-cn-beijing.aliyuncs.com/demo-assets/";
 
-const GROUP_AVATAR_URL = "https://img.yzcdn.cn/2.jpg";
+const USER_AVATAR_URL = ASSETS_URL + "user.png";
+
+const GROUP_AVATAR_URL = ASSETS_URL + "group.png";
 
 /** UIKIT 中支持的用户状态 */
 const PRESENCE_STATUS_LIST = [

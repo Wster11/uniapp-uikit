@@ -14,7 +14,7 @@
 
 <script lang="ts" setup>
 import type { Chat } from "../../../../types/index";
-import ImageNotFound from "../../../../assets/img404.jpg";
+import ImageNotFound from "../../../../assets/img404.png";
 import { ref } from "vue";
 interface Props {
   msg: Chat.ImgMsgBody;
