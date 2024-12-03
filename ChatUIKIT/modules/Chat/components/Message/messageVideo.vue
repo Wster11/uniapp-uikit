@@ -7,7 +7,7 @@
         @error="onError"
         @load="onImgLoad"
         class="image"
-        :src="msg.thumb"
+        :src="isError ? ImageNotFound : msg.thumb"
       />
       <view
         v-if="!isError && isLoaded"
@@ -26,6 +26,7 @@ import type { Chat } from "../../../../types/index";
 import ImageNotFound from "../../../../assets/img404.jpg";
 import VideoPlayBtn from "../../../../assets/videoplay.png";
 import { ref } from "vue";
+
 interface Props {
   msg: Chat.VideoMsgBody;
   mode?: string; // uni image mode
@@ -54,7 +55,6 @@ const isError = ref(false);
 const isLoaded = ref(false);
 
 const onError = () => {
-  props.msg.thumb = ImageNotFound;
   isError.value = true;
 };
 

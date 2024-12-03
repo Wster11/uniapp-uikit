@@ -7,7 +7,7 @@
       @tap="previewImage"
       @load="onImgLoad"
       class="image"
-      :src="msg.thumb"
+      :src="isError ? ImageNotFound : msg.thumb"
     />
   </view>
 </template>
@@ -36,7 +36,6 @@ const mode = props.mode || "aspectFit";
 
 const onError = () => {
   isError.value = true;
-  props.msg.thumb = ImageNotFound;
 };
 
 const previewImage = () => {
