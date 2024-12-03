@@ -94,7 +94,11 @@ const isPasswordLogin = ref(!!IS_USE_CUSTOM_SERVER);
 
 // 启动倒计时
 const startCount = () => {
+  if (timer.value) {
+    clearInterval(timer.value);
+  }
   disabled = true;
+  counter.value = 60;
   timer.value = setInterval(() => {
     counter.value--;
     if (counter.value <= 0) {
