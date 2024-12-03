@@ -11,6 +11,7 @@
           :auto-height="true"
           :focus="isFocus"
           :confirm-type="'send'"
+          :adjust-position="false"
           :show-confirm-bar="false"
         />
         <view
@@ -28,6 +29,7 @@ import { ChatUIKIT } from "../../../../index";
 import { autorun } from "mobx";
 import { t } from "../../../../locales/index";
 import { Chat } from "../../../../types/index";
+import { formatTextMessage } from "../../../../utils/index";
 import { chatSDK } from "../../../../sdk";
 
 const editingMsg = ref(null);
@@ -40,7 +42,9 @@ const unwatchEditingMsg = autorun(() => {
 });
 
 const editAble = computed(() => {
-  return txt.value !== editingMsg.value?.msg;
+  return (
+    txt.value !== editingMsg.value?.msg && formatTextMessage(txt.value).trim()
+  );
 });
 
 const cancelEdit = () => {
@@ -69,7 +73,7 @@ onUnmounted(() => {
 @import url("../../../../styles/common.scss");
 
 .mask {
-  position: fixed;
+  position: absolute;
   left: 0;
   right: 0;
   top: 0;

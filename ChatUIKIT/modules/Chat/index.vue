@@ -13,7 +13,16 @@
     </view>
     <MessageQuotePanel />
     <!-- 消息编辑 -->
-    <MessageEdit />
+    <MessageEdit
+      v-if="isEditingMessage"
+      :style="{
+        position: 'fixed',
+        width: '100%',
+        height: `calc(100% - ${keyboardHeight})`,
+        overflow: 'hidden',
+        'z-index': 9
+      }"
+    />
     <!-- 输入框 -->
     <view class="chat-input-wrap">
       <MessageInput
@@ -78,6 +87,7 @@ const contactListRef = ref(null);
 const conversationId = ref("");
 const isShowToolbar = ref(false);
 const isShowEmojiPicker = ref(false);
+const isEditingMessage = ref(false);
 const keyboardHeight = ref("0px");
 const conversationType = ref<Chat.ConversationItem["conversationType"]>(
   "" as Chat.ConversationItem["conversationType"]
@@ -85,6 +95,10 @@ const conversationType = ref<Chat.ConversationItem["conversationType"]>(
 const featureConfig = ChatUIKIT.getFeatureConfig();
 const isShowMask = computed(() => {
   return isShowToolbar.value || isShowEmojiPicker.value;
+});
+
+const unwatchEditingMsg = autorun(() => {
+  isEditingMessage.value = !!ChatUIKIT.messageStore.editingMessage;
 });
 
 const unwatchQuoteMsg = autorun(() => {
@@ -96,9 +110,6 @@ const unwatchQuoteMsg = autorun(() => {
 });
 
 const onKeyboardHeightChange = ({ height }) => {
-  if (ChatUIKIT.messageStore.editingMessage) {
-    return;
-  }
   keyboardHeight.value = height + "px";
 };
 
@@ -185,6 +196,7 @@ onUnmounted(() => {
   ChatUIKIT.messageStore.setQuoteMessage(null);
   ChatUIKIT.messageStore.setEditingMessage(null);
   unwatchQuoteMsg();
+  unwatchEditingMsg();
 });
 
 onLoad((option) => {

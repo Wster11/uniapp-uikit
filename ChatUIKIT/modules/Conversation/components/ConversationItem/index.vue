@@ -34,14 +34,16 @@
             <view
               v-if="conversation.atType && conversation.atType !== 'NONE'"
               class="mention-tag"
-              >{{
-                conversation.atType === "ALL" ? t("atAllTag") : t("atTag")
-              }}</view
             >
+              {{ conversation.atType === "ALL" ? t("atAllTag") : t("atTag") }}
+            </view>
             <view
               class="last-msg ellipsis"
               v-if="conversation.lastMessage?.type === 'txt'"
             >
+              <span v-if="conversation.conversationType === 'groupChat'"
+                >{{ getLastMsgFrom(conversation.lastMessage) }}:
+              </span>
               <span
                 :class="[{ 'emoji-wrap': item.type !== 'text' }]"
                 v-for="(item, idx) in renderTxt(conversation.lastMessage.msg)"
@@ -112,10 +114,6 @@ const emits = defineEmits(["mute", "pin", "delete", "leftSwipe"]);
 
 let startX = 0;
 
-const appUserStore = ChatUIKIT.appUserStore;
-
-const groupStore = ChatUIKIT.groupStore;
-
 const conversationInfo = ref<any>({});
 
 const isMute = ref<Boolean>(false);
@@ -123,6 +121,22 @@ const isMute = ref<Boolean>(false);
 const isTapDelete = ref<Boolean>(false);
 
 const featureConfig = ChatUIKIT.getFeatureConfig();
+
+const getLastMsgFrom = (msg: MixedMessageBody) => {
+  if (props.conversation.conversationType === "groupChat") {
+    const from = msg.from || ChatUIKIT.getChatConn().user;
+    const nickname = ChatUIKIT.appUserStore.getUserInfoFromStore(from).nickname;
+    if (nickname) {
+      return nickname;
+    }
+    if (msg.ext?.ease_chat_uikit_user_info.nickname) {
+      return msg.ext.ease_chat_uikit_user_info.nickname;
+    }
+    return from;
+  } else {
+    return "";
+  }
+};
 
 const menuList = computed(() => {
   let list: any[] = [];
@@ -173,13 +187,14 @@ const uninstallIsMuteWatch = autorun(() => {
 const uninstallConvInfoWatch = autorun(() => {
   const convId = props.conversation.conversationId;
   if (props.conversation.conversationType === "groupChat") {
-    const groupInfo = groupStore.getGroupInfoFromStore(convId);
+    const groupInfo = ChatUIKIT.groupStore.getGroupInfoFromStore(convId);
     conversationInfo.value = {
       name: groupInfo?.groupName || convId,
       avatar: ChatUIKIT.groupStore.getGroupAvatar(convId)
     };
   } else {
-    return (conversationInfo.value = appUserStore.getUserInfoFromStore(convId));
+    return (conversationInfo.value =
+      ChatUIKIT.appUserStore.getUserInfoFromStore(convId));
   }
 });
 
