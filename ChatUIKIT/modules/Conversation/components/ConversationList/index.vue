@@ -25,8 +25,8 @@
           />
         </view>
       </view>
+      <Empty v-if="!conversationList.length" />
     </view>
-    <Empty v-if="!conversationList.length" />
   </view>
 </template>
 
