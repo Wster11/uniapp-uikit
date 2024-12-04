@@ -21,7 +21,9 @@
           <UserItem class="contact-item" :user="slotProps.item" />
         </template>
       </IndexedList>
-      <Empty v-else />
+      <view class="empty-wrap" v-else>
+        <Empty />
+      </view>
       <view class="create-btn-wrap">
         <UIKITButton
           class="crate-btn"
@@ -181,6 +183,10 @@ onUnmounted(() => {
 .contact-indexed-list {
   flex: 1;
   overflow-y: scroll;
+}
+
+.empty-wrap {
+  flex: 1;
 }
 
 .create-btn-wrap {

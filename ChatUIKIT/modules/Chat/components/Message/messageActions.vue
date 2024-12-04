@@ -71,7 +71,8 @@ const setMenuItems = () => {
   const msgTime = props.msg.time;
   const recallLimit = 1000 * 60 * 2; // 撤回时间限制
   const isRecallAllowed =
-    props.msg.status === "sent" && currentTime - msgTime < recallLimit;
+    (props.msg.status === "sent" || props.msg.status === "read") &&
+    currentTime - msgTime < recallLimit;
   const isMsgEditable =
     isSelf &&
     props.msg.type === "txt" &&
