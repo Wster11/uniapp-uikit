@@ -1,7 +1,26 @@
 .conversation-list-wrap {
+  height: 100%;
   position: relative;
-  padding-bottom: var(--window-bottom);
   overflow: hidden;
+}
+
+.conversation-list-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.wx-block,
+.block {
+  flex-shrink: 0;
+}
+
+.convs-wrap {
+  box-sizing: border-box;
+  flex: 1;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 .input-wrap input {

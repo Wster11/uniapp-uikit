@@ -106,7 +106,7 @@ onLoad((option) => {
 }
 
 .search-list-wrap {
-  height: calc(100vh - var(--status-bar-height));
+  height: calc(100% - var(--status-bar-height));
   display: flex;
   flex-direction: column;
   overflow: hidden;

@@ -1,7 +1,7 @@
 <template>
   <view class="group-create-wrap">
-    <view v-if="!isSearch">
-      <NavBar @onLeftTap="onBack">
+    <view class="group-create-content" v-if="!isSearch">
+      <NavBar class="nav-bar" @onLeftTap="onBack">
         <template v-slot:left>
           <view class="title" v-text="t('createGroup')"></view>
         </template>
@@ -149,6 +149,17 @@ onUnmounted(() => {
   padding: 7px 8px;
 }
 
+.nav-bar {
+  flex-shrink: 0;
+}
+
+.group-create-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
 .search-content {
   display: flex;
   flex-direction: column;
@@ -161,18 +172,19 @@ onUnmounted(() => {
 }
 
 .group-create-wrap {
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   overflow: hidden;
 }
 
 .contact-indexed-list {
-  display: flex;
-  height: calc(100vh - 200px);
+  flex: 1;
+  overflow-y: scroll;
 }
 
 .create-btn-wrap {
+  flex-shrink: 0;
   display: flex;
   padding: 14px;
   align-items: center;

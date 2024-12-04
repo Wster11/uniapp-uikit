@@ -21,6 +21,10 @@ const isSelf = ChatUIKIT.messageStore.checkMessageFromIsSelf(props.msg);
 const fileSize = (fileLength / 1024).toFixed(2) + "kb";
 
 const previewFile = () => {
+  /*  #ifdef WEB  */
+  window.open(props.msg.url, "_blank");
+  /*  #endif  */
+
   /*  #ifndef WEB  */
   uni.showLoading({
     title: "loading",

@@ -1,7 +1,7 @@
 .contact-list-wrap {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100%;
   overflow: hidden;
 }
 
@@ -49,6 +49,5 @@ uni-page-body {
 .contact-index-list {
   box-sizing: border-box;
   flex: 1;
-  padding-bottom: calc(var(--tab-bar-height) + env(safe-area-inset-bottom) + var(--window-bottom));
   overflow-y: scroll;
 }

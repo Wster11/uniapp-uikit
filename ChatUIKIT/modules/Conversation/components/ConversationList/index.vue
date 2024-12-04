@@ -1,6 +1,6 @@
 <template>
   <view class="conversation-list-wrap">
-    <view>
+    <view class="conversation-list-content">
       <view class="header-wrap">
         <ConversationNav />
         <SearchButton class="convs-search-btn" @tap="onSearch" />
