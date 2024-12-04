@@ -272,7 +272,8 @@ class ChatStore {
     ChatUIKIT.getChatConn().addEventHandler("STORE_GROUP", {
       onGroupEvent: async (event) => {
         console.log("[ChatStore] Group event:", event.operation, "for group:", event.id);
-        this.handleGroupEvent(event);
+        // 群组事件暂时不处理
+        // this.handleGroupEvent(event);
       }
     });
 
