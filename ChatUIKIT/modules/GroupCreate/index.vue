@@ -191,6 +191,7 @@ onUnmounted(() => {
   border-top: 0.5px solid #e3e6e8;
   background: #f9fafa;
   backdrop-filter: blur(10px);
+  margin-bottom: 45px;
 }
 
 .crate-btn {
