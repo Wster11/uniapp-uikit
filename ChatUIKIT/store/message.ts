@@ -9,6 +9,7 @@ import { t } from "../locales/index";
 import { MessageStatus, ConversationBaseInfo } from "../types/index";
 import { MAX_MESSAGES_PER_CONVERSATION } from "../const";
 import { chatSDK } from "../sdk";
+import { logger } from "../log";
 
 /**
  * 会话消息信息接口
@@ -93,7 +94,7 @@ class MessageStore {
         cursor: cursor || ""
       });
 
-      console.log("[MessageStore] Get history messages success", dt);
+      logger.info("[MessageStore] Get history messages success", dt);
 
       runInAction(() => {
         dt.messages.forEach((msg: any) => {
@@ -123,7 +124,7 @@ class MessageStore {
         }
       });
     } catch (error) {
-      console.error("[MessageStore] Get history messages failed", error);
+      logger.error("[MessageStore] Get history messages failed", error);
       const info = this.conversationMessagesMap.get(
         conversation.conversationId
       );
@@ -224,7 +225,7 @@ class MessageStore {
           this.addMessageToMap(msgCopy);
           this.insertMessage(msgCopy);
           const res = await ChatUIKIT.getChatConn().send(msg);
-          console.log("[MessageStore] Send message success", res);
+          logger.info("[MessageStore] Send message success", res);
 
           const convId = ChatUIKIT.convStore.getCvsIdFromMessage(msgCopy);
           const conv = ChatUIKIT.convStore.getConversationById(convId);
@@ -270,7 +271,7 @@ class MessageStore {
             }
           }
         } catch (error) {
-          console.log("[MessageStore] Send message failed", error);
+          logger.error("[MessageStore] Send message failed", error);
           this.updateMessageStatus(msg.id, "failed");
         }
       }
@@ -342,13 +343,13 @@ class MessageStore {
         to: ChatUIKIT.convStore.getCvsIdFromMessage(msg),
         chatType: msg.chatType
       });
-      console.log("[MessageStore] Recall message success", res);
+      logger.info("[MessageStore] Recall message success", res);
       runInAction(() => {
         this.onRecallMessage(msg.id, ChatUIKIT.getChatConn().user);
       });
       return res;
     } catch (error) {
-      console.error("[MessageStore] Recall message failed", error);
+      logger.error("[MessageStore] Recall message failed", error);
       throw error;
     }
   }
@@ -441,7 +442,7 @@ class MessageStore {
         messageIds: [messageId]
       })
       .then(() => {
-        console.log("[MessageStore] Delete message success", messageId);
+        logger.info("[MessageStore] Delete message success", messageId);
         runInAction(() => {
           this.removeMessageFromMap(msg.id);
           if (msg.serverMsgId) {
@@ -473,7 +474,7 @@ class MessageStore {
         });
       })
       .catch((error) => {
-        console.error("[MessageStore] Delete message failed", error);
+        logger.error("[MessageStore] Delete message failed", error);
       });
   }
 
@@ -510,11 +511,11 @@ class MessageStore {
         modifiedMessage: msg
       })
       .then((res) => {
-        console.log("[MessageStore] Modify message success", res);
+        logger.info("[MessageStore] Modify message success", res);
         this.modifyLocalMessage(beforeMsg.id, res.message);
       })
       .catch((error) => {
-        console.error("[MessageStore] Modify message failed", error);
+        logger.error("[MessageStore] Modify message failed", error);
         throw error;
       });
   }
@@ -601,7 +602,7 @@ class MessageStore {
         }
       });
 
-      console.log(
+      logger.info(
         `[MessageStore] Cleaned up ${messageIdsToRemove.length} messages from conversation ${conversationId}`
       );
     });

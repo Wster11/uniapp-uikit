@@ -1,4 +1,5 @@
 import type { Chat } from "../types/index";
+import { logger } from "../log";
 
 /**
  * IM连接管理类
@@ -16,7 +17,7 @@ class ConnStore {
    * 初始化连接存储
    */
   constructor() {
-    console.log("[ConnStore] Initializing...");
+    logger.info("[ConnStore] Initializing...");
   }
 
   /**
@@ -24,7 +25,7 @@ class ConnStore {
    * @param connection Chat SDK的连接实例
    */
   setChatConn(connection: Chat.Connection) {
-    console.log("[ConnStore] Setting chat connection");
+    logger.info("[ConnStore] Setting chat connection");
     this.conn = connection;
   }
 
@@ -37,7 +38,7 @@ class ConnStore {
     if (this.conn) {
       return this.conn;
     }
-    console.error("[ConnStore] Connection not initialized");
+    logger.error("[ConnStore] Connection not initialized");
     throw new Error("conn is not initialized");
   }
 }

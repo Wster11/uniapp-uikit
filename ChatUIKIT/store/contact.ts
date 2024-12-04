@@ -1,6 +1,7 @@
 import { makeAutoObservable } from "mobx";
 import type { ContactNotice, ContactNoticeInfo, Chat } from "../types/index";
 import { ChatUIKIT } from "../index";
+import { logger } from "../log";
 
 /**
  * 联系人管理类
@@ -22,7 +23,7 @@ class ContactStore {
    * 初始化并使对象可观察
    */
   constructor() {
-    console.log("[ContactStore] Initializing...");
+    logger.info("[ContactStore] Initializing...");
     makeAutoObservable(this);
   }
 
@@ -32,7 +33,7 @@ class ContactStore {
    * @param pageNum 页码,默认为1
    */
   deepGetUserInfo(userIdList: string[], pageNum: number = 1) {
-    console.log("[ContactStore] Getting user info recursively for page:", pageNum);
+    logger.info("[ContactStore] Getting user info recursively for page:", pageNum);
     const pageSize = 100;
     const userIds = userIdList;
     const start = (pageNum - 1) * pageSize;
@@ -52,14 +53,14 @@ class ContactStore {
    * 获取全部联系人
    */
   getContacts() {
-    console.log("[ContactStore] Getting all contacts");
+    logger.info("[ContactStore] Getting all contacts");
     ChatUIKIT.getChatConn()
       .getAllContacts()
       .then((res) => {
         if (res.data) {
           this.deepGetUserInfo(res.data.map((item) => item.userId) || []);
           this.contacts = res.data;
-          console.log("[ContactStore] Successfully got contacts:", res.data.length);
+          logger.info("[ContactStore] Successfully got contacts:", res.data.length);
         }
       });
   }
@@ -70,11 +71,11 @@ class ContactStore {
    * @returns Promise 添加结果
    */
   addContact(userId: string) {
-    console.log("[ContactStore] Adding contact:", userId);
+    logger.info("[ContactStore] Adding contact:", userId);
     return ChatUIKIT.getChatConn()
       .addContact(userId, "apply join contact")
       .then((res) => {
-        console.log("[ContactStore] Successfully added contact:", userId);
+        logger.info("[ContactStore] Successfully added contact:", userId);
         return res;
       });
   }
@@ -85,12 +86,12 @@ class ContactStore {
    * @returns Promise 删除结果
    */
   deleteContact(userId: string) {
-    console.log("[ContactStore] Deleting contact:", userId);
+    logger.info("[ContactStore] Deleting contact:", userId);
     return ChatUIKIT.getChatConn()
       .deleteContact(userId)
       .then((res) => {
         this.deleteStoreContact(userId);
-        console.log("[ContactStore] Successfully deleted contact:", userId);
+        logger.info("[ContactStore] Successfully deleted contact:", userId);
         return res;
       });
   }
@@ -101,11 +102,11 @@ class ContactStore {
    * @returns Promise 拒绝结果
    */
   declineContactInvite(userId: string) {
-    console.log("[ContactStore] Declining contact invite from:", userId);
+    logger.info("[ContactStore] Declining contact invite from:", userId);
     return ChatUIKIT.getChatConn()
       .declineContactInvite(userId)
       .then((res) => {
-        console.log("[ContactStore] Successfully declined contact invite from:", userId);
+        logger.info("[ContactStore] Successfully declined contact invite from:", userId);
         return res;
       });
   }
@@ -116,12 +117,12 @@ class ContactStore {
    * @returns Promise 接受结果
    */
   acceptContactInvite(userId: string) {
-    console.log("[ContactStore] Accepting contact invite from:", userId);
+    logger.info("[ContactStore] Accepting contact invite from:", userId);
     return ChatUIKIT.getChatConn()
       .acceptContactInvite(userId)
       .then((res) => {
         this.deleteContactNotice(userId);
-        console.log("[ContactStore] Successfully accepted contact invite from:", userId);
+        logger.info("[ContactStore] Successfully accepted contact invite from:", userId);
         return res;
       });
   }
@@ -131,7 +132,7 @@ class ContactStore {
    * @param msg 通知消息
    */
   addContactNotice(msg: ContactNotice) {
-    console.log("[ContactStore] Adding contact notice:", msg);
+    logger.info("[ContactStore] Adding contact notice:", msg);
     this.contactsNoticeInfo.list.unshift(msg);
     this.contactsNoticeInfo.unReadCount++;
   }
@@ -141,7 +142,7 @@ class ContactStore {
    * @param userId 用户ID
    */
   deleteContactNotice(userId: string) {
-    console.log("[ContactStore] Deleting contact notice for:", userId);
+    logger.info("[ContactStore] Deleting contact notice for:", userId);
     const index = this.contactsNoticeInfo.list.findIndex(
       (item) => item.from === userId
     );
@@ -156,7 +157,7 @@ class ContactStore {
    * @param userId 用户ID
    */
   deleteStoreContact(userId: string) {
-    console.log("[ContactStore] Deleting contact from store:", userId);
+    logger.info("[ContactStore] Deleting contact from store:", userId);
     const index = this.contacts.findIndex((item) => item.userId === userId);
     if (index !== -1) {
       this.contacts.splice(index, 1);
@@ -168,7 +169,7 @@ class ContactStore {
    * @param user 联系人信息
    */
   addStoreContact(user: Chat.ContactItem) {
-    console.log("[ContactStore] Adding contact to store:", user);
+    logger.info("[ContactStore] Adding contact to store:", user);
     if (!this.contacts.find((item) => item.userId === user.userId)) {
       this.contacts.unshift(user);
     }
@@ -179,7 +180,7 @@ class ContactStore {
    * @param user 用户信息
    */
   setViewedUserInfo(user: Chat.ContactItem) {
-    console.log("[ContactStore] Setting viewed user info:", user);
+    logger.info("[ContactStore] Setting viewed user info:", user);
     this.viewedUserInfo = user;
   }
 
@@ -190,7 +191,7 @@ class ContactStore {
    * @returns Promise 设置结果
    */
   setContactRemark(userId: string, remark: string) {
-    console.log("[ContactStore] Setting contact remark for:", userId, remark);
+    logger.info("[ContactStore] Setting contact remark for:", userId, remark);
     return ChatUIKIT.getChatConn()
       .setContactRemark({ userId, remark })
       .then((res) => {
@@ -198,7 +199,7 @@ class ContactStore {
         if (index !== -1) {
           this.contacts[index].remark = remark;
         }
-        console.log("[ContactStore] Successfully set contact remark for:", userId);
+        logger.info("[ContactStore] Successfully set contact remark for:", userId);
         return res;
       });
   }
@@ -207,7 +208,7 @@ class ContactStore {
    * 清空联系人通知未读数
    */
   clearContactNoticeUnReadCount() {
-    console.log("[ContactStore] Clearing contact notice unread count");
+    logger.info("[ContactStore] Clearing contact notice unread count");
     this.contactsNoticeInfo.unReadCount = 0;
   }
 
@@ -215,7 +216,7 @@ class ContactStore {
    * 清空联系人Store
    */
   clear() {
-    console.log("[ContactStore] Clearing contact store");
+    logger.info("[ContactStore] Clearing contact store");
     this.contacts = [];
     this.contactsNoticeInfo = { list: [], unReadCount: 0 };
     this.viewedUserInfo = {} as Chat.ContactItem;

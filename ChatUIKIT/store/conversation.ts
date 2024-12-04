@@ -10,6 +10,7 @@ import type {
 import { AT_ALL } from "../const/index";
 import { ChatUIKIT } from "../index";
 import { chatSDK } from "../sdk";
+import { logger } from "../log";
 
 /**
  * 会话管理类
@@ -41,7 +42,7 @@ class ConversationStore {
    * 初始化并使对象可观察
    */
   constructor() {
-    console.log("[ConversationStore] Initializing...");
+    logger.info("[ConversationStore] Initializing...");
     makeAutoObservable(this);
   }
 
@@ -54,7 +55,7 @@ class ConversationStore {
       const isMuted = this.muteConvsMap.get(curr.conversationId);
       return prev + (isMuted ? 0 : curr.unReadCount);
     }, 0);
-    console.log("[ConversationStore] Total unread count:", count);
+    logger.info("[ConversationStore] Total unread count:", count);
     return count;
   }
 
@@ -63,9 +64,9 @@ class ConversationStore {
    * @param conversations 会话数组
    */
   setConversations(conversations: Chat.ConversationItem[]) {
-    console.log("[ConversationStore] Setting conversations:", conversations);
+    logger.info("[ConversationStore] Setting conversations:", conversations);
     if (!Array.isArray(conversations)) {
-      return console.error("[ConversationStore] Invalid parameter: conversations");
+      return logger.error("[ConversationStore] Invalid parameter: conversations");
     }
 
     const currentCvsId = this.conversationList.map(
@@ -81,14 +82,14 @@ class ConversationStore {
       )
       .map((conversationItem) => conversationItem.conversationId);
 
-    console.log("[ConversationStore] Getting user info for:", userIds);
+    logger.log("[ConversationStore] Getting user info for:", userIds);
     this.deepGetUserInfo(userIds);
     this.getSilentModeForConversations(filteredConversations);
 
     beforeConversations.push(...filteredConversations);
 
     this.conversationList = [...beforeConversations.sort(sortByPinned)];
-    console.log("[ConversationStore] Updated conversation list:", this.conversationList);
+    logger.info("[ConversationStore] Updated conversation list:", this.conversationList);
   }
 
   /**
@@ -96,14 +97,14 @@ class ConversationStore {
    * 递归获取所有会话
    */
   async getConversationList() {
-    console.log("[ConversationStore] Getting conversation list with params:", this.conversationParams);
+    logger.info("[ConversationStore] Getting conversation list with params:", this.conversationParams);
     const res = await ChatUIKIT.getChatConn().getServerConversations(
       this.conversationParams
     );
     this.setConversations(res.data?.conversations || []);
     this.conversationParams.cursor = res.data?.cursor || "";
     if (res.data?.cursor) {
-      console.log("[ConversationStore] More conversations available, fetching next page");
+      logger.log("[ConversationStore] More conversations available, fetching next page");
       await this.getConversationList();
     }
     return res;
@@ -114,17 +115,17 @@ class ConversationStore {
    * 递归获取所有置顶会话
    */
   async getServerPinnedConversations() {
-    console.log("[ConversationStore] Getting pinned conversations with params:", this.pinConversationParams);
+    logger.info("[ConversationStore] Getting pinned conversations with params:", this.pinConversationParams);
     const res = await ChatUIKIT.getChatConn().getServerPinnedConversations(
       this.pinConversationParams
     );
     this.setConversations(res.data?.conversations || []);
     this.pinConversationParams.cursor = res.data?.cursor || "";
     if (res.data?.cursor) {
-      console.log("[ConversationStore] More pinned conversations available, fetching next page");
+      logger.log("[ConversationStore] More pinned conversations available, fetching next page");
       await this.getServerPinnedConversations();
     } else {
-      console.log("[ConversationStore] No more pinned conversations, getting regular conversations");
+      logger.log("[ConversationStore] No more pinned conversations, getting regular conversations");
       this.getConversationList();
     }
     return res;
@@ -135,7 +136,7 @@ class ConversationStore {
    * @param conversation 要删除的会话
    */
   deleteStoreConversation(conversation: Chat.ConversationItem) {
-    console.log("[ConversationStore] Deleting conversation from store:", conversation);
+    logger.info("[ConversationStore] Deleting conversation from store:", conversation);
     const idx = this.conversationList.findIndex(
       (cvs) =>
         cvs.conversationType === conversation.conversationType &&
@@ -143,9 +144,9 @@ class ConversationStore {
     );
     if (idx > -1) {
       this.conversationList.splice(idx, 1);
-      console.log("[ConversationStore] Successfully deleted conversation");
+      logger.log("[ConversationStore] Successfully deleted conversation");
     } else {
-      console.log("[ConversationStore] Conversation not found in store");
+      logger.warn("[ConversationStore] Conversation not found in store");
     }
   }
 
@@ -158,9 +159,9 @@ class ConversationStore {
     conversation: Chat.ConversationItem,
     deleteMessage = false
   ) {
-    console.log("[ConversationStore] Deleting conversation:", conversation, "deleteMessage:", deleteMessage);
+    logger.info("[ConversationStore] Deleting conversation:", conversation, "deleteMessage:", deleteMessage);
     if (typeof conversation !== "object") {
-      return console.error("[ConversationStore] Invalid parameter: conversation");
+      return logger.error("[ConversationStore] Invalid parameter: conversation");
     }
     await ChatUIKIT.getChatConn().deleteConversation({
       channel: conversation.conversationId,
@@ -175,11 +176,11 @@ class ConversationStore {
    * @param conversationId 会话ID
    */
   getConversationById(conversationId: string) {
-    console.log("[ConversationStore] Getting conversation by id:", conversationId);
+    logger.log("[ConversationStore] Getting conversation by id:", conversationId);
     const conversation = this.conversationList.find(
       (item) => item.conversationId === conversationId
     );
-    console.log("[ConversationStore] Found conversation:", conversation);
+    logger.log("[ConversationStore] Found conversation:", conversation);
     return conversation;
   }
 
@@ -199,11 +200,11 @@ class ConversationStore {
    * @param conversationId 会话ID
    */
   clearConversationUnreadCount(conversationId: string) {
-    console.log("[ConversationStore] Clearing unread count for conversation:", conversationId);
+    logger.info("[ConversationStore] Clearing unread count for conversation:", conversationId);
     const conv = this.getConversationById(conversationId);
     if (conv) {
       conv.unReadCount = 0;
-      console.log("[ConversationStore] Successfully cleared unread count");
+      logger.log("[ConversationStore] Successfully cleared unread count");
     }
   }
 
@@ -212,7 +213,7 @@ class ConversationStore {
    * @param conversation 会话信息
    */
   async markConversationRead(conversation: ConversationBaseInfo) {
-    console.log("[ConversationStore] Marking conversation as read:", conversation);
+    logger.info("[ConversationStore] Marking conversation as read:", conversation);
     const msg = chatSDK.message.create({
       type: "channel",
       chatType: conversation.conversationType,
@@ -232,7 +233,7 @@ class ConversationStore {
    * @param conversation 会话信息
    */
   setCurrentConversation(conversation: ConversationBaseInfo | null) {
-    console.log("[ConversationStore] Setting current conversation:", conversation);
+    logger.info("[ConversationStore] Setting current conversation:", conversation);
     this.currConversation = conversation;
   }
 
@@ -241,7 +242,7 @@ class ConversationStore {
    * @param conversation 要置顶的会话
    */
   moveConversationTop(conversation: Chat.ConversationItem) {
-    console.log("[ConversationStore] Moving conversation to top:", conversation);
+    logger.info("[ConversationStore] Moving conversation to top:", conversation);
     const conv = this.getConversationById(conversation.conversationId);
     const conversationList = [...this.conversationList];
     if (conv) {
@@ -258,7 +259,7 @@ class ConversationStore {
       conversationList.unshift(conversation);
     }
     this.conversationList = [...conversationList.sort(sortByPinned)];
-    console.log("[ConversationStore] Updated conversation list after moving to top");
+    logger.log("[ConversationStore] Updated conversation list after moving to top");
   }
 
   /**
@@ -272,7 +273,7 @@ class ConversationStore {
     msg: Chat.MessageBody,
     unReadCount = 0
   ) {
-    console.log("[ConversationStore] Creating new conversation:", conversation);
+    logger.info("[ConversationStore] Creating new conversation:", conversation);
     const conv: Chat.ConversationItem = {
       conversationId: conversation.conversationId,
       conversationType: conversation.conversationType,
@@ -284,7 +285,7 @@ class ConversationStore {
     if (conversation.conversationType === "singleChat") {
       this.deepGetUserInfo([conversation.conversationId]);
     }
-    console.log("[ConversationStore] Created conversation:", conv);
+    logger.log("[ConversationStore] Created conversation:", conv);
     return conv;
   }
 
@@ -299,14 +300,14 @@ class ConversationStore {
     msg: Chat.MessageBody,
     unReadCount = 0
   ) {
-    console.log("[ConversationStore] Updating last message for conversation:", conversation);
+    logger.info("[ConversationStore] Updating last message for conversation:", conversation);
     const conv = this.getConversationById(conversation.conversationId);
     if (conv) {
       runInAction(() => {
         conv.lastMessage = msg;
         conv.unReadCount = unReadCount;
       });
-      console.log("[ConversationStore] Successfully updated last message");
+      logger.log("[ConversationStore] Successfully updated last message");
     }
   }
 
@@ -326,7 +327,7 @@ class ConversationStore {
     } else {
       conversationId = message.from || "";
     }
-    console.log("[ConversationStore] Got conversation ID from message:", conversationId);
+    logger.log("[ConversationStore] Got conversation ID from message:", conversationId);
     return conversationId;
   }
 
@@ -335,7 +336,7 @@ class ConversationStore {
    * @param conversationList 会话列表
    */
   getSilentModeForConversations(conversationList: Chat.ConversationItem[]) {
-    console.log("[ConversationStore] Getting silent mode for conversations:", conversationList);
+    logger.info("[ConversationStore] Getting silent mode for conversations:", conversationList);
     if (!conversationList || conversationList.length == 0) {
       return;
     }
@@ -364,7 +365,7 @@ class ConversationStore {
             this.muteConvsMap.set(groupId, true);
           }
         });
-        console.log("[ConversationStore] Updated silent mode map:", this.muteConvsMap);
+        logger.log("[ConversationStore] Updated silent mode map:", this.muteConvsMap);
       });
   }
 
@@ -374,7 +375,7 @@ class ConversationStore {
    * @param mute 是否免打扰
    */
   setSilentModeForConversationSync(cvs: ConversationBaseInfo, mute: boolean) {
-    console.log("[ConversationStore] Setting silent mode sync for conversation:", cvs, "mute:", mute);
+    logger.info("[ConversationStore] Setting silent mode sync for conversation:", cvs, "mute:", mute);
     this.muteConvsMap.set(cvs.conversationId, mute);
   }
 
@@ -383,7 +384,7 @@ class ConversationStore {
    * @param cvs 会话信息
    */
   setSilentModeForConversation(cvs: Chat.ConversationItem) {
-    console.log("[ConversationStore] Setting silent mode for conversation:", cvs);
+    logger.info("[ConversationStore] Setting silent mode for conversation:", cvs);
     ChatUIKIT.getChatConn()
       .setSilentModeForConversation({
         conversationId: cvs.conversationId,
@@ -397,7 +398,7 @@ class ConversationStore {
       })
       .then((res: any) => {
         this.setSilentModeForConversationSync(cvs, true);
-        console.log("[ConversationStore] Successfully set silent mode");
+        logger.log("[ConversationStore] Successfully set silent mode");
       });
   }
 
@@ -406,7 +407,7 @@ class ConversationStore {
    * @param cvs 会话信息
    */
   clearRemindTypeForConversation(cvs: Chat.ConversationItem) {
-    console.log("[ConversationStore] Clearing remind type for conversation:", cvs);
+    logger.info("[ConversationStore] Clearing remind type for conversation:", cvs);
     ChatUIKIT.getChatConn()
       .clearRemindTypeForConversation({
         conversationId: cvs.conversationId,
@@ -415,7 +416,7 @@ class ConversationStore {
       })
       .then((res: any) => {
         this.setSilentModeForConversationSync(cvs, false);
-        console.log("[ConversationStore] Successfully cleared remind type");
+        logger.log("[ConversationStore] Successfully cleared remind type");
       });
   }
 
@@ -425,7 +426,7 @@ class ConversationStore {
    * @param isPinned 是否置顶
    */
   pinConversation(cvs: Chat.ConversationItem, isPinned: boolean) {
-    console.log("[ConversationStore] Pinning conversation:", cvs, "isPinned:", isPinned);
+    logger.info("[ConversationStore] Pinning conversation:", cvs, "isPinned:", isPinned);
     ChatUIKIT.getChatConn()
       .pinConversation({
         conversationType: cvs.conversationType,
@@ -438,7 +439,7 @@ class ConversationStore {
           isPinned,
           res.data?.pinnedTime || Date.now()
         );
-        console.log("[ConversationStore] Successfully pinned conversation");
+        logger.log("[ConversationStore] Successfully pinned conversation");
       });
   }
 
@@ -453,7 +454,7 @@ class ConversationStore {
     isPinned: boolean,
     pinnedTime: number
   ) {
-    console.log("[ConversationStore] Syncing pin status for conversation:", cvs);
+    logger.info("[ConversationStore] Syncing pin status for conversation:", cvs);
     const conv = this.getConversationById(cvs.conversationId);
     if (conv) {
       conv.isPinned = isPinned;
@@ -463,7 +464,7 @@ class ConversationStore {
     runInAction(() => {
       this.conversationList = [...this.conversationList.sort(sortByPinned)];
     });
-    console.log("[ConversationStore] Successfully synced pin status");
+    logger.log("[ConversationStore] Successfully synced pin status");
   }
 
   /**
@@ -472,7 +473,7 @@ class ConversationStore {
    */
   getConversationMuteStatus(cvsId: string): boolean {
     const status = this.muteConvsMap.get(cvsId) || false;
-    console.log("[ConversationStore] Got mute status for conversation:", cvsId, "status:", status);
+    logger.log("[ConversationStore] Got mute status for conversation:", cvsId, "status:", status);
     return status;
   }
 
@@ -481,7 +482,7 @@ class ConversationStore {
    * @param message 消息对象
    */
   setAtTypeByMessage(message: MixedMessageBody) {
-    console.log("[ConversationStore] Setting @ type by message:", message);
+    logger.info("[ConversationStore] Setting @ type by message:", message);
     const conversationId = this.getCvsIdFromMessage(message);
     // 在当前会话中不设置@状态
     if (this.currConversation?.conversationId === conversationId) {
@@ -502,7 +503,7 @@ class ConversationStore {
             conversationId,
             mentionList === AT_ALL ? "ALL" : "ME"
           );
-          console.log("[ConversationStore] Set @ type for conversation");
+          logger.log("[ConversationStore] Set @ type for conversation");
         }
       }
     }
@@ -515,7 +516,7 @@ class ConversationStore {
    * @param atType @类型
    */
   setAtType(chatType: Chat.ChatType, cvsId: string, atType: AT_TYPE) {
-    console.log("[ConversationStore] Setting @ type:", {chatType, cvsId, atType});
+    logger.info("[ConversationStore] Setting @ type:", {chatType, cvsId, atType});
     const idx = this.conversationList.findIndex((item) => {
       return (
         item.conversationType === chatType && item.conversationId === cvsId
@@ -523,7 +524,7 @@ class ConversationStore {
     });
     if (idx > -1) {
       this.conversationList[idx].atType = atType;
-      console.log("[ConversationStore] Successfully set @ type");
+      logger.log("[ConversationStore] Successfully set @ type");
     }
   }
 
@@ -531,14 +532,14 @@ class ConversationStore {
    * 清空会话Store
    */
   clear() {
-    console.log("[ConversationStore] Clearing conversation store");
+    logger.info("[ConversationStore] Clearing conversation store");
     runInAction(() => {
       this.conversationList = [];
       this.conversationParams = { pageSize: 20, cursor: "" };
       this.pinConversationParams = { pageSize: 20, cursor: "" };
       this.currConversation = null;
     });
-    console.log("[ConversationStore] Successfully cleared store");
+    logger.log("[ConversationStore] Successfully cleared store");
   }
 }
 

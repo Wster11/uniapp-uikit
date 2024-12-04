@@ -43,6 +43,7 @@ import Popup from "../../../../components/Popup/index.vue";
 import { t } from "../../../../locales/index";
 import { ChatUIKIT } from "../../../../index";
 import { chatSDK } from "../../../../sdk";
+import { logger } from "../../../../log";
 
 type RecordStatus = "record" | "recording" | "recordEnd";
 
@@ -183,7 +184,7 @@ const uploadAndSendAudio = () => {
           url: data.uri + "/" + data.entities[0].uuid,
           filename: "audio.mp3",
           type: "mp3",
-		  //@ts-ignore
+          //@ts-ignore
           length: audioLength
         },
         ext: {
@@ -217,13 +218,13 @@ const uploadAndSendAudio = () => {
 onMounted(() => {
   recorder.value = uni.getRecorderManager();
   recorder.value?.onStart(() => {
-    console.log("recording start");
+    logger.log("recording start");
   });
   recorder.value?.onError(() => {
-    console.log("recording error");
+    logger.log("recording error");
   });
   recorder.value?.onStop((res) => {
-    console.log("recording stop");
+    logger.log("recording stop");
     audioFilePath.value = res.tempFilePath;
   });
 });

@@ -275,7 +275,6 @@ const loginWithTel = async () => {
       }
     }
   } catch (error) {
-    console.log(error);
     uni.showToast({
       title: t("loginFailed"),
       icon: "none"

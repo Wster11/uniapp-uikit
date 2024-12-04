@@ -11,6 +11,7 @@
 <script lang="ts" setup>
 import type { Chat } from "../../../../types/index";
 import { ChatUIKIT } from "../../../../index";
+import { logger } from "../../../../log";
 interface Props {
   msg: Chat.FileMsgBody;
 }
@@ -38,10 +39,10 @@ const previewFile = () => {
         filePath: filePath,
         showMenu: false,
         success: function (res) {
-          console.log("open ducoment success");
+          logger.info("open ducoment success");
         },
         fail: function (err) {
-          console.log("open ducoment fail", err);
+          logger.error("open ducoment fail", err);
         }
       });
     },
