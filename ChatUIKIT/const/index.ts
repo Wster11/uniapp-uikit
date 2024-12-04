@@ -11,6 +11,9 @@ const USER_AVATAR_URL = ASSETS_URL + "user.png";
 
 const GROUP_AVATAR_URL = ASSETS_URL + "group.png";
 
+// 会话中消息的最大数量
+const MAX_MESSAGES_PER_CONVERSATION = 100;
+
 /** UIKIT 中支持的用户状态 */
 const PRESENCE_STATUS_LIST = [
   "Online", // 在线
@@ -27,6 +30,7 @@ export {
   GET_GROUP_MEMBERS_PAGESIZE,
   USER_AVATAR_URL,
   GROUP_AVATAR_URL,
+  MAX_MESSAGES_PER_CONVERSATION,
   PRESENCE_STATUS_LIST,
   GroupEventFromIds
 };

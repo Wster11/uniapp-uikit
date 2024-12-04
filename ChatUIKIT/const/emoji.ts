@@ -1,3 +1,4 @@
+//@ts-nocheck
 import emoji1 from "../assets/emojis/U+1F600.png";
 import emoji2 from "../assets/emojis/U+1F604.png";
 import emoji3 from "../assets/emojis/U+1F609.png";

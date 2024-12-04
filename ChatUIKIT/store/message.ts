@@ -7,6 +7,7 @@ import type { MixedMessageBody, Chat } from "../types/index";
 import { ChatUIKIT } from "../index";
 import { t } from "../locales/index";
 import { MessageStatus, ConversationBaseInfo } from "../types/index";
+import { MAX_MESSAGES_PER_CONVERSATION } from "../const";
 import { chatSDK } from "../sdk";
 
 /**
@@ -320,6 +321,10 @@ class MessageStore {
           );
           ChatUIKIT.convStore.moveConversationTop(newConv);
         }
+        // 如果当前会话不是正在查看的会话，则清理超过限制的消息
+        if (ChatUIKIT.convStore.currConversation?.conversationId !== convId) {
+          this.cleanupRemovedMessages(convId);
+        }
       }
     });
   }
@@ -556,6 +561,50 @@ class MessageStore {
    */
   checkMessageFromIsSelf(msg: MixedMessageBody) {
     return msg.from === ChatUIKIT.getChatConn().user || msg.from === "";
+  }
+
+  /**
+   * 清理指定会话中超过限制的消息（目前在离开会话页面和收到消息时会调用）
+   * @param conversationId 会话ID
+   */
+  cleanupRemovedMessages(conversationId: string) {
+    const info = this.conversationMessagesMap.get(conversationId);
+    if (!info || info.messageIds.length <= MAX_MESSAGES_PER_CONVERSATION) {
+      return;
+    }
+
+    runInAction(() => {
+      // 计算需要移除的消息数量
+      const removeCount =
+        info.messageIds.length - MAX_MESSAGES_PER_CONVERSATION;
+
+      // 获取要移除的消息ID（最早的消息）
+      const messageIdsToRemove = info.messageIds.slice(0, removeCount);
+
+      // 更新会话的消息ID列表，只保留最新的 MAX_MESSAGES_PER_CONVERSATION 条
+      info.messageIds = info.messageIds.slice(removeCount);
+
+      info.cursor = info.messageIds[0];
+
+      info.isLast = false;
+
+      // 清理被移除的消息
+      messageIdsToRemove.forEach((msgId) => {
+        const msg = this.messageMap.get(msgId);
+        if (!msg) return;
+        // 清理消息映射
+        this.removeMessageFromMap(msgId);
+
+        // 清理服务器消息ID映射
+        if (msg.serverMsgId && msg.serverMsgId !== msgId) {
+          this.removeMessageFromMap(msg.serverMsgId);
+        }
+      });
+
+      console.log(
+        `[MessageStore] Cleaned up ${messageIdsToRemove.length} messages from conversation ${conversationId}`
+      );
+    });
   }
 
   /**

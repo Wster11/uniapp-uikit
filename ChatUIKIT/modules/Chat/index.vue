@@ -192,9 +192,10 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  ChatUIKIT.convStore.setCurrentConversation(null);
   ChatUIKIT.messageStore.setQuoteMessage(null);
   ChatUIKIT.messageStore.setEditingMessage(null);
+  ChatUIKIT.messageStore.cleanupRemovedMessages(conversationId.value);
+  ChatUIKIT.convStore.setCurrentConversation(null);
   unwatchQuoteMsg();
   unwatchEditingMsg();
 });
