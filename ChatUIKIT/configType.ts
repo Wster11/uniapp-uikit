@@ -55,8 +55,13 @@ interface ChatUIKITConfig {
 interface ChatUIKITInitParams {
   /** IM SDK实例 */
   chat: Chat.Connection;
-  /** UIKIT theme Config */
-  themeConfig: ThemeConfig;
+  /** UIKIT init Config */
+  config: {
+    /** 主题配置 */
+    theme: ThemeConfig;
+    /** 是否开启调试模式 */
+    isDebug: boolean;
+  };
 }
 
 export { ChatUIKITInitParams, ChatUIKITConfig, FeatureConfig, ThemeConfig };

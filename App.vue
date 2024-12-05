@@ -21,11 +21,13 @@ const chat = new (websdk as unknown as EasemobChatStatic).connection({
 
 websdk.logger.disableAll();
 
-
 ChatUIKIT.init({
   chat,
-  themeConfig: {
-    avatarShape: "square"
+  config: {
+    theme: {
+      avatarShape: "square"
+    },
+    isDebug: true
   }
 });
 

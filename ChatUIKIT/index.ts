@@ -7,6 +7,7 @@ import GroupStore from "./store/group";
 import MessageStore from "./store/message";
 import ConfigStore from "./store/config";
 import { ChatUIKITInitParams, FeatureConfig } from "./configType";
+import { logger } from "./log";
 class ChatKIT {
   public connStore: ConnStore;
   public chatStore: ChatStore;
@@ -21,12 +22,13 @@ class ChatKIT {
     this.configStore = new ConfigStore();
   }
   // 初始化IM SDK
-  public init(config: ChatUIKITInitParams) {
+  public init(params: ChatUIKITInitParams) {
     if (this.connStore.conn) {
       return;
     }
-    this.configStore.setThemeConfig(config.themeConfig);
-    this.connStore.setChatConn(config.chat);
+    this.configStore.setThemeConfig(params.config.theme);
+    this.connStore.setChatConn(params.chat);
+    params.config.isDebug && logger.enableDebug();
     this.chatStore = new ChatStore();
     this.contactStore = new ContactStore();
     this.convStore = new ConversationStore();

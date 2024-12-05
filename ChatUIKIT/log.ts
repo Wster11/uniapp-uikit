@@ -75,5 +75,3 @@ class Logger {
 }
 
 export const logger = Logger.getInstance();
-
-logger.enableDebug();
