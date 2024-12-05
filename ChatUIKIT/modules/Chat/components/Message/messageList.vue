@@ -138,22 +138,20 @@ const getHistoryMessage = async () => {
     return;
   }
   isLoading.value = true;
+  const firstMessageId = msgs.value[0].id || "";
   try {
     await messageStore.getHistoryMessages(
       {
         conversationId: props.conversationId,
         conversationType: props.conversationType
       } as Chat.ConversationItem,
-      cursor.value,
-      () => {
-        // 获取历史消息接口成功，获取当前可视区域的第一条消息id
-        currentViewMsgId.value = msgs.value[0].id;
-      }
+      cursor.value
     );
 
     nextTick(() => {
+      isLoading.value = false;
+      currentViewMsgId.value = firstMessageId;
       const timer = setTimeout(() => {
-        isLoading.value = false;
         currentViewMsgId.value = "";
         clearTimeout(timer);
       }, 300);

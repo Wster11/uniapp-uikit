@@ -79,12 +79,10 @@ class MessageStore {
    * 获取历史消息
    * @param conversation 会话对象
    * @param cursor 分页游标
-   * @param onSuccess 获取成功的回调函数
    */
   async getHistoryMessages(
     conversation: Chat.ConversationItem,
-    cursor?: string,
-    onSuccess?: () => void
+    cursor?: string
   ) {
     try {
       const dt = await ChatUIKIT.getChatConn().getHistoryMessages({
@@ -101,7 +99,6 @@ class MessageStore {
           this.addMessageToMap(msg);
         });
         const messageIds = dt.messages.map((msg) => msg.id);
-        onSuccess?.();
         const info = this.conversationMessagesMap.get(
           conversation.conversationId
         );
