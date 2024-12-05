@@ -61,7 +61,8 @@ const locales = {
     presenceNoDisturb: "请勿打扰",
     presenceCustom: "自定义在线状态",
     presenceConfirm: "确认",
-    presencePlaceholder: "请输入自定义状态"
+    presencePlaceholder: "请输入自定义状态",
+    unSupportTip: "暂不支持"
   },
   en: {
     loginTitle: "EaseMob IM",
@@ -125,7 +126,8 @@ const locales = {
     presenceNoDisturb: "Do Not Disturb",
     presenceCustom: "Custom Status",
     presenceConfirm: "Confirm",
-    presencePlaceholder: "Enter custom status"
+    presencePlaceholder: "Enter custom status",
+    unSupportTip: "Not supported"
   }
 };
 

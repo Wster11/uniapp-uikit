@@ -295,10 +295,16 @@ const loginIM = () => {
   }
 };
 
-// 其他逻辑
 const toPrivacy = () => {
-  /* 省略代码 */
+  const url = "https://www.easemob.com/terms";
+  // #ifdef APP-PLUS
+  plus.runtime.openURL(url);
+  // #endif
+  // #ifdef WEB
+  window.open(url);
+  // #endif
 };
+
 const checkboxChange = (e: any) => {
   privacyChecked.value = !!e.detail.value[0];
 };

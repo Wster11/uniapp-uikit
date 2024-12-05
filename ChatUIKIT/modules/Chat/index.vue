@@ -1,5 +1,11 @@
 <template>
-  <view class="chat-wrap" :style="{ height: `calc(100% - ${keyboardHeight})` }">
+  <view
+    :class="[
+      'chat-wrap',
+      { 'chat-wrap-keyboard-close': keyboardHeight === '0px' }
+    ]"
+    :style="{ height: `calc(100% - ${keyboardHeight})` }"
+  >
     <ChatNav />
     <!-- 消息列表 -->
     <view class="msgs-wrap">
