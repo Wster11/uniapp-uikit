@@ -102,12 +102,14 @@ onMounted(() => {
       messageStore.conversationMessagesMap.get(props.conversationId)
     );
     if (convMessageInfo) {
+      const oldMsgs = [...msgs.value];
       msgs.value = convMessageInfo.messageIds.map((id) => {
         return deepClone(ChatUIKIT.messageStore.messageMap.get(id));
       });
       isLast.value = convMessageInfo.isLast;
       cursor.value = convMessageInfo.cursor;
-      if (isLoading.value || currentViewMsgId.value) {
+      const isSameLength = oldMsgs.length === msgs.value.length;
+      if (isLoading.value || currentViewMsgId.value || isSameLength) {
         return;
       }
       nextTick(() => {
