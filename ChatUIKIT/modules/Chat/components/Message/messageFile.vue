@@ -12,6 +12,7 @@
 import type { Chat } from "../../../../types/index";
 import { ChatUIKIT } from "../../../../index";
 import { logger } from "../../../../log";
+import { t } from "../../../../locales";
 interface Props {
   msg: Chat.FileMsgBody;
 }
@@ -20,6 +21,8 @@ const props = defineProps<Props>();
 const fileLength = props.msg.file_length || props.msg.body.file_length;
 const isSelf = ChatUIKIT.messageStore.checkMessageFromIsSelf(props.msg);
 const fileSize = (fileLength / 1024).toFixed(2) + "kb";
+
+const fileType = props.msg.filetype || props.msg.filename.split(".").pop();
 
 const previewFile = () => {
   /*  #ifdef WEB  */
@@ -38,19 +41,28 @@ const previewFile = () => {
       uni.openDocument({
         filePath: filePath,
         showMenu: false,
+        fileType,
         success: function (res) {
           logger.info("open ducoment success");
         },
         fail: function (err) {
           logger.error("open ducoment fail", err);
+          setTimeout(() => {
+            uni.showToast({
+              title: t("openDocumentFailed"),
+              icon: "none"
+            });
+          });
         }
       });
     },
     fail: (err) => {
-      uni.showToast({
-        title: "文件下载失败",
-        icon: "none"
-      });
+      setTimeout(() => {
+        uni.showToast({
+          title: t("openDocumentFailed"),
+          icon: "none"
+        });
+      }, 200);
     },
     complete: () => {
       uni.hideLoading();

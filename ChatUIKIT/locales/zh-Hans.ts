@@ -148,4 +148,5 @@ export default {
   contactRequestAgreeButton: "同意",
   modalConfirm: "确认",
   modalCancel: "取消",
+  openDocumentFailed: "文件打开失败"
 };
