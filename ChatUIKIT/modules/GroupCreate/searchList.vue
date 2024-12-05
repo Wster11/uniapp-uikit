@@ -118,7 +118,7 @@ onUnmounted(() => {
 }
 
 .search-item {
-  box-sizing: border-box;
+  flex: 1;
 }
 
 .input-wrap {
