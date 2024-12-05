@@ -9,7 +9,7 @@
       <view class="icon audio-icon"></view>
     </view>
     <AudioMessageSender v-if="featureConfig.inputAudio" ref="audioPopupRef" />
-    <!-- #endif -->
+    <!-- #endsif -->
     <view class="send-input" @tap="onInputTap">
       <input
         :class="[{ 'prevent-event': props.preventEvent }]"
@@ -64,6 +64,7 @@ const emits = defineEmits([
   "onMessageSend",
   "onShowToolbar",
   "onShowEmojiPicker",
+  "onRecordAudio",
   "onInputTap",
   "onBlur",
   "onFocus",
@@ -82,6 +83,7 @@ const mentionUserIds = ref<string[]>([]);
 
 const showAudioPopup = () => {
   audioPopupRef.value.showAudioPopup();
+  emits("onRecordAudio");
 };
 
 const showToolbar = () => {

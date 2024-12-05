@@ -36,12 +36,16 @@
         :preventEvent="isShowToolbar || isShowEmojiPicker"
         @onInputTap="onInputTap"
         @onMention="onMention"
+        @onRecordAudio="
+          isShowToolbar = false;
+          isShowEmojiPicker = false;
+        "
         @onShowToolbar="
-          isShowToolbar = true;
+          isShowToolbar = !isShowToolbar;
           isShowEmojiPicker = false;
         "
         @onShowEmojiPicker="
-          isShowEmojiPicker = true;
+          isShowEmojiPicker = !isShowEmojiPicker;
           isShowToolbar = false;
         "
       />

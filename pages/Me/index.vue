@@ -35,21 +35,6 @@
             <view class="icon person"> </view>
           </template>
         </MenuItem>
-        <MenuItem class="me-menu" :title="t('meSetting')" @tap="unSupportTip">
-          <template v-slot:left>
-            <view class="icon general"> </view>
-          </template>
-        </MenuItem>
-        <MenuItem class="me-menu" :title="t('meNotice')" @tap="unSupportTip">
-          <template v-slot:left>
-            <view class="icon notice"> </view>
-          </template>
-        </MenuItem>
-        <MenuItem class="me-menu" :title="t('mePrivacy')" @tap="toPrivacy">
-          <template v-slot:left>
-            <view class="icon privacy"> </view>
-          </template>
-        </MenuItem>
         <MenuItem class="me-menu" :title="t('meAbout')" @tap="toAbout">
           <template v-slot:left>
             <view class="icon about"> </view>
@@ -82,23 +67,6 @@ const userInfo = ref<UserInfoWithPresence>({} as UserInfoWithPresence);
 const unwatchUserInfo = autorun(() => {
   userInfo.value = ChatUIKIT.appUserStore.getSelfUserInfo();
 });
-
-const unSupportTip = () => {
-  uni.showToast({
-    title: t("unSupportTip"),
-    icon: "none"
-  });
-};
-
-const toPrivacy = () => {
-  const url = "https://www.easemob.com/terms";
-  // #ifdef APP-PLUS
-  plus.runtime.openURL(url);
-  // #endif
-  // #ifdef WEB
-  window.open(url);
-  // #endif
-};
 
 const copy = () => {
   uni.setClipboardData({

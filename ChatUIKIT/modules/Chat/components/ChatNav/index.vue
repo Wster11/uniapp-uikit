@@ -108,7 +108,7 @@ onUnmounted(() => {
 @import url("../../../../styles/common.scss");
 
 .name {
-  max-width: 60vw;
+  max-width: 45vw;
   color: #171a1c;
   font-size: 16px;
   font-weight: 500;
