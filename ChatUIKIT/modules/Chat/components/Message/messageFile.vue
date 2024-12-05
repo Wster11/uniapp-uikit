@@ -22,8 +22,6 @@ const fileLength = props.msg.file_length || props.msg.body.file_length;
 const isSelf = ChatUIKIT.messageStore.checkMessageFromIsSelf(props.msg);
 const fileSize = (fileLength / 1024).toFixed(2) + "kb";
 
-const fileType = props.msg.filetype || props.msg.filename.split(".").pop();
-
 const previewFile = () => {
   /*  #ifdef WEB  */
   window.open(props.msg.url, "_blank");
@@ -41,7 +39,7 @@ const previewFile = () => {
       uni.openDocument({
         filePath: filePath,
         showMenu: false,
-        fileType,
+        fileType: props.msg.filetype || props.msg.filename.split(".").pop(),
         success: function (res) {
           logger.info("open ducoment success");
         },
