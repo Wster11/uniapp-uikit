@@ -73,6 +73,7 @@
 			"path": "ChatUIKIT/modules/Chat/index",
 			"style": {
 				"navigationStyle": "custom",
+				"disableScroll": true,
 				"app-plus": {
 					"bounce": "none",
 					"softinputNavBar": "none"

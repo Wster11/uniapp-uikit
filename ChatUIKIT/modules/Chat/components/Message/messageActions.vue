@@ -109,15 +109,15 @@ const setMenuItems = () => {
     });
   }
 
-  // 自己的消息可以显示 "删除" 和可撤回的显示 "撤回"
-  if (isSelf) {
-    featureConfig.deleteMessage &&
-      list.push({
-        label: t("deleteBtn"),
-        icon: DeleteIcon,
-        action: deleteMessage
-      });
+  featureConfig.deleteMessage &&
+    list.push({
+      label: t("deleteBtn"),
+      icon: DeleteIcon,
+      action: deleteMessage
+    });
 
+  // 自己的消息可以显示可撤回的显示 "撤回"
+  if (isSelf) {
     if (featureConfig.recallMessage && isRecallAllowed) {
       list.push({
         label: t("recallBtn"),
