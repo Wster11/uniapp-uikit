@@ -242,7 +242,7 @@ class MessageStore {
           }
           if (msgCopy.type === "img") {
             //@ts-ignore
-            msgCopy.thumb = msgCopy.body.url;
+            msgCopy.thumb = msgCopy.url;
           }
           this.addMessageToMap(msgCopy);
           this.insertMessage(msgCopy);
