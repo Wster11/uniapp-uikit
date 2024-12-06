@@ -38,7 +38,6 @@ const sendVideoMessage = (res: any) => {
   if (!tempFilePath) {
     return;
   }
-  uni.showLoading();
   const token = conn.token;
   const requestParams = {
     url: uploadUrl,
@@ -47,42 +46,28 @@ const sendVideoMessage = (res: any) => {
     name: "file",
     header: {
       Authorization: "Bearer " + token
-    },
-    success: async (res: any) => {
-      const data = JSON.parse(res.data);
-      const videoMsg = chatSDK.message.create({
-        type: "video",
-        to: convStore.currConversation!.conversationId,
-        chatType: convStore.currConversation!.conversationType,
-        //@ts-ignore
-        body: {
-          url: data.uri + "/" + data.entities[0].uuid
-        },
-        ext: {
-          ease_chat_uikit_user_info: {
-            avatarURL: ChatUIKIT.appUserStore.getSelfUserInfo().avatar,
-            nickname: ChatUIKIT.appUserStore.getSelfUserInfo().name
-          }
-        }
-      });
-      try {
-        await ChatUIKIT.messageStore.sendMessage(videoMsg);
-        toolbarInject?.closeToolbar();
-      } catch (error: any) {
-        uni.showToast({
-          title: `send failed: ${error.message}`,
-          icon: "none"
-        });
-      }
-      uni.hideLoading();
-    },
-    fail: (e: any) => {
-      uni.hideLoading();
-      uni.showToast({ title: t("uploadFailed"), icon: "none" });
     }
   };
-  //@ts-ignore
-  uni.uploadFile(requestParams);
+
+  const videoMsg = chatSDK.message.create({
+    type: "video",
+    to: convStore.currConversation!.conversationId,
+    chatType: convStore.currConversation!.conversationType,
+    //@ts-ignore
+    body: {
+      url: tempFilePath
+    },
+    ext: {
+      ease_chat_uikit_user_info: {
+        avatarURL: ChatUIKIT.appUserStore.getSelfUserInfo().avatar,
+        nickname: ChatUIKIT.appUserStore.getSelfUserInfo().name
+      }
+    }
+  });
+  toolbarInject?.closeToolbar();
+  ChatUIKIT.messageStore.sendMessage(videoMsg, () => {
+    return uni.uploadFile(requestParams);
+  });
 };
 </script>
 

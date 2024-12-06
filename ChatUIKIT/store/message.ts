@@ -209,8 +209,9 @@ class MessageStore {
   /**
    * 发送消息
    * @param msg 要发送的消息对象
+   * @param uploadFileFunc 如果存在附件消息上传方法， 则等待上传文件的函数成功，在发送消息
    */
-  sendMessage(msg: Chat.MessageBody) {
+  sendMessage(msg: Chat.MessageBody, uploadFileFunc?: () => Promise<any>) {
     runInAction(async () => {
       if (
         msg.type !== "delivery" &&
@@ -218,9 +219,51 @@ class MessageStore {
         msg.type !== "channel"
       ) {
         try {
-          const msgCopy = { ...msg, status: "sending" } as MixedMessageBody;
+          let msgCopy = { ...msg, status: "sending" } as MixedMessageBody;
+          // 同步本地消息和服务器消息的格式
+          if (msgCopy.type === "audio") {
+            //@ts-ignore
+            msgCopy.length = msgCopy.body.length;
+            //@ts-ignore
+            msgCopy.url = msgCopy.body.url;
+          }
+          // 同步本地消息和服务器消息的格式
+          if (msgCopy.type === "file") {
+            //@ts-ignore
+            msgCopy.file_length = msgCopy.body.file_length;
+            //@ts-ignore
+            msgCopy.url = msgCopy.body.url;
+            //@ts-ignore
+            msgCopy.filename = msgCopy.body.filename;
+          }
+          if (msgCopy.type === "video") {
+            //@ts-ignore
+            msgCopy.url = msgCopy.body.url;
+          }
+          if (msgCopy.type === "img") {
+            //@ts-ignore
+            msgCopy.thumb = msgCopy.body.url;
+          }
           this.addMessageToMap(msgCopy);
           this.insertMessage(msgCopy);
+          if (uploadFileFunc) {
+            logger.info("[MessageStore] Upload file start");
+            let res = await uploadFileFunc();
+            logger.info("[MessageStore] Upload file success");
+            const data = JSON.parse(res.data);
+            if (msg.type === "img") {
+              //@ts-ignore
+              msg.url = data.uri + "/" + data.entities[0].uuid;
+            }
+            if (
+              msg.type === "audio" ||
+              msg.type === "file" ||
+              msg.type === "video"
+            ) {
+              //@ts-ignore
+              msg.body.url = data.uri + "/" + data.entities[0].uuid;
+            }
+          }
           const res = await ChatUIKIT.getChatConn().send(msg);
           logger.info("[MessageStore] Send message success", res);
 
@@ -230,13 +273,29 @@ class MessageStore {
             ...res.message,
             status: "sent"
           } as MixedMessageBody;
-          this.updateLocalMessage(msgCopy.id, {
+
+          let newLocalMsg = {
             ...msgCopy,
             ...(res.message as any),
             status: "sent",
             serverMsgId: res.serverMsgId,
             id: msgCopy.id
-          });
+          };
+
+          if (msg.type === "video") {
+            // 设置视频缩略图
+            newLocalMsg.thumb = (res.message as Chat.VideoMsgBody).thumb;
+            // 设置视频url为本地路径
+            newLocalMsg.url = (msgCopy as Chat.VideoMsgBody).url;
+          }
+
+          if (msg.type === "img") {
+            // 设置图片消息为本地消息路径
+            newLocalMsg.thumb = (msgCopy as Chat.ImgMsgBody).thumb;
+            newLocalMsg.url = (msgCopy as Chat.ImgMsgBody).url;
+          }
+
+          this.updateLocalMessage(msgCopy.id, newLocalMsg);
           // 同时存储服务器消息
           res.message &&
             this.addMessageToMap({

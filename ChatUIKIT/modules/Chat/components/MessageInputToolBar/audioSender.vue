@@ -164,54 +164,37 @@ const uploadAndSendAudio = () => {
   const audioLength = elapsedTime.value;
 
   hideAudioPopup();
-  uni.showLoading();
 
   const token = conn.token;
   const requestParams = {
     url: uploadUrl,
     filePath: file,
-    fileType: "audio",
     name: "file",
-    header: { Authorization: "Bearer " + token },
-    success: async (res: any) => {
-      const data = JSON.parse(res.data);
-      const audioMsg = chatSDK.message.create({
-        type: "audio",
-        to: convStore.currConversation!.conversationId,
-        chatType: convStore.currConversation!.conversationType,
-        filename: "audio.mp3",
-        body: {
-          url: data.uri + "/" + data.entities[0].uuid,
-          filename: "audio.mp3",
-          type: "mp3",
-          //@ts-ignore
-          length: audioLength
-        },
-        ext: {
-          ease_chat_uikit_user_info: {
-            avatarURL: ChatUIKIT.appUserStore.getSelfUserInfo().avatar,
-            nickname: ChatUIKIT.appUserStore.getSelfUserInfo().name
-          }
-        }
-      });
-      try {
-        await ChatUIKIT.messageStore.sendMessage(audioMsg);
-      } catch (error: any) {
-        uni.showToast({
-          title: `send failed: ${error.message}`,
-          icon: "none"
-        });
-      }
-      uni.hideLoading();
-    },
-    fail: () => {
-      uni.hideLoading();
-      uni.showToast({ title: t("uploadFailed"), icon: "none" });
-    }
+    header: { Authorization: "Bearer " + token }
   };
+  const audioMsg = chatSDK.message.create({
+    type: "audio",
+    to: convStore.currConversation!.conversationId,
+    chatType: convStore.currConversation!.conversationType,
+    filename: "audio.mp3",
+    body: {
+      url: file,
+      filename: "audio.mp3",
+      type: "mp3",
+      //@ts-ignore
+      length: audioLength
+    },
+    ext: {
+      ease_chat_uikit_user_info: {
+        avatarURL: ChatUIKIT.appUserStore.getSelfUserInfo().avatar,
+        nickname: ChatUIKIT.appUserStore.getSelfUserInfo().name
+      }
+    }
+  });
+  ChatUIKIT.messageStore.sendMessage(audioMsg, () => {
+    return uni.uploadFile(requestParams);
+  });
   resetRecording();
-  //@ts-ignore
-  uni.uploadFile(requestParams);
 };
 
 // 在组件挂载时，初始化录音管理器

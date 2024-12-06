@@ -21,7 +21,11 @@ const isShow = ref(false);
 onLoad((option) => {
   // 支持safari浏览器播放
   if (isSafari() || (isWechat() && isiOS())) {
-    videoUrl.value = `${option?.url}&origin-file=true`;
+    if (option.url.includes("?")) {
+      videoUrl.value = `${option.url}&origin-file=true`;
+    } else {
+      videoUrl.value = option?.url;
+    }
   } else {
     videoUrl.value = option?.url;
   }

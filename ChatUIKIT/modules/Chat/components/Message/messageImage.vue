@@ -7,7 +7,7 @@
       @tap="previewImage"
       @load="onImgLoad"
       class="image"
-      :src="isError ? ImageNotFound : msg.thumb"
+      :src="isError ? ImageNotFound : msg.thumb || msg.url"
     />
   </view>
 </template>
@@ -17,7 +17,6 @@ import type { Chat } from "../../../../types/index";
 import { ASSETS_URL } from "../../../../const/index";
 
 const ImageNotFound = ASSETS_URL + "img404.png";
-
 
 import { ref } from "vue";
 interface Props {

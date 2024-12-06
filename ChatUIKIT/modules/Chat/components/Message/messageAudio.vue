@@ -38,7 +38,7 @@ import { ref, onUnmounted, watch } from "vue";
 const ReceiveAudioIcon = ASSETS_URL + "icon/receiveAudio.png";
 const SendAudioIcon = ASSETS_URL + "icon/sendAudio.png";
 const SendAudioPlayingIcon = ASSETS_URL + "icon/sendAudioPlaying.gif";
-const ReceiveAudioPlayingIcon = ASSETS_URL + "icon/receiveAudioPlaying.gif";  
+const ReceiveAudioPlayingIcon = ASSETS_URL + "icon/receiveAudioPlaying.gif";
 
 interface Props {
   msg: Chat.AudioMsgBody;
@@ -68,6 +68,10 @@ const toggle = async () => {
 };
 
 const formatAudioToMp3 = () => {
+  // 如果消息状态为发送中，则直接使用本地的音频url
+  if (props.msg.status === "sending") {
+    return props.msg.url;
+  }
   return new Promise<string>((resolve, reject) => {
     const { url } = props.msg;
     uni.downloadFile({

@@ -7,7 +7,7 @@
         @error="onError"
         @load="onImgLoad"
         class="image"
-        :src="isError ? VideoNotFound : msg.thumb"
+        :src="showPoster ? VideoNotFound : msg.thumb"
       />
       <view
         v-if="!isError && isLoaded"
@@ -24,7 +24,7 @@
 <script lang="ts" setup>
 import type { Chat } from "../../../../types/index";
 import { ASSETS_URL } from "../../../../const/index";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
 const VideoNotFound = ASSETS_URL + "video404.png";
 const VideoPlayBtn = ASSETS_URL + "videoplay.png";
@@ -53,6 +53,10 @@ const styles = ref({
 const mode = props.mode || "widthFix";
 
 const isError = ref(false);
+
+const showPoster = computed(() => {
+  return props.msg.status === "sending" || isError.value;
+});
 
 const isLoaded = ref(false);
 
