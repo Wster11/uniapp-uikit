@@ -102,26 +102,27 @@ export function throttle(
   func: CallbackFunction,
   limit: number
 ): CallbackFunction {
-  let lastFunc: ReturnType<typeof setTimeout>;
-  let lastRan: number | undefined;
+  let inThrottle: boolean;
+  let lastTime: number = 0;
+  let timeoutId: any = null;
 
   return function (this: any, ...args: any[]) {
     const context = this;
+    const currentTime = Date.now();
 
-    if (!lastRan) {
-      lastRan = Date.now();
-      lastFunc = setTimeout(function () {
-        func.apply(context, args);
-        lastRan = undefined;
-      }, limit);
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+
+    if (!inThrottle || currentTime - lastTime >= limit) {
+      func.apply(context, args);
+      lastTime = currentTime;
+      inThrottle = true;
     } else {
-      clearTimeout(lastFunc);
-      lastFunc = setTimeout(function () {
-        if (Date.now() - lastRan! >= limit) {
-          func.apply(context, args);
-          lastRan = Date.now();
-        }
-      }, limit - (Date.now() - lastRan));
+      timeoutId = setTimeout(() => {
+        func.apply(context, args);
+        lastTime = Date.now();
+      }, limit);
     }
   };
 }

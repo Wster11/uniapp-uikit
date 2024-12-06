@@ -73,7 +73,9 @@
 			"path": "ChatUIKIT/modules/Chat/index",
 			"style": {
 				"navigationStyle": "custom",
+				// #ifdef MP-MP-WEIXIN
 				"disableScroll": true,
+				// #endif 
 				"app-plus": {
 					"bounce": "none",
 					"softinputNavBar": "none"
