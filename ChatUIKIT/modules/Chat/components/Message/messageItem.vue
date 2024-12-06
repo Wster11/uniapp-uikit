@@ -140,7 +140,6 @@ const onMessageBubblePress = (e) => {
 
 <style lang="scss" scoped>
 .msg-item-wrap {
-  display: flex;
   width: 100%;
   display: flex;
   margin-bottom: 15px;
@@ -156,11 +155,13 @@ const onMessageBubblePress = (e) => {
   }
 
   .msg-bubble-bg {
+    padding: 8px;
     background: #e5f5ff;
     color: #171a1c;
   }
 
   .msg-bubble-self-bg {
+    padding: 8px;
     background: #009dff;
     color: #fff;
   }
@@ -172,7 +173,6 @@ const onMessageBubblePress = (e) => {
     display: inline-block;
     word-break: break-all;
     border-radius: 4px;
-    padding: 8px;
     max-width: calc(100vw - 100px);
     min-width: 15px;
   }
