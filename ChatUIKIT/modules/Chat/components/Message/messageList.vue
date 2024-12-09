@@ -139,6 +139,9 @@ const getHistoryMessage = async () => {
   }
   isLoading.value = true;
   const firstMessageId = msgs.value[0].id || "";
+  // #ifdef MP-WEIXIN
+  currentViewMsgId.value = firstMessageId;
+  // #endif
   try {
     await messageStore.getHistoryMessages(
       {
@@ -148,10 +151,14 @@ const getHistoryMessage = async () => {
       cursor.value,
       () => {
         // 获取历史消息接口成功，获取当前可视区域的第一条消息id
+        // #ifdef APP-PLUS
         currentViewMsgId.value = firstMessageId;
+        // #endif
       }
     );
-
+    // #ifdef WEB
+    currentViewMsgId.value = firstMessageId;
+    // #endif
     nextTick(() => {
       isLoading.value = false;
       const timer = setTimeout(() => {
