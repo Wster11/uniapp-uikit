@@ -145,12 +145,15 @@ const getHistoryMessage = async () => {
         conversationId: props.conversationId,
         conversationType: props.conversationType
       } as Chat.ConversationItem,
-      cursor.value
+      cursor.value,
+      () => {
+        // 获取历史消息接口成功，获取当前可视区域的第一条消息id
+        currentViewMsgId.value = firstMessageId;
+      }
     );
 
     nextTick(() => {
       isLoading.value = false;
-      currentViewMsgId.value = firstMessageId;
       const timer = setTimeout(() => {
         currentViewMsgId.value = "";
         clearTimeout(timer);
