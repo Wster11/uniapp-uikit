@@ -121,9 +121,7 @@ const unwatchQuoteMsg = autorun(() => {
 
 const onKeyboardHeightChange = ({ height }) => {
   keyboardHeight.value = height + "px";
-  if (height > 0) {
-    msgListRef?.value?.scrollToBottom();
-  }
+  msgListRef?.value?.scrollToBottom();
 };
 
 const onInputTap = () => {

@@ -2,20 +2,12 @@
   <view class="msg-video">
     <view class="video-poster">
       <image
-        :mode="mode"
-        :style="{ width: styles.width, height: styles.height }"
         @error="onError"
-        @load="onImgLoad"
         class="image"
-        :src="showPoster ? VideoNotFound : msg.thumb"
+        :src="isError ? VideoNotFound : msg.thumb"
       />
-      <view
-        v-if="!isError && isLoaded"
-        :style="{ width: btnStyles.width, height: btnStyles.height }"
-        @tap="toVideoPreview"
-        class="video-play-btn"
-      >
-        <image class="video-play-btn-image" :src="VideoPlayBtn"></image>
+      <view v-if="!isError" @tap="toVideoPreview" class="video-play-btn">
+        <image class="video-play-btn-image" :src="VideoPlayBtn" />
       </view>
     </view>
   </view>
@@ -24,70 +16,21 @@
 <script lang="ts" setup>
 import type { Chat } from "../../../../types/index";
 import { ASSETS_URL } from "../../../../const/index";
-import { ref, computed } from "vue";
+import { ref } from "vue";
 
 const VideoNotFound = ASSETS_URL + "video404.png";
 const VideoPlayBtn = ASSETS_URL + "videoplay.png";
 
 interface Props {
   msg: Chat.VideoMsgBody;
-  mode?: string; // uni image mode
-  width?: number;
-  height?: number;
-  disabledPreview?: boolean; // is use preview
+  disabledPreview?: boolean;
 }
 const props = defineProps<Props>();
 
-const IMAGE_MAX_SIZE = 225;
-
-const width = props.width ? `${props.width}px` : "auto";
-const height = props.height ? `${props.height}px` : `${IMAGE_MAX_SIZE}px`;
-const btnStyles = ref({
-  width: props.width ? `${props.width / 2}px` : "64px",
-  height: props.height ? `${props.height / 2}px` : "64px"
-});
-const styles = ref({
-  width,
-  height
-});
-const mode = props.mode || "widthFix";
-
 const isError = ref(false);
-
-const showPoster = computed(() => {
-  return props.msg.status === "sending" || isError.value;
-});
-
-const isLoaded = ref(false);
 
 const onError = () => {
   isError.value = true;
-};
-
-const genImageStyles = (value: { width?: any; height?: any }) => {
-  const { width, height } = value;
-  if (width === 0 || height === 0) {
-    return;
-  }
-  let imageWidth = 0;
-  let imageHeight = 0;
-  if (width > height) {
-    imageWidth = IMAGE_MAX_SIZE;
-    imageHeight = (IMAGE_MAX_SIZE * height) / width;
-  } else {
-    imageWidth = (IMAGE_MAX_SIZE * width) / height;
-    imageHeight = IMAGE_MAX_SIZE;
-  }
-  styles.value.width = imageWidth + "px";
-  styles.value.height = imageHeight + "px";
-};
-
-const onImgLoad = (e: any) => {
-  isLoaded.value = true;
-  if (props.width && props.height) {
-    return;
-  }
-  genImageStyles(e.detail);
 };
 
 const toVideoPreview = () => {
@@ -105,14 +48,22 @@ const toVideoPreview = () => {
   position: relative;
 }
 .image {
-  border-radius: 4px;
+  width: 100%;
+  height: 100%;
 }
 
 .video-poster {
   position: relative;
+  width: 120px;
+  height: 200px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 6px;
+  overflow: hidden;
 }
 
 .video-play-btn {
+  width: 64px;
+  height: 64px;
   display: inline-block;
   position: absolute;
   top: 50%;
