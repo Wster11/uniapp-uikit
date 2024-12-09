@@ -36,6 +36,7 @@
     </view>
     <SearchList
       v-else
+      class="search-list-comp"
       :checkedList="selectedUserIds"
       @checkboxChange="onCheckboxChange"
       @cancel="isSearch = false"
@@ -198,6 +199,10 @@ onUnmounted(() => {
   background: #f9fafa;
   backdrop-filter: blur(10px);
   margin-bottom: 45px;
+}
+
+.search-list-comp {
+  height: 100%;
 }
 
 .crate-btn {
