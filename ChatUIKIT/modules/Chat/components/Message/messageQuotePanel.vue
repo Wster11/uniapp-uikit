@@ -1,7 +1,7 @@
 <template>
   <view v-if="quoteMsg" class="msg-quote-panel-wrap">
     <view class="left-wrap">
-      <MessageQuote :isReplying="true" />
+      <MessageQuote class="msg-quote-wrap" :isReplying="true" />
     </view>
     <view class="cancel" @tap="cancelQuote"> </view>
   </view>
@@ -41,6 +41,11 @@ onUnmounted(() => {
   margin-right: 12px;
   background-image: url("../../../../assets//icon/cancel.png");
   background-size: 100%;
+}
+
+.msg-quote-wrap {
+  display: flex;
+  width: 100%;
 }
 
 .left-wrap {
