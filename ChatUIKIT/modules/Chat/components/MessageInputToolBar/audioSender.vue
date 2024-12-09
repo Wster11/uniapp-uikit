@@ -64,6 +64,9 @@ let audioContext: UniApp.InnerAudioContext | null = null;
 
 let timerId: any = 0;
 
+// 最大录音时长
+const MAX_RECORD_DURATION = 1000 * 60;
+
 // 计算已经录制的时长
 const elapsedTime = computed(() => Math.floor(duration.value / 1000));
 
@@ -85,6 +88,10 @@ const startRecording = () => {
   timerId = setInterval(() => {
     if (recordStatus.value === "recording") {
       duration.value = Date.now() - startTime.value;
+      // 添加时长检查
+      if (duration.value >= MAX_RECORD_DURATION) {
+        stopRecording();
+      }
     }
   }, 1000);
   uni.vibrateShort(); // 短暂震动提示
