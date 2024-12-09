@@ -28,6 +28,7 @@
         <input
           class="input"
           v-model="tel"
+          type="number"
           maxlength="11"
           :placeholder="t('loginPhoneIdPlaceholder')"
         />
@@ -36,6 +37,7 @@
         <input
           class="input"
           v-model="code"
+          type="number"
           maxlength="6"
           :placeholder="t('loginCodePlaceholder')"
         />
