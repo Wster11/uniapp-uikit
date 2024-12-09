@@ -1,0 +1,152 @@
+.conversation-item-wrap {
+  display: flex;
+  padding: 0 15px;
+  align-items: center;
+}
+
+.pin-conversation-item-wrap {
+  background: #F1F2F3;
+}
+
+.content-wrap {
+  height: 74px;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  border-bottom: 0.5px solid #E3E6E8;
+}
+
+.mention-tag {
+  flex-shrink: 0;
+  font-size: 14px;
+  font-weight: 500px;
+  line-height: 18px;
+  color: #009DFF;
+  margin-right: 2px;
+}
+
+.avatar-wrap {
+  position: relative;
+}
+
+.unread-mute {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-top: 10px;
+  background: #009DFF;
+  border-radius: 50%;
+}
+
+.unread-count {
+  display: inline-block;
+  width: fit-content;
+  padding: 1px 4px;
+  height: 15px;
+  min-width: 10px;
+  font-size: 12px;
+  text-align: center;
+  line-height: 16px;
+  border-radius: 9px;
+  background: #009DFF;
+  color: #fff;
+  margin-top: 5px;
+}
+
+.user-info-wrap {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  margin-left: 12px;
+}
+
+.info-wrap {
+  display: flex;
+  align-items: center;
+}
+
+.user-nick-name {
+  font-size: 16px;
+  max-width: calc(100vw - 200px);
+  color: #171A1C;
+  line-height: 22px;
+  flex-shrink: 0;
+  flex-grow: 0;
+}
+
+.msg-wrap {
+  display: flex;
+}
+
+.last-msg {
+  flex: 1;
+  width: 0;
+  min-height: 18px;
+  font-size: 14px;
+  color: #75828A;
+  line-height: 18px;
+}
+
+.time {
+  flex-shrink: 0;
+  margin-left: 15px;
+  color: #75828A;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.msg-right-wrap {
+  text-align: right;
+}
+
+.swipe-menu-wrap {
+  transition: all 0.4s ease;
+  position: relative;
+}
+
+.emoji-wrap {
+  vertical-align: middle;
+}
+
+.menu-wrap {
+  position: absolute;
+  right: -272px;
+  top: 0;
+  width: 272px;
+  height: 100%;
+  text-align: center;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  line-height: 22px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.mute {
+  width: 100%;
+  background: #5270ad;
+}
+
+.pin {
+  width: 100%;
+  background: #009dff;
+}
+
+.delete {
+  width: 100%;
+  background: #75828A;
+}
+
+.confirm-delete {
+  width: 100%;
+  background: #f35;
+}

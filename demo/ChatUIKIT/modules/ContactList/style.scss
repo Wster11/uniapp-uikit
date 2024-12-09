@@ -1,0 +1,53 @@
+.contact-list-wrap {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.header-wrap {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  z-index: 999;
+  padding: 0 8px;
+  width: 100%;
+  background: #f9fafa;
+  box-sizing: border-box;
+}
+
+.count {
+  color: #75828A;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.contact-search {
+  flex-shrink: 0;
+  margin: 8px;
+}
+
+
+uni-page-body {
+  overflow: hidden;
+}
+
+.request-count {
+  padding: 1px 4px;
+  height: 15px;
+  min-width: 10px;
+  font-size: 12px;
+  text-align: center;
+  line-height: 16px;
+  border-radius: 9px;
+  background: #009DFF;
+  color: #fff;
+}
+
+
+.contact-index-list {
+  box-sizing: border-box;
+  flex: 1;
+  overflow-y: scroll;
+}
