@@ -108,7 +108,8 @@ onMounted(() => {
       });
       isLast.value = convMessageInfo.isLast;
       cursor.value = convMessageInfo.cursor;
-      const isSameLength = oldMsgs.length === msgs.value.length;
+      const isSameLength =
+        oldMsgs.length === msgs.value.length && oldMsgs.length !== 0;
       if (isLoading.value || currentViewMsgId.value || isSameLength) {
         return;
       }
