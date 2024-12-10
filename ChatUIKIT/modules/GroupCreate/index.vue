@@ -113,7 +113,7 @@ const createGroup = () => {
 };
 
 const onBack = () => {
-  uni.switchTab({
+  uni.redirectTo({
     url: "/ChatUIKIT/modules/Conversation/index"
   });
 };
