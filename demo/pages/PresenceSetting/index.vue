@@ -60,14 +60,14 @@
 </template>
 
 <script setup lang="ts">
-import NavBar from "../../ChatUIKIT/components/NavBar/index.vue";
-import MenuItem from "../../ChatUIKIT/components/MenuItem/index.vue";
-import UIKITButton from "../../ChatUIKIT/components/Button/index.vue";
-import { ChatUIKIT } from "../../ChatUIKIT/index";
-import { PRESENCE_STATUS_LIST } from "../../ChatUIKIT/const";
+import NavBar from "../../ChatUIKit/components/NavBar/index.vue";
+import MenuItem from "../../ChatUIKit/components/MenuItem/index.vue";
+import UIKITButton from "../../ChatUIKit/components/Button/index.vue";
+import { ChatUIKit } from "../../ChatUIKit/index";
+import { PRESENCE_STATUS_LIST } from "../../ChatUIKit/const";
 import { t } from "../../const/locales";
 import { autorun } from "mobx";
-import Modal from "../../ChatUIKIT/components/Modal/index.vue";
+import Modal from "../../ChatUIKit/components/Modal/index.vue";
 import { ref, computed, onUnmounted } from "vue";
 
 const presenceExt = ref("");
@@ -92,7 +92,7 @@ const presenceMenus = PRESENCE_STATUS_LIST.map((status) => ({
 }));
 
 const unwatchUserInfo = autorun(() => {
-  presenceExt.value = ChatUIKIT.appUserStore.getSelfUserInfo().presenceExt;
+  presenceExt.value = ChatUIKit.appUserStore.getSelfUserInfo().presenceExt;
 });
 
 const checkedStatus = computed(() => {
@@ -100,7 +100,7 @@ const checkedStatus = computed(() => {
     return presenceExt.value;
   } else {
     inputValue.value = customPresence.value =
-      ChatUIKIT.appUserStore.getSelfUserInfo().presenceExt || "";
+      ChatUIKit.appUserStore.getSelfUserInfo().presenceExt || "";
 
     return "Custom";
   }
@@ -129,7 +129,7 @@ const closeModal = () => {
 };
 
 const publishPresence = () => {
-  ChatUIKIT.appUserStore
+  ChatUIKit.appUserStore
     .publishPresence({
       presenceExt:
         checkedStatus.value === "Custom"

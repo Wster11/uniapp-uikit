@@ -179,7 +179,7 @@ const loginWithPassword = () => {
       });
       // 跳转会话列表页面
       uni.switchTab({
-        url: "/ChatUIKIT/modules/Conversation/index"
+        url: "/ChatUIKit/modules/Conversation/index"
       });
     })
     .catch((e) => {
@@ -228,7 +228,7 @@ const loginWithTel = async () => {
           });
           // 跳转会话列表页面
           uni.switchTab({
-            url: "/ChatUIKIT/modules/Conversation/index"
+            url: "/ChatUIKit/modules/Conversation/index"
           });
         })
         .finally(() => {

@@ -61,7 +61,7 @@
 			}
 		},
 		{
-			"path": "ChatUIKIT/modules/Conversation/index",
+			"path": "ChatUIKit/modules/Conversation/index",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -70,7 +70,7 @@
 			}
 		},
 		{
-			"path": "ChatUIKIT/modules/Chat/index",
+			"path": "ChatUIKit/modules/Chat/index",
 			"style": {
 				"navigationStyle": "custom",
 				// #ifdef MP-WEIXIN
@@ -83,7 +83,7 @@
 			}
 		},
 		{
-			"path": "ChatUIKIT/modules/ChatNew/index",
+			"path": "ChatUIKit/modules/ChatNew/index",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -92,7 +92,7 @@
 			}
 		},
 		{
-			"path": "ChatUIKIT/modules/GroupList/index",
+			"path": "ChatUIKit/modules/GroupList/index",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -101,7 +101,7 @@
 			}
 		},
 		{
-			"path": "ChatUIKIT/modules/ConversationSearchList/index",
+			"path": "ChatUIKit/modules/ConversationSearchList/index",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -110,7 +110,7 @@
 			}
 		},
 		{
-			"path": "ChatUIKIT/modules/VideoPreview/index",
+			"path": "ChatUIKit/modules/VideoPreview/index",
 			"style": {
 				"navigationBarTitleText": "Video Preview",
 				"app-plus": {
@@ -119,7 +119,7 @@
 			}
 		},
 		{
-			"path": "ChatUIKIT/modules/ContactList/index",
+			"path": "ChatUIKit/modules/ContactList/index",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -128,7 +128,7 @@
 			}
 		},
 		{
-			"path": "ChatUIKIT/modules/ContactAdd/index",
+			"path": "ChatUIKit/modules/ContactAdd/index",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -137,7 +137,7 @@
 			}
 		},
 		{
-			"path": "ChatUIKIT/modules/ContactRequestList/index",
+			"path": "ChatUIKit/modules/ContactRequestList/index",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -146,7 +146,7 @@
 			}
 		},
 		{
-			"path": "ChatUIKIT/modules/ContactSearchList/index",
+			"path": "ChatUIKit/modules/ContactSearchList/index",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -155,7 +155,7 @@
 			}
 		},
 		{
-			"path": "ChatUIKIT/modules/GroupCreate/index",
+			"path": "ChatUIKit/modules/GroupCreate/index",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -174,13 +174,13 @@
 				"text": "消息",
 				"iconPath": "static/icon/conversation.png",
 				"selectedIconPath": "static/icon/conversation_active.png",
-				"pagePath": "ChatUIKIT/modules/Conversation/index"
+				"pagePath": "ChatUIKit/modules/Conversation/index"
 			},
 			{
 				"text": "联系人",
 				"iconPath": "static/icon/contacts.png",
 				"selectedIconPath": "static/icon/contacts_active.png",
-				"pagePath": "ChatUIKIT/modules/ContactList/index"
+				"pagePath": "ChatUIKit/modules/ContactList/index"
 			},
 			{
 				"text": "个人中心",

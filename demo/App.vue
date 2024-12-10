@@ -1,5 +1,5 @@
 <script lang="ts">
-import { ChatUIKIT } from "./ChatUIKIT";
+import { ChatUIKit } from "./ChatUIKit";
 import {
   APPKEY,
   API_URL,
@@ -21,7 +21,7 @@ const chat = new (websdk as unknown as EasemobChatStatic).connection({
 
 websdk.logger.disableAll();
 
-ChatUIKIT.init({
+ChatUIKit.init({
   chat,
   config: {
     theme: {
@@ -31,26 +31,26 @@ ChatUIKIT.init({
   }
 });
 
-// ChatUIKIT.hideFeature(["useUserInfo", "usePresence"]);
+// ChatUIKit.hideFeature(["useUserInfo", "usePresence"]);
 
 // 手动设置用户属性
-// ChatUIKIT.appUserStore.setUserInfo("0c1bdd28c7", {
+// ChatUIKit.appUserStore.setUserInfo("0c1bdd28c7", {
 //   nickname: "张三",
 //   avatarurl: "https://p9-passport.byteacctimg.com/img/user-avatar/6d239ae53c4aded5fadd95cda5fc6759~40x40.awebp"
 // });
 
-uni.$UIKIT = ChatUIKIT;
+uni.$UIKIT = ChatUIKit;
 
 // 监听群组变化获取群组头像
 autorun(() => {
-  const groupIds = ChatUIKIT.groupStore.joinedGroupList
+  const groupIds = ChatUIKit.groupStore.joinedGroupList
     .filter((group) => {
       // 过滤掉已经有头像的群组
-      return !ChatUIKIT.groupStore.isHasGroupAvatar(group.groupId);
+      return !ChatUIKit.groupStore.isHasGroupAvatar(group.groupId);
     })
     .map((group) => {
       // 设置头像空头像, 避免重复请求
-      ChatUIKIT.groupStore.setGroupAvatar(group.groupId, "");
+      ChatUIKit.groupStore.setGroupAvatar(group.groupId, "");
       return group.groupId;
     });
 
@@ -66,12 +66,12 @@ const getGroupAvatarUrl = async (groupIds: string[]) => {
       const res = await uni.request({
         url: getInsideGroupAvatarUrl(groupId),
         header: {
-          Authorization: "Bearer " + ChatUIKIT.getChatConn().accessToken
+          Authorization: "Bearer " + ChatUIKit.getChatConn().accessToken
         }
       });
       runInAction(() => {
         // 设置群组头像
-        ChatUIKIT.groupStore.setGroupAvatar(groupId, res.data.avatarUrl);
+        ChatUIKit.groupStore.setGroupAvatar(groupId, res.data.avatarUrl);
       });
     } catch (error) {
       console.error("Failed to fetch group avatar:", groupId, error);
@@ -88,7 +88,7 @@ const autoLogin = async () => {
     if (res.data) {
       // 跳转会话列表页面
       uni.reLaunch({
-        url: "/ChatUIKIT/modules/Conversation/index",
+        url: "/ChatUIKit/modules/Conversation/index",
         success: () => {
           // #ifdef APP-PLUS
           plus.navigator.closeSplashscreen();
@@ -116,7 +116,7 @@ export default {
   },
   onShow: function () {
     console.log("App Show");
-    ChatUIKIT.onShow();
+    ChatUIKit.onShow();
   },
   onHide: function () {
     console.log("App Hide");

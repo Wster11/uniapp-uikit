@@ -36,9 +36,9 @@
 </template>
 
 <script setup lang="ts">
-import NavBar from "../../ChatUIKIT/components/NavBar/index.vue";
-import Avatar from "../../ChatUIKIT/components/Avatar/index.vue";
-import MenuItem from "../../ChatUIKIT/components/MenuItem/index.vue";
+import NavBar from "../../ChatUIKit/components/NavBar/index.vue";
+import Avatar from "../../ChatUIKit/components/Avatar/index.vue";
+import MenuItem from "../../ChatUIKit/components/MenuItem/index.vue";
 import { t } from "../../const/locales";
 
 const onBack = () => {

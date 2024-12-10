@@ -1,4 +1,4 @@
-import type { ChatKIT } from "../ChatUIKIT"
+import type { ChatKIT } from "../ChatUIKit"
 
 declare global {
 	interface Uni {

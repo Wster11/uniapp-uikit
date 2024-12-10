@@ -50,22 +50,22 @@
 </template>
 
 <script setup lang="ts">
-import Avatar from "../../ChatUIKIT/components/Avatar/index.vue";
-import MenuItem from "../../ChatUIKIT/components/MenuItem/index.vue";
+import Avatar from "../../ChatUIKit/components/Avatar/index.vue";
+import MenuItem from "../../ChatUIKit/components/MenuItem/index.vue";
 import { ref, onUnmounted } from "vue";
 import { t } from "../../const/locales";
-import { ChatUIKIT } from "../../ChatUIKIT/index";
+import { ChatUIKit } from "../../ChatUIKit/index";
 import { CHAT_STORE } from "@/const/index";
-import { USER_AVATAR_URL } from "../../ChatUIKIT/const";
-import { UserInfoWithPresence } from "../../ChatUIKIT/types";
+import { USER_AVATAR_URL } from "../../ChatUIKit/const";
+import { UserInfoWithPresence } from "../../ChatUIKit/types";
 import { autorun } from "mobx";
 
-const userId = ChatUIKIT.getChatConn().user;
+const userId = ChatUIKit.getChatConn().user;
 
 const userInfo = ref<UserInfoWithPresence>({} as UserInfoWithPresence);
 
 const unwatchUserInfo = autorun(() => {
-  userInfo.value = ChatUIKIT.appUserStore.getSelfUserInfo();
+  userInfo.value = ChatUIKit.appUserStore.getSelfUserInfo();
 });
 
 const copy = () => {
@@ -75,7 +75,7 @@ const copy = () => {
 };
 
 const logout = () => {
-  ChatUIKIT.chatStore.close();
+  ChatUIKit.chatStore.close();
   uni.removeStorageSync(CHAT_STORE);
   uni.reLaunch({
     url: "/pages/Login/index"
