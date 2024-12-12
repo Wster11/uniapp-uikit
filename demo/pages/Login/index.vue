@@ -163,7 +163,7 @@ const loginWithPassword = () => {
   uni.showLoading({
     title: t("loginLoadingTitle")
   });
-  uni.$UIKIT.chatStore
+  uni.$UIKit.chatStore
     .login({
       user: userId.value,
       pwd: password.value // 密码登录
@@ -213,7 +213,7 @@ const loginWithTel = async () => {
 
     if (res.statusCode == 200) {
       const { token, chatUserName } = res.data;
-      uni.$UIKIT.chatStore
+      uni.$UIKit.chatStore
         .login({
           user: chatUserName,
           accessToken: token

@@ -39,7 +39,7 @@ ChatUIKit.init({
 //   avatarurl: "https://p9-passport.byteacctimg.com/img/user-avatar/6d239ae53c4aded5fadd95cda5fc6759~40x40.awebp"
 // });
 
-uni.$UIKIT = ChatUIKit;
+uni.$UIKit = ChatUIKit;
 
 // 监听群组变化获取群组头像
 autorun(() => {
@@ -96,7 +96,7 @@ const autoLogin = async () => {
         }
       });
       const { userId, token } = res.data;
-      await uni.$UIKIT.chatStore.login({
+      await uni.$UIKit.chatStore.login({
         user: userId,
         accessToken: token
       });

@@ -56,7 +56,7 @@ class ChatKIT {
   /** 在 onShow 生命周期检测IM链接是否有效*/
   public onShow() {
     // 如果IM是登录状态，则检测IM链接是否有效
-    if (!this.getChatConn().logout) {
+    if (this.getChatConn().logout === false) {
       this.getChatConn().onShow();
     }
   }
