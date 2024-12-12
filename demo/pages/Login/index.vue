@@ -92,7 +92,11 @@ const tel = ref("");
 const code = ref("");
 const privacyChecked = ref(false);
 const times = ref(0);
-const isPasswordLogin = ref(!!IS_USE_CUSTOM_SERVER);
+
+// const isPasswordLogin = ref(!!IS_USE_CUSTOM_SERVER);
+
+// 是否使用密码登录
+const isPasswordLogin = ref(true);
 
 // 启动倒计时
 const startCount = () => {

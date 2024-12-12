@@ -4,6 +4,9 @@
 
 环信单群聊 UIKit 是基于环信即时通讯云 IM SDK 开发的一款即时通讯 UI 组件库，提供各种组件实现会话列表、聊天界面、联系人列表及后续界面等功能，帮助开发者根据实际业务需求快速搭建包含 UI 界面的即时通讯应用。
 
+示例项目中上传头像，获取群组头像功能依赖 app server 来实现，如果你要实现自己的 app server，请参考app server [示例代码](https://github.com/easemob/easemob-demo-appserver/tree/dev-demo)。需要确保 app server 中使用的 appKey 和本项目中配置的是相同的。
+
+
 ## 支持平台（vue3）
 
 - Android
@@ -62,6 +65,13 @@ const URL = "" // 环信 websocket 地址 wss协议
 打开 HBuilderX 工具栏 -> 运行, 选择指定运行平台, 例如浏览器, 然后点击运行
 
 <img src="./image3.png" alt="run" width="300" />
+
+
+## demo体验
+
+- [H5](https://uniapp-h5.easemob.com/);
+- [Android](https://www.pgyer.com/unggU6xu);
+- [iOS](https://www.pgyer.com/LvuQvWCN);
 
 ## 相关链接
 
