@@ -57,12 +57,7 @@
 
 UIKit中依赖的静态资源（`ChatUIKit/assets`）放置在环信服务器中,有访问频率限制，建议您将静态资源放置在您的业务服务器上，然后修改 `ChatUIKit/const/index.ts` 文件中的 `ASSETS_URL` 为您的资源服务器地址。
 
-## 📁 相关资源
+## 相关资源
 
-[集成文档](https://docs-im-beta.easemob.com/document/web/quickstart.html);
-
-[chat demo 线上地址](https://uniapp-h5.easemob.com/);
-
-## 📄 代码许可
-
-示例项目遵守 MIT 许可证。
+- [快速开始](https://docs-im-beta.easemob.com/document/web/quickstart.html);
+- [集成文档](https://docs-im-beta.easemob.com/document/web/quickstart.html);
